@@ -21,6 +21,6 @@ MonoBehaviour:
     subType: 0
     itemDescription: "\u8FD9\u662F\u4E00\u628A\u65A7\u5934"
     useRadius: 0
-    canPickUp: 0
+    canPickUp: 1
     itemPrice: 0
     sellPercentage: 0

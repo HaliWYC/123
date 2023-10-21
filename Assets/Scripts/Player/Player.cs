@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        //Debug.Log("Player");
     }
 
     private void Update()
