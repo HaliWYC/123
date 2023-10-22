@@ -18,8 +18,17 @@ MonoBehaviour:
     itemIcon: {fileID: 21300000, guid: 3714c3e6b5e3d498ebcd06d432b3dd89, type: 3}
     iconOnWorldSprite: {fileID: 0}
     itemType: 3
-    subType: 0
     itemDescription: "\u8FD9\u662F\u4E00\u628A\u65A7\u5934"
+    useRadius: 0
+    canPickUp: 1
+    itemPrice: 0
+    sellPercentage: 0
+  - itemID: 1002
+    itemName: NEW ITEM
+    itemIcon: {fileID: 21300000, guid: ab9788b07a759404293670018c76ec0f, type: 3}
+    iconOnWorldSprite: {fileID: 0}
+    itemType: 0
+    itemDescription: "\u8FD9\u662F\u4E00\u628A\u7A3F\u5B50"
     useRadius: 0
     canPickUp: 1
     itemPrice: 0

@@ -13,6 +13,12 @@ namespace ShanHai_IsolatedCity.Inventory
 
         public InventoryBag_SO playerBag;
 
+
+        private void Start()
+        {
+            EventHandler.callUpdateInventoryUI(InventoryLocation.角色, playerBag.itemList);
+        }
+
         /// <summary>
         /// Use ID to return item
         /// </summary>
@@ -31,21 +37,88 @@ namespace ShanHai_IsolatedCity.Inventory
         /// <param name="toDestory">Whether destroy object or not </param>
          public void addItem(Item item, bool toDestory)
         {
-            //Is Bag spare?
+          //Is Bag spare?
 
-            //Is Bag already having this item?
+          var index = getItemIndexInBag(item.itemID);
 
-            InventoryItem newItem = new InventoryItem();
-            newItem.itemID = item.itemID;
-            newItem.itemAmount = 1;
+            addItemAtIndex(item.itemID, index, 1);
 
-            playerBag.itemList[0] = newItem;
 
             //Debug.Log(getItemDetails(item.itemID).itemID + "Name" + getItemDetails(item.itemID).itemName);
             if (toDestory)
             {
                 Destroy(item.gameObject);
             }
+
+            //Update UI
+            EventHandler.callUpdateInventoryUI(InventoryLocation.角色, playerBag.itemList);
         }
+
+        /// <summary>
+        /// Is Bag spare?
+        /// </summary>
+        /// <returns></returns>
+        private bool checkBagCapacity()
+        {
+            for(int i = 0; i < playerBag.itemList.Count; i++)
+            {
+                if (playerBag.itemList[i].itemID == 0)
+                {
+                    return true;
+                }
+                
+            }
+            return false;
+        }
+        /// <summary>
+        /// Use ID to find the position of the object had in the bag
+        /// </summary>
+        /// <param name="ID">Item ID</param>
+        /// <returns>-1 means not exist else return the index</returns>
+        private int getItemIndexInBag(int ID)
+        {
+            for (int i = 0; i < playerBag.itemList.Count; i++)
+            {
+                if (playerBag.itemList[i].itemID == ID)
+                {
+                    return i;
+                }
+
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Add the item at the certain index
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <param name="index"></param>
+        /// <param name="amount"></param>
+        private void addItemAtIndex(int ID, int index, int amount)
+        {
+            if (index == -1 && checkBagCapacity())//Does not have this item 
+            {
+                var Item = new InventoryItem { itemID = ID, itemAmount = amount };
+
+                for (int i = 0; i < playerBag.itemList.Count; i++)
+                {
+                    if (playerBag.itemList[i].itemID == 0)
+                    {
+                        playerBag.itemList[i] = Item;
+                        break;
+                    }
+                }
+            }
+            else//Does have this item
+            {
+                int currentAmount = playerBag.itemList[index].itemAmount + amount;
+
+                var Item = new InventoryItem { itemID = ID, itemAmount = currentAmount };
+
+                playerBag.itemList[index] = Item;
+            }
+
+        }
+
     }
 }

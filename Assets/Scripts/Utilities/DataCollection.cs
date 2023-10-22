@@ -13,8 +13,6 @@ public class ItemDetails
 
     public ItemType itemType;
 
-    public SubType subType;
-
     [TextArea]
     public string itemDescription;
 

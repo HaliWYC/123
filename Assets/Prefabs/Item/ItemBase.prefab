@@ -91,14 +91,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b15623151014c9ba15d313c0fb16b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemID: 1001
+  itemID: 0
   itemDetails:
     itemID: 0
     itemName: 
     itemIcon: {fileID: 0}
     iconOnWorldSprite: {fileID: 0}
     itemType: 0
-    subType: 0
     itemDescription: 
     useRadius: 0
     canPickUp: 0
