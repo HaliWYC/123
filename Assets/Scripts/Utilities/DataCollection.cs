@@ -13,12 +13,18 @@ public class ItemDetails
 
     public ItemType itemType;
 
+    public WeaponType weaponType;
+
     [TextArea]
     public string itemDescription;
 
     public int useRadius;
 
     public bool canPickUp;
+
+    public bool canDrop;
+
+    public bool Stackable;
 
     public int itemPrice;
 

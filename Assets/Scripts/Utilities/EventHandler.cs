@@ -11,4 +11,10 @@ public static class EventHandler
     {
         updateInventoryUI?.Invoke(location, list);
     }
+
+    public static event Action<int, Vector3> instantiateItemInScene;
+    public static void callInstantiateItemInScene(int ID,Vector3 pos)
+    {
+        instantiateItemInScene?.Invoke(ID, pos);
+    }
 }

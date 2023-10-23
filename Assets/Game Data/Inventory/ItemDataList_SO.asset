@@ -17,19 +17,25 @@ MonoBehaviour:
     itemName: "\u65A7\u5934"
     itemIcon: {fileID: 21300000, guid: 3714c3e6b5e3d498ebcd06d432b3dd89, type: 3}
     iconOnWorldSprite: {fileID: 0}
-    itemType: 3
-    itemDescription: "\u8FD9\u662F\u4E00\u628A\u65A7\u5934"
-    useRadius: 0
+    itemType: 4
+    weaponType: 13
+    itemDescription: "\u8FD9\u662F\u4E00\u628A\u65A7\u5934,\u53EF\u4EE5\u7528\u5B83\u780D\u6811\u6216\u8005\u653B\u51FB\u654C\u4EBA\uFF0C\u53EF\u4EE5\u9020\u6210\u8F7B\u5FAE\u7684\u7269\u7406\u653B\u51FB\uFF0C\u53EF\u80FD\u4F1A\u4F7F\u654C\u4EBA\u53D7\u4F24"
+    useRadius: 1
     canPickUp: 1
-    itemPrice: 0
-    sellPercentage: 0
+    canDrop: 1
+    Stackable: 1
+    itemPrice: 10
+    sellPercentage: 0.44
   - itemID: 1002
-    itemName: 
+    itemName: "\u7A3F\u5B50"
     itemIcon: {fileID: 21300000, guid: ab9788b07a759404293670018c76ec0f, type: 3}
     iconOnWorldSprite: {fileID: 0}
-    itemType: 0
+    itemType: 4
+    weaponType: 13
     itemDescription: "\u8FD9\u662F\u4E00\u628A\u7A3F\u5B50"
     useRadius: 0
     canPickUp: 1
-    itemPrice: 0
-    sellPercentage: 0
+    canDrop: 1
+    Stackable: 0
+    itemPrice: 15
+    sellPercentage: 0.56

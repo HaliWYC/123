@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ShanHai_IsolatedCity.Inventory
 {
@@ -8,6 +9,11 @@ namespace ShanHai_IsolatedCity.Inventory
 
     public class InventoryUI : MonoBehaviour
     {
+        public ItemToolTip itemToolTip;
+
+        [Header("Drag Icon")]
+        public Image dragItem;
+
         [Header("Player Bag UI")]
 
         [SerializeField] private GameObject bagUI;

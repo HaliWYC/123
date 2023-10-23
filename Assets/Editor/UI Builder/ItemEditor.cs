@@ -183,6 +183,15 @@ public class ItemEditor : EditorWindow
             itemListView.Rebuild();
         });
 
+        /*itemDetailsSection.Q<EnumField>("WeaponType").Init(activeItem.weaponType);
+        itemDetailsSection.Q<EnumField>("WeaponType").value = activeItem.weaponType;
+        itemDetailsSection.Q<EnumField>("WeaponType").RegisterValueChangedCallback(evt =>
+        {
+
+            activeItem.weaponType = (WeaponType)evt.newValue;
+            itemListView.Rebuild();
+        });*/
+
         itemDetailsSection.Q<TextField>("Description").value = activeItem.itemDescription;
         itemDetailsSection.Q<TextField>("Description").RegisterValueChangedCallback(evt =>
         {
@@ -199,6 +208,18 @@ public class ItemEditor : EditorWindow
         itemDetailsSection.Q<Toggle>("CanPickUp").RegisterValueChangedCallback(evt =>
         {
             activeItem.canPickUp = evt.newValue;
+        });
+
+        itemDetailsSection.Q<Toggle>("CanDrop").value = activeItem.canDrop;
+        itemDetailsSection.Q<Toggle>("CanDrop").RegisterValueChangedCallback(evt =>
+        {
+            activeItem.canDrop = evt.newValue;
+        });
+
+        itemDetailsSection.Q<Toggle>("Stackable").value = activeItem.Stackable;
+        itemDetailsSection.Q<Toggle>("Stackable").RegisterValueChangedCallback(evt =>
+        {
+            activeItem.Stackable = evt.newValue;
         });
 
         itemDetailsSection.Q<IntegerField>("Price").value = activeItem.itemPrice;

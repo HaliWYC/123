@@ -96,6 +96,7 @@ namespace ShanHai_IsolatedCity.Inventory
         /// <param name="amount"></param>
         private void addItemAtIndex(int ID, int index, int amount)
         {
+
             if (index == -1 && checkBagCapacity())//Does not have this item 
             {
                 var Item = new InventoryItem { itemID = ID, itemAmount = amount };
@@ -111,13 +112,57 @@ namespace ShanHai_IsolatedCity.Inventory
             }
             else//Does have this item
             {
-                int currentAmount = playerBag.itemList[index].itemAmount + amount;
+                if (getItemDetails(ID).Stackable)
+                {
+                    int currentAmount = playerBag.itemList[index].itemAmount + amount;
 
-                var Item = new InventoryItem { itemID = ID, itemAmount = currentAmount };
+                    var Item = new InventoryItem { itemID = ID, itemAmount = currentAmount };
 
-                playerBag.itemList[index] = Item;
+                    playerBag.itemList[index] = Item;
+                }
+                
+                else if (!getItemDetails(ID).Stackable && checkBagCapacity())//Not Stackable
+                {
+                    var Item = new InventoryItem { itemID = ID, itemAmount = amount };
+
+                    for (int i = 0; i < playerBag.itemList.Count; i++)
+                    {
+                        if (playerBag.itemList[i].itemID == 0)
+                        {
+                            playerBag.itemList[i] = Item;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    return;
+                }
             }
 
+        }
+        /// <summary>
+        /// Swap Item in Player's bag
+        /// </summary>
+        /// <param name="initialIndex">Initial Index</param>
+        /// <param name="targetIndex">Target Index</param>
+        public void swapItem(int initialIndex, int targetIndex)
+        {
+            InventoryItem currentItem = playerBag.itemList[initialIndex];
+
+            InventoryItem targetItem = playerBag.itemList[targetIndex];
+
+            if (targetItem.itemID != 0)
+            {
+                playerBag.itemList[initialIndex] = targetItem;
+                playerBag.itemList[targetIndex] =  currentItem;
+            }
+            else
+            {
+                playerBag.itemList[targetIndex] = currentItem;
+                playerBag.itemList[initialIndex] = new InventoryItem();
+            }
+            EventHandler.callUpdateInventoryUI(InventoryLocation.角色, playerBag.itemList);
         }
 
     }
