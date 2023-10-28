@@ -23,7 +23,7 @@ MonoBehaviour:
     useRadius: 1
     canPickUp: 1
     canDrop: 1
-    Stackable: 1
+    Stackable: 0
     itemPrice: 10
     sellPercentage: 0.44
   - itemID: 1002

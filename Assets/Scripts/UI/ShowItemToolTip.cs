@@ -15,6 +15,7 @@ namespace ShanHai_IsolatedCity.Inventory
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            //Debug.Log(slotUI.itemAmount);
             if (slotUI.itemAmount != 0)
             {
                 inventoryUI.itemToolTip.gameObject.SetActive(true);

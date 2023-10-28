@@ -36,11 +36,13 @@ namespace ShanHai_IsolatedCity.Inventory
                     {
                         if (list[i].itemAmount > 0)
                         {
+                            
                             var Item = InventoryManager.Instance.getItemDetails(list[i].itemID);
                             playerSlots[i].upDateSlot(Item, list[i].itemAmount);
                         }
                         else
                         {
+                            //Debug.Log(list[i].itemAmount);
                             playerSlots[i].upDateEmptySlot();
                         }
                     }

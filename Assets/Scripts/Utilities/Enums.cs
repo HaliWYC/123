@@ -20,3 +20,7 @@ public enum WeaponType
     单手剑,双手剑,长刀,短刀,斧头,匕首,盾牌,琴,长枪,长矛,戟,笛,拳套,非武器
 }
 
+public enum Seasons
+{
+    春,夏,秋,冬
+}

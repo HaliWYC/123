@@ -2,39 +2,59 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
     public Rigidbody2D rb;
+    private Animator anim;
+    public PlayerInputControl inputControl;
+    private bool isMoving;
+
+    [SerializeField] private Transform playerTransform;
 
     public float speed;
-    private float inputX;
-    private float inputY;
+    //private float inputX;
+    //private float inputY;
 
-    private Vector2 movementInput;
+    public Vector2 movementInput;
 
 
 
 
     private void Awake()
     {
+        inputControl = new PlayerInputControl();
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponentInChildren<Animator>();
         //Debug.Log("Player");
     }
 
     private void Update()
     {
-        PlayerInput();
+        //PlayerInput();
+        movementInput = inputControl.Gameplay.Move.ReadValue<Vector2>();
+        switchAnimation();
+        Running();
     }
 
     private void FixedUpdate()
     {
         Movement();
+
     }
 
+    private void OnEnable()
+    {
+        inputControl.Enable();
+    }
 
+    private void OnDisable()
+    {
+        inputControl.Disable();
+    }
 
-    private void PlayerInput()
+    /*private void PlayerInput()
     {
         inputX = Input.GetAxisRaw("Horizontal");
         inputY = Input.GetAxisRaw("Vertical");
@@ -48,12 +68,60 @@ public class Player : MonoBehaviour
 
         movementInput = new Vector2(inputX, inputY);
 
-    }
+    }*/
 
     private void Movement()
     {
-        rb.MovePosition(rb.position + movementInput * speed * Time.deltaTime);
+        //rb.MovePosition(rb.position + movementInput * speed * Time.deltaTime);
+        if (movementInput.x != 0 && movementInput.y != 0)
+        {
+            movementInput.x *= 0.8f;
+            movementInput.y *= 0.8f;
+        }
+
+
+
+         //Debug.Log(movementInput.x + movementInput.y);
+        rb.velocity = new Vector2(movementInput.x * speed * Time.deltaTime, movementInput.y * speed * Time.deltaTime);
+        //Debug.Log(rb.velocity.x + rb.velocity.y);
+        //Debug.Log(movementInput.x + movementInput.y);
+        isMoving = rb.velocity != Vector2.zero;
+        //Flip player
+
+        int faceDir = (int)playerTransform.localScale.x;
+
+        if (movementInput.x > 0)
+            faceDir = 1;
+        if (movementInput.x < 0)
+            faceDir = -1;
+
+
+        playerTransform.localScale = new Vector3(faceDir, 1, 1);
+
     }
 
+    private void Running()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            speed =1000;
+        }
 
+
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            speed = 500;
+        }
+    }
+
+    public void switchAnimation()
+    {
+        anim.SetBool("isMoving", isMoving);
+        if (isMoving)
+        {
+            anim.SetFloat("velocityX", rb.velocity.x);
+            anim.SetFloat("velocityY", rb.velocity.y);
+        }
+        
+    }
 }

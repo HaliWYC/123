@@ -53,6 +53,7 @@ namespace ShanHai_IsolatedCity.Inventory
         /// <param name="amount">HoldingNumber </param>
         public void upDateSlot(ItemDetails item, int amount)
         {
+            //Debug.Log(amount);
             itemDetails = item;
             slotImage.sprite = item.itemIcon;
             slotImage.enabled = true;
@@ -71,7 +72,7 @@ namespace ShanHai_IsolatedCity.Inventory
             {
                 isSelected = false;
             }
-
+            itemAmount = 0;
             slotImage.enabled = false;
             amountText.text = string.Empty;
             button.interactable = false;
@@ -94,6 +95,7 @@ namespace ShanHai_IsolatedCity.Inventory
         {
             if (itemAmount != 0)
             {
+                //Debug.Log(itemAmount);
                 inventoryUI.dragItem.enabled = true;
                 inventoryUI.dragItem.sprite = slotImage.sprite;
                 inventoryUI.dragItem.SetNativeSize();
@@ -119,6 +121,7 @@ namespace ShanHai_IsolatedCity.Inventory
                 }
 
                 var targetSlotUI = eventData.pointerCurrentRaycast.gameObject.GetComponent<SlotUI>();
+                
                 int targetIndex = targetSlotUI.slotIndex;
 
                 //Swap item in player's bag
