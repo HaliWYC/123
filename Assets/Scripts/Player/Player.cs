@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     private Animator anim;
     public PlayerInputControl inputControl;
     private bool isMoving;
+    private bool inputDisable;
 
     [SerializeField] private Transform playerTransform;
 
@@ -30,28 +31,61 @@ public class Player : MonoBehaviour
         //Debug.Log("Player");
     }
 
+    
+
     private void Update()
     {
         //PlayerInput();
+        if (inputDisable == true)
+        {
+            inputControl.Disable();
+            //isMoving = false;
+        }
+        else
+            inputControl.Enable();
+        
+            
         movementInput = inputControl.Gameplay.Move.ReadValue<Vector2>();
+        
         switchAnimation();
         Running();
     }
 
     private void FixedUpdate()
     {
-        Movement();
-
+        //if(!inputDisable)
+            Movement();
     }
 
     private void OnEnable()
     {
         inputControl.Enable();
+        EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
+        EventHandler.afterSceneLoadedEvent += onAfterSceneLoadEvent;
+        EventHandler.moveToPosition += onMoveToPosition;
+    }
+
+    private void onMoveToPosition(Vector3 targetPosition)
+    {
+        transform.position = targetPosition;
+    }
+
+    private void onAfterSceneLoadEvent()
+    {
+        inputDisable = false;
+    }
+
+    private void onBeforeSceneUnloadEvent()
+    {
+        inputDisable = true;
     }
 
     private void OnDisable()
     {
         inputControl.Disable();
+        EventHandler.beforeSceneUnloadEvent -= onBeforeSceneUnloadEvent;
+        EventHandler.afterSceneLoadedEvent -= onAfterSceneLoadEvent;
+        EventHandler.moveToPosition -= onMoveToPosition;
     }
 
     /*private void PlayerInput()
@@ -78,10 +112,7 @@ public class Player : MonoBehaviour
             movementInput.x *= 0.8f;
             movementInput.y *= 0.8f;
         }
-
-
-
-         //Debug.Log(movementInput.x + movementInput.y);
+        //Debug.Log(movementInput.x + movementInput.y);
         rb.velocity = new Vector2(movementInput.x * speed * Time.deltaTime, movementInput.y * speed * Time.deltaTime);
         //Debug.Log(rb.velocity.x + rb.velocity.y);
         //Debug.Log(movementInput.x + movementInput.y);

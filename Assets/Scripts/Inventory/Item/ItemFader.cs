@@ -17,13 +17,13 @@ public class ItemFader : MonoBehaviour
     public void FadeIn()
     {
         Color targetColour= new Color(1, 1, 1, 1);
-        spriteRenderer.DOColor(targetColour, Settings.fadeDuration);
+        spriteRenderer.DOColor(targetColour, Settings.itemFadeDuration);
     }
 
     //Gradually change the transparency of the sprite
     public void FadeOut()
     {
         Color targetColour = new Color(1, 1, 1, Settings.targetAlpha);
-        spriteRenderer.DOColor(targetColour, Settings.fadeDuration);
+        spriteRenderer.DOColor(targetColour, Settings.itemFadeDuration);
     }
 }

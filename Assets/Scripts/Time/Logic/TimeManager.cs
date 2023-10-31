@@ -18,6 +18,11 @@ public class TimeManager : MonoBehaviour
     {
         newGameTime();
     }
+    private void Start()
+    {
+        EventHandler.callGameMinuteEvent(gameMinute,gameHour);
+        EventHandler.callGameDateEvent(gameHour, gameDay, gameMonth, gameYear, gameSeason);
+    }
     private void Update()
     {
         if (!gameClockPause)
@@ -29,8 +34,15 @@ public class TimeManager : MonoBehaviour
                 updateGameTime();
             }
         }
+        if (Input.GetKey(KeyCode.T))
+        {
+            for(int i = 0; i < 60; i++)
+            {
+                updateGameTime();
+            }
+        }
     }
-
+    
     private void newGameTime()
     {
         gameSecond = 0;
@@ -79,8 +91,11 @@ public class TimeManager : MonoBehaviour
                             gameSeason = (Seasons)seasonNumber;
                         }
                     }
+
                 }
+                EventHandler.callGameDateEvent(gameHour, gameDay, gameMonth, gameYear, gameSeason);
             }
+            EventHandler.callGameMinuteEvent(gameMinute, gameHour);
         }
     }
 }

@@ -25,6 +25,7 @@ namespace ShanHai_IsolatedCity.Inventory
         private void OnEnable()
         {
             EventHandler.updateInventoryUI += onUpdateInventoryUI;
+            EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
         }
 
         private void onUpdateInventoryUI(InventoryLocation location, List<InventoryItem> list)
@@ -54,6 +55,12 @@ namespace ShanHai_IsolatedCity.Inventory
         private void OnDisable()
         {
             EventHandler.updateInventoryUI -= onUpdateInventoryUI;
+            EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
+        }
+
+        private void onBeforeSceneUnloadEvent()
+        {
+            upDateSlotHighLight(-1);
         }
 
         private void Start()

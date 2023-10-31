@@ -17,4 +17,43 @@ public static class EventHandler
     {
         instantiateItemInScene?.Invoke(ID, pos);
     }
+
+    public static event Action<int, int> gameMinuteEvent;
+
+    public static void callGameMinuteEvent(int minute,int hour)
+    {
+        gameMinuteEvent?.Invoke(minute, hour);
+    }
+
+    public static event Action<int, int, int, int, Seasons> gameDateEvent;
+
+    public static void callGameDateEvent(int hour,int day,int month,int year,Seasons season)
+    {
+        gameDateEvent?.Invoke(hour, day, month, year, season);
+    }
+
+    public static event Action<string, Vector3> transitionEvent;
+
+    public static void callTransitionEvent(string sceneName,Vector3 pos)
+    {
+        transitionEvent?.Invoke(sceneName, pos);
+    }
+
+    public static event Action beforeSceneUnloadEvent;
+    public static void callBeforeSceneUnloadEvent()
+    {
+        beforeSceneUnloadEvent?.Invoke();
+    }
+
+    public static event Action afterSceneLoadedEvent;
+    public static void callAfterSceneLoadedEvent()
+    {
+        afterSceneLoadedEvent?.Invoke();
+    }
+
+    public static event Action<Vector3> moveToPosition;
+    public static void callMoveToPosition(Vector3 targetPosition)
+    {
+        moveToPosition?.Invoke(targetPosition);
+    }
 }
