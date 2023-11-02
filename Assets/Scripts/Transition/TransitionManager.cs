@@ -31,10 +31,11 @@ namespace ShanHai_IsolatedCity.Transition
                 StartCoroutine(transtion(sceneToGo, pos));
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
-            StartCoroutine(loadSceneSetActive(startSceneName));
             fadeCanvasGroup = FindObjectOfType<CanvasGroup>();
+            yield return StartCoroutine(loadSceneSetActive(startSceneName));
+            EventHandler.callAfterSceneLoadedEvent();
         }
 
         /// <summary>

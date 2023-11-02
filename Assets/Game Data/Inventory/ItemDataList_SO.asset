@@ -20,12 +20,12 @@ MonoBehaviour:
     itemType: 4
     weaponType: 13
     itemDescription: "\u8FD9\u662F\u4E00\u628A\u65A7\u5934,\u53EF\u4EE5\u7528\u5B83\u780D\u6811\u6216\u8005\u653B\u51FB\u654C\u4EBA\uFF0C\u53EF\u4EE5\u9020\u6210\u8F7B\u5FAE\u7684\u7269\u7406\u653B\u51FB\uFF0C\u53EF\u80FD\u4F1A\u4F7F\u654C\u4EBA\u53D7\u4F24"
-    useRadius: 1
+    useRadius: 2
     canPickUp: 1
-    canDrop: 1
+    canDrop: 0
     Stackable: 0
     itemPrice: 10
-    sellPercentage: 0.44
+    sellPercentage: 0.5
   - itemID: 1002
     itemName: "\u7A3F\u5B50"
     itemIcon: {fileID: 21300000, guid: ab9788b07a759404293670018c76ec0f, type: 3}
@@ -33,9 +33,22 @@ MonoBehaviour:
     itemType: 4
     weaponType: 13
     itemDescription: "\u8FD9\u662F\u4E00\u628A\u7A3F\u5B50"
-    useRadius: 0
+    useRadius: 2
+    canPickUp: 1
+    canDrop: 0
+    Stackable: 0
+    itemPrice: 10
+    sellPercentage: 0.5
+  - itemID: 1003
+    itemName: "\u94BB\u77F3"
+    itemIcon: {fileID: 21300000, guid: c0c4aacf253c71546a3c7761a9703a85, type: 3}
+    iconOnWorldSprite: {fileID: 21300000, guid: c0c4aacf253c71546a3c7761a9703a85, type: 3}
+    itemType: 4
+    weaponType: 13
+    itemDescription: "\u94BB\u77F3\uFF0C\u81EA\u53E4\u4EE5\u6765\u4FBF\u662F\u4EF7\u503C\u8FDE\u57CE\u4E4B\u7269\uFF0C\u901A\u5E38\u9690\u85CF\u5728\u5730\u5E95\u6DF1\u5904\uFF0C\u6781\u5176\u7A00\u6709"
+    useRadius: 3
     canPickUp: 1
     canDrop: 1
-    Stackable: 0
-    itemPrice: 15
-    sellPercentage: 0.56
+    Stackable: 1
+    itemPrice: 100
+    sellPercentage: 1

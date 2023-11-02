@@ -69,3 +69,23 @@ public class SceneItem
     public int itemID;
     public SerilazableVector3 position;
 }
+
+[System.Serializable]
+public class TileProperty
+{
+    public Vector2Int tileCoordinate;
+    public GridType gridType;
+    public bool boolTypeValue;
+}
+
+[System.Serializable]
+public class TileDetails
+{
+    public int gridX, gridY;
+    public bool meleeOnly;
+    public bool rangedOnly;
+    public bool canDropItem;
+    public bool isNPCObstacle;
+
+    //TODO:Can add some property of the single tile
+}

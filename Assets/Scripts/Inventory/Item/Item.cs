@@ -36,16 +36,17 @@ namespace ShanHai_IsolatedCity.Inventory
         /// <param name="ID"></param>
         public void Init(int ID)
         {
+            
             itemID = ID;
 
             //Get data from inventory manager
 
             itemDetails = InventoryManager.Instance.getItemDetails(itemID);
-
+            
             if (itemDetails != null)
             {
                 spriteRenderer.sprite = itemDetails.iconOnWorldSprite != null ? itemDetails.iconOnWorldSprite : itemDetails.itemIcon;
-
+                //Debug.Log(spriteRenderer.sprite);
                 // Change the collider size
 
                 Vector2 newSize = new Vector2(spriteRenderer.sprite.bounds.size.x, spriteRenderer.sprite.bounds.size.y);

@@ -1,6 +1,4 @@
-﻿
-
-public enum ItemType
+﻿public enum ItemType
 {
     武器,书籍,秘籍,丹药,商品
 }
@@ -23,4 +21,15 @@ public enum WeaponType
 public enum Seasons
 {
     春,夏,秋,冬
+}
+
+public enum GridType
+{
+    可投掷区,近战区,远程区,NPC障碍
+}
+
+
+public enum ParticleEffectType
+{
+    None,LeaveFalling01,LeaveFalling02
 }

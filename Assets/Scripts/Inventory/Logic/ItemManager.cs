@@ -8,13 +8,24 @@ namespace ShanHai_IsolatedCity.Inventory
     public class ItemManager : MonoBehaviour
     {
         public Item itemPrefab;
+        public Item bounceItemPrefab;
         private Transform itemParent;
+        private Transform playerTransform => FindObjectOfType<Player>().transform;
 
         private Dictionary<string, List<SceneItem>> sceneItemDict = new Dictionary<string, List<SceneItem>>();
 
         private void OnEnable()
         {
             EventHandler.instantiateItemInScene += onInstantiateItemInScene;
+            EventHandler.dropItemEvent += onDropItemEvent;
+            EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
+            EventHandler.afterSceneLoadedEvent += onAfterSceneLoadEvent;
+        }
+
+        private void OnDisable()
+        {
+            EventHandler.instantiateItemInScene -= onInstantiateItemInScene;
+            EventHandler.dropItemEvent -= onDropItemEvent;
             EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
             EventHandler.afterSceneLoadedEvent += onAfterSceneLoadEvent;
         }
@@ -31,11 +42,13 @@ namespace ShanHai_IsolatedCity.Inventory
             item.itemID = ID;
         }
 
-        private void OnDisable()
+        private void onDropItemEvent(int ID, Vector3 mousePos)
         {
-            EventHandler.instantiateItemInScene -= onInstantiateItemInScene;
-            EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
-            EventHandler.afterSceneLoadedEvent += onAfterSceneLoadEvent;
+            var item = Instantiate(bounceItemPrefab, playerTransform.position, Quaternion.identity, itemParent);
+            item.itemID = ID;
+
+            var dir = (mousePos - playerTransform.position).normalized;
+            item.GetComponent<ItemBounce>().initBounceItem(mousePos, dir);
         }
 
         private void onBeforeSceneUnloadEvent()

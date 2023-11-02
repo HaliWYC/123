@@ -62,7 +62,15 @@ public class Player : MonoBehaviour
         inputControl.Enable();
         EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
         EventHandler.afterSceneLoadedEvent += onAfterSceneLoadEvent;
+        EventHandler.mouseClickEvent += onMouseClickEvent;
         EventHandler.moveToPosition += onMoveToPosition;
+    }
+
+    private void onMouseClickEvent(Vector3 pos, ItemDetails itemDetails)
+    {
+        //TODO: Execute animation
+
+        EventHandler.callExecuteActionAfterAnimation(pos, itemDetails);
     }
 
     private void onMoveToPosition(Vector3 targetPosition)
@@ -86,6 +94,7 @@ public class Player : MonoBehaviour
         EventHandler.beforeSceneUnloadEvent -= onBeforeSceneUnloadEvent;
         EventHandler.afterSceneLoadedEvent -= onAfterSceneLoadEvent;
         EventHandler.moveToPosition -= onMoveToPosition;
+        EventHandler.mouseClickEvent -= onMouseClickEvent;
     }
 
     /*private void PlayerInput()

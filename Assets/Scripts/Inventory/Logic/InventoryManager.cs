@@ -19,6 +19,23 @@ namespace ShanHai_IsolatedCity.Inventory
             EventHandler.callUpdateInventoryUI(InventoryLocation.角色, playerBag.itemList);
         }
 
+        private void OnEnable()
+        {
+            EventHandler.dropItemEvent += onDropItemEvent;
+        }
+
+        
+
+        private void OnDisable()
+        {
+            EventHandler.dropItemEvent -= onDropItemEvent;
+        }
+        private void onDropItemEvent(int ID, Vector3 pos)
+        {
+            removeItem(ID, 1);
+        }
+
+
         /// <summary>
         /// Use ID to return item
         /// </summary>
@@ -162,6 +179,30 @@ namespace ShanHai_IsolatedCity.Inventory
                 playerBag.itemList[targetIndex] = currentItem;
                 playerBag.itemList[initialIndex] = new InventoryItem();
             }
+            EventHandler.callUpdateInventoryUI(InventoryLocation.角色, playerBag.itemList);
+        }
+
+        /// <summary>
+        /// Remove certain amount of item in bag
+        /// </summary>
+        /// <param name="ID">ID</param>
+        /// <param name="removeAmount">Amount</param>
+        private void removeItem(int ID, int removeAmount)
+        {
+            var index = getItemIndexInBag(ID);
+
+            if (playerBag.itemList[index].itemAmount > removeAmount)
+            {
+                var amount = playerBag.itemList[index].itemAmount - removeAmount;
+                var item = new InventoryItem { itemID = ID, itemAmount = amount };
+                playerBag.itemList[index] = item;
+            }
+            else if (playerBag.itemList[index].itemAmount == removeAmount)
+            {
+                var item = new InventoryItem();
+                playerBag.itemList[index] = item;
+            }
+
             EventHandler.callUpdateInventoryUI(InventoryLocation.角色, playerBag.itemList);
         }
 

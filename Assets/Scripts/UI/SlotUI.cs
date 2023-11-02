@@ -28,7 +28,7 @@ namespace ShanHai_IsolatedCity.Inventory
 
         public int itemAmount;
 
-        private InventoryUI inventoryUI => GetComponentInParent<InventoryUI>(); 
+        public InventoryUI inventoryUI => GetComponentInParent<InventoryUI>(); 
 
 
 
@@ -38,7 +38,7 @@ namespace ShanHai_IsolatedCity.Inventory
         {
             isSelected = false;
 
-            if (itemDetails.itemID == 0)
+            if (itemDetails == null)
             {
                 upDateEmptySlot();
             }
@@ -71,7 +71,10 @@ namespace ShanHai_IsolatedCity.Inventory
             if (isSelected)
             {
                 isSelected = false;
+                inventoryUI.upDateSlotHighLight(-1);
+                EventHandler.callItemSelectedEvent(itemDetails, isSelected);
             }
+            itemDetails = null;
             itemAmount = 0;
             slotImage.enabled = false;
             amountText.text = string.Empty;
@@ -80,7 +83,7 @@ namespace ShanHai_IsolatedCity.Inventory
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (itemAmount == 0)
+            if (itemDetails==null)
             {
                 return;
             }
@@ -88,7 +91,13 @@ namespace ShanHai_IsolatedCity.Inventory
 
             slotHighLight.gameObject.SetActive(isSelected);
 
-            inventoryUI.upDateSlotHighLight(slotIndex); 
+            inventoryUI.upDateSlotHighLight(slotIndex);
+
+            if (slotType == SlotType.人物背包)
+            {
+                EventHandler.callItemSelectedEvent(itemDetails, isSelected);
+            }
+
         }
 
         public void OnBeginDrag(PointerEventData eventData)
