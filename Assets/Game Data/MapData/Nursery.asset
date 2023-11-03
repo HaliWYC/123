@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: Nursery
   m_EditorClassIdentifier: 
   sceneName: Nursery
+  gridWidth: 38
+  gridHeight: 44
+  originX: -19
+  orginY: -21
   tileProperties:
   - tileCoordinate: {x: -18, y: -18}
     gridType: 0

@@ -89,3 +89,11 @@ public class TileDetails
 
     //TODO:Can add some property of the single tile
 }
+
+[System.Serializable]
+public class NPCPosition
+{
+    public Transform npc;
+    public string startScene;
+    public Vector3 position;
+}

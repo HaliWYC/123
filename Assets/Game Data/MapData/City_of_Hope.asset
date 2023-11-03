@@ -13,6 +13,10 @@ MonoBehaviour:
   m_Name: City_of_Hope
   m_EditorClassIdentifier: 
   sceneName: City of Hope
+  gridWidth: 264
+  gridHeight: 264
+  originX: -132
+  orginY: -132
   tileProperties:
   - tileCoordinate: {x: -105, y: -20}
     gridType: 0

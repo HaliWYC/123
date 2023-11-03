@@ -24,6 +24,8 @@ namespace ShanHai_IsolatedCity.Map
             }
         }
 
+
+
         /// <summary>
         /// Generate Dictionary accroding to the Map information
         /// </summary>
@@ -126,6 +128,33 @@ namespace ShanHai_IsolatedCity.Map
         {
             string key = mouseGridPos.x + "x" + mouseGridPos.y + "y" + SceneManager.GetActiveScene().name;
             return getTileDetails(key);
+        }
+
+        /// <summary>
+        /// Return range and orgin accroding scene name
+        /// </summary>
+        /// <param name="sceneName">Scene Name</param>
+        /// <param name="gridDimension">Grid Dimension</param>
+        /// <param name="gridOrigin">Grid Origin</param>
+        /// <returns>Whether has current scene information or not </returns>
+        public bool getGridDimensions(string sceneName,out Vector2Int gridDimension,out Vector2Int gridOrigin)
+        {
+            gridDimension = Vector2Int.zero;
+            gridOrigin = Vector2Int.zero;
+
+            foreach(var mapData in mapDataList)
+            {
+                if(mapData.sceneName == sceneName)
+                {
+                    gridDimension.x = mapData.gridWidth;
+                    gridDimension.y = mapData.gridHeight;
+
+                    gridOrigin.x = mapData.originX;
+                    gridOrigin.y = mapData.orginY;
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

@@ -19,4 +19,9 @@ public class Settings
 
     //Transition
     public const float fadeDuration = 1.5f;
+
+
+    //NPC movement
+    public const float gridCellSize = 1;
+    public const float gridCellDiagonalSize = 1.41f;
 }
