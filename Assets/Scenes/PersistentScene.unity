@@ -971,6 +971,7 @@ MonoBehaviour:
   mapDataList:
   - {fileID: 11400000, guid: 8b15e20ffc4563e449f25a3705cae753, type: 2}
   - {fileID: 11400000, guid: c2ce589c4dcb6b348989329859030978, type: 2}
+  - {fileID: 11400000, guid: 84bd8663dffee43ad9ced5d29570278f, type: 2}
 --- !u!4 &1075912252
 Transform:
   m_ObjectHideFlags: 0
@@ -1031,7 +1032,7 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &1208964156
@@ -1063,7 +1064,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0.3}
@@ -1140,7 +1141,7 @@ Transform:
   m_GameObject: {fileID: 1208964154}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.1, y: 20, z: 0}
+  m_LocalPosition: {x: 0, y: 20, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1160,9 +1161,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scheduleData: {fileID: 11400000, guid: 96a38a136f714014f9e17558e21a3e1e, type: 2}
-  currentScene: Nursery
+  currentScene: City of Hope
   normalSpeed: 2
   isMoving: 0
+  blankAnimationClip: {fileID: 7400000, guid: 500fefed8113b4f7e8f2dc728631a63d, type: 2}
 --- !u!95 &1208964160
 Animator:
   serializedVersion: 5
@@ -1781,12 +1783,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 372e832f1f237cc438ddae65e7677e5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {x: 0, y: 0}
-  finishPos: {x: 0, y: 0}
+  startPos: {x: -6, y: -21}
+  finishPos: {x: -16, y: -10}
   displayMap: {fileID: 208567213}
   displayTile: {fileID: 11400000, guid: d71f1c5218702d34aaff4e06cbe9129c, type: 2}
   displayStartAndFinish: 0
   displayPath: 0
+  npcMovement: {fileID: 1208964159}
+  moveNPC: 0
+  targetScene: Stall
+  targetPos: {x: -16, y: -11}
+  stopClip: {fileID: 7400000, guid: 54d560542c0284c169c56cddc7145ac6, type: 2}
 --- !u!114 &1979990543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1799,10 +1806,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f9324a71f7251443bfcb94a75c8ce48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneRouteDate: {fileID: 11400000, guid: b9dcd008a83944cf1b49cdcde3c8d29b, type: 2}
   npcPositionList:
   - npc: {fileID: 1208964158}
     startScene: City of Hope
-    position: {x: -0.1, y: 20, z: 0}
+    position: {x: 0, y: 20, z: 0}
 --- !u!1 &2045553871
 GameObject:
   m_ObjectHideFlags: 0

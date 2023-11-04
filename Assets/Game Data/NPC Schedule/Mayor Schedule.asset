@@ -12,13 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49d310ff99e58ed49b64d3750c4e48b1, type: 3}
   m_Name: Mayor Schedule
   m_EditorClassIdentifier: 
-  schedualList:
+  scheduleList:
   - hour: 8
     minute: 0
     day: 0
     priority: 0
     season: 0
     targetScene: City of Hope
-    targetGridposition: {x: 5, y: 5}
+    targetGridposition: {x: -91, y: -20}
+    clipAtStop: {fileID: 7400000, guid: 54d560542c0284c169c56cddc7145ac6, type: 2}
+    interactable: 0
+  - hour: 10
+    minute: 0
+    day: 0
+    priority: 0
+    season: 0
+    targetScene: Nursery
+    targetGridposition: {x: 15, y: -12}
+    clipAtStop: {fileID: 7400000, guid: db32c3897ab64466f86a8993b8e48f9e, type: 2}
+    interactable: 0
+  - hour: 12
+    minute: 0
+    day: 0
+    priority: 0
+    season: 0
+    targetScene: Stall
+    targetGridposition: {x: -16, y: -11}
     clipAtStop: {fileID: 7400000, guid: db32c3897ab64466f86a8993b8e48f9e, type: 2}
     interactable: 0

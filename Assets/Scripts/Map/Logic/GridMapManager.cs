@@ -110,7 +110,7 @@ namespace ShanHai_IsolatedCity.Map
         /// </summary>
         /// <param name="key">x+y+Name of Map</param>
         /// <returns></returns>
-        private TileDetails getTileDetails(string key)
+        public TileDetails getTileDetails(string key)
         {
             if (tileDetailsDict.ContainsKey(key))
             {

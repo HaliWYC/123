@@ -22,9 +22,34 @@ public class TimeManager : Singleton<TimeManager>
         base.Awake();
         newGameTime();
     }
+
+    private void OnEnable()
+    {
+        EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
+        EventHandler.afterSceneLoadedEvent += onAfterSceneLoadedEvent;
+    }
+
+    private void OnDisable()
+    {
+        EventHandler.beforeSceneUnloadEvent -= onBeforeSceneUnloadEvent;
+        EventHandler.afterSceneLoadedEvent -= onAfterSceneLoadedEvent;
+    }
+
+    private void onBeforeSceneUnloadEvent()
+    {
+        gameClockPause = true;
+    }
+
+    private void onAfterSceneLoadedEvent()
+    {
+        gameClockPause = false;
+    }
+
+    
+
     private void Start()
     {
-        EventHandler.callGameMinuteEvent(gameMinute,gameHour);
+        EventHandler.callGameMinuteEvent(gameMinute, gameHour, gameDay, gameSeason);
         EventHandler.callGameDateEvent(gameHour, gameDay, gameMonth, gameYear, gameSeason);
     }
     private void Update()
@@ -99,7 +124,7 @@ public class TimeManager : Singleton<TimeManager>
                 }
                 EventHandler.callGameDateEvent(gameHour, gameDay, gameMonth, gameYear, gameSeason);
             }
-            EventHandler.callGameMinuteEvent(gameMinute, gameHour);
+            EventHandler.callGameMinuteEvent(gameMinute, gameHour, gameDay, gameSeason);
         }
     }
 }

@@ -37,7 +37,7 @@ public class TimeUI : MonoBehaviour
         dayNightRotate(hour);
     }
 
-    private void onGameMinuteEvent(int minute, int hour)
+    private void onGameMinuteEvent(int minute, int hour, int day, Seasons seasons)
     {
         timeText.text = hour.ToString("00") + ":" + minute.ToString("00");
     }

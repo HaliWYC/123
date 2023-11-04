@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -96,4 +97,22 @@ public class NPCPosition
     public Transform npc;
     public string startScene;
     public Vector3 position;
+}
+
+[System.Serializable]
+public class SceneRoute
+{
+    public string fromSceneName;
+    public string goToSceneName;
+
+    public List<ScenePath> scenePathList; 
+}
+
+
+[System.Serializable]
+public class ScenePath
+{
+    public string sceneName;
+    public Vector2Int fromGridCell;
+    public Vector2Int goToGridCell;
 }

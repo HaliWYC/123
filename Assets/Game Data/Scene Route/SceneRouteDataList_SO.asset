@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac92bef5caa534b9c96ef8b5c3d61dc2, type: 3}
+  m_Name: SceneRouteDataList_SO
+  m_EditorClassIdentifier: 
+  sceneRouteList:
+  - fromSceneName: City of Hope
+    goToSceneName: Nursery
+    scenePathList:
+    - sceneName: Nursery
+      fromGridCell: {x: -7, y: -20}
+      goToGridCell: {x: 99999, y: 99999}
+    - sceneName: City of Hope
+      fromGridCell: {x: 99999, y: 99999}
+      goToGridCell: {x: -91, y: -10}
+  - fromSceneName: Nursery
+    goToSceneName: City of Hope
+    scenePathList:
+    - sceneName: City of Hope
+      fromGridCell: {x: 99999, y: 99999}
+      goToGridCell: {x: -91, y: -10}
+    - sceneName: Nursery
+      fromGridCell: {x: 99999, y: 99999}
+      goToGridCell: {x: -7, y: -20}
+  - fromSceneName: Nursery
+    goToSceneName: Stall
+    scenePathList:
+    - sceneName: Stall
+      fromGridCell: {x: -6, y: -21}
+      goToGridCell: {x: 99999, y: 99999}
+    - sceneName: City of Hope
+      fromGridCell: {x: -91, y: -10}
+      goToGridCell: {x: -51, y: -41}
+    - sceneName: Nursery
+      fromGridCell: {x: 99999, y: 99999}
+      goToGridCell: {x: -7, y: -20}

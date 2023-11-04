@@ -24,11 +24,11 @@ public static class EventHandler
         dropItemEvent?.Invoke(ID, pos);
     }
 
-    public static event Action<int, int> gameMinuteEvent;
+    public static event Action<int, int,int,Seasons> gameMinuteEvent;
 
-    public static void callGameMinuteEvent(int minute,int hour)
+    public static void callGameMinuteEvent(int minute,int hour,int day,Seasons season)
     {
-        gameMinuteEvent?.Invoke(minute, hour);
+        gameMinuteEvent?.Invoke(minute, hour,day,season);
     }
 
     public static event Action<int, int, int, int, Seasons> gameDateEvent;

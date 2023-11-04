@@ -20,6 +20,13 @@ namespace ShanHai_IsolatedCity.Astar
 
         private Stack<MovementStep> npcMovmentStepStack;
 
+        [Header("Test NPC Movement")]
+        public NPCMovement npcMovement;
+        public bool moveNPC;
+        [SceneName ]public string targetScene;
+        public Vector2Int targetPos;
+        public AnimationClip stopClip;
+
         private void Awake()
         {
             aStar = GetComponent<AStar>();
@@ -29,6 +36,13 @@ namespace ShanHai_IsolatedCity.Astar
         private void Update()
         {
             showPathOnGridMap();
+
+            if (moveNPC)
+            {
+                moveNPC = false;
+                var schedule = new ScheduleDetails(0, 0, 0, 0, Seasons.春, targetScene, targetPos, stopClip, true);
+                npcMovement.buildSchedulePath(schedule);
+            }
         }
 
         private void showPathOnGridMap()

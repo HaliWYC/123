@@ -25,11 +25,13 @@ namespace ShanHai_IsolatedCity.Astar
             pathFound = false;
             if (generateGridNodes(sceneName, startPos, endPos))
             {
+                Debug.Log("2");
                 //Find the shortest path
                 if (findShortestPath())
                 {
-                    
+
                     //Generate NPC paths
+                    //Debug.Log("1");
                     updatePathOnMovementStepStack(sceneName, npcMovementStack);
 
                 }
@@ -61,9 +63,11 @@ namespace ShanHai_IsolatedCity.Astar
             {
                 for(int y = 0; y < gridHeight; y++)
                 {
-                    //var key = (x + originX) + "x" + (y + originY) + "y" + sceneName;
+                    
                     Vector3Int tilePos = new Vector3Int(x + originX, y + originY, 0);
-                    TileDetails tile = GridMapManager.Instance.getTileDetailsOnMousePosition(tilePos);
+                    var key = tilePos.x + "x" + tilePos.y + "y" + sceneName;
+
+                    TileDetails tile = GridMapManager.Instance.getTileDetails(key);
 
                     if (tile != null)
                     {
@@ -177,6 +181,7 @@ namespace ShanHai_IsolatedCity.Astar
                 MovementStep newStep = new MovementStep();
                 newStep.sceneName = sceneName;
                 newStep.gridCoordinate = new Vector2Int(nextNode.gridPosition.x + originX, nextNode.gridPosition.y + originY);
+                //Debug.Log(newStep.gridCoordinate);
                 //Push into stack
                 npcMovementStep.Push(newStep);
                 nextNode = nextNode.parentNode;

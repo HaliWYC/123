@@ -12,9 +12,12 @@ EditorBuildSettings:
     path: Assets/Scenes/City of Hope.unity
     guid: 01a3bd2f992d4d64c8cfe3e5814e16af
   - enabled: 1
-    path: Assets/Scenes/UI.unity
-    guid: a8fdad49e46ca4c10bff66c17c33f8e9
-  - enabled: 1
     path: Assets/Scenes/Nursery.unity
     guid: 24c7a381fca06dd4bb0219dd5de95d8f
+  - enabled: 1
+    path: Assets/Scenes/Stall.unity
+    guid: 7bb8706580c7b4d74b561b7d1710de8d
+  - enabled: 1
+    path: Assets/Scenes/UI.unity
+    guid: a8fdad49e46ca4c10bff66c17c33f8e9
   m_configObjects: {}
