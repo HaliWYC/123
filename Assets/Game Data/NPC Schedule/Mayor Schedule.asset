@@ -19,9 +19,9 @@ MonoBehaviour:
     priority: 0
     season: 0
     targetScene: City of Hope
-    targetGridposition: {x: -91, y: -20}
+    targetGridposition: {x: 0, y: 20}
     clipAtStop: {fileID: 7400000, guid: 54d560542c0284c169c56cddc7145ac6, type: 2}
-    interactable: 0
+    interactable: 1
   - hour: 10
     minute: 0
     day: 0
@@ -39,4 +39,4 @@ MonoBehaviour:
     targetScene: Stall
     targetGridposition: {x: -16, y: -11}
     clipAtStop: {fileID: 7400000, guid: db32c3897ab64466f86a8993b8e48f9e, type: 2}
-    interactable: 0
+    interactable: 1

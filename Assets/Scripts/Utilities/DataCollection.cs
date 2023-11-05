@@ -16,6 +16,10 @@ public class ItemDetails
 
     public WeaponType weaponType;
 
+    public WeaponQualityType weaponQuality;
+
+    public QualityType itemQuality;
+
     [TextArea]
     public string itemDescription;
 
@@ -97,6 +101,13 @@ public class NPCPosition
     public Transform npc;
     public string startScene;
     public Vector3 position;
+}
+
+[System.Serializable]
+public class NPCDetails
+{
+    public string NPCName;
+    public int NPCMoney;
 }
 
 [System.Serializable]

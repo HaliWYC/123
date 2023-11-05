@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ShanHai_IsolatedCity.Dialogue;
 
 public static class EventHandler
 {
@@ -79,5 +80,36 @@ public static class EventHandler
     public static void callExecuteActionAfterAnimation(Vector3 pos, ItemDetails itemDetails)
     {
         executeActionAfterAnimation?.Invoke(pos, itemDetails);
+    }
+
+    public static event Action<DialoguePiece> showDialogueEvent;
+    public static void callShowDialogueEvent(DialoguePiece dialoguePiece)
+    {
+        showDialogueEvent?.Invoke(dialoguePiece);
+    }
+
+    //Open the shop
+    public static event Action<SlotType, InventoryBag_SO> baseBagOpenEvent;
+    public static void callBaseBagOpenEvent(SlotType slotType,InventoryBag_SO bag_SO)
+    {
+        baseBagOpenEvent?.Invoke(slotType, bag_SO);
+    }
+
+    public static event Action<SlotType, InventoryBag_SO> baseBagCloseEvent;
+    public static void callBaseBagCloseEvent(SlotType slotType, InventoryBag_SO bag_SO)
+    {
+        baseBagCloseEvent?.Invoke(slotType, bag_SO);
+    }
+
+    public static event Action<GameState> updateGameStateEvent;
+    public static void callUpdateGameStateEvent(GameState gameState)
+    {
+        updateGameStateEvent?.Invoke(gameState);
+    }
+
+    public static event Action<ItemDetails, bool> showTradeUI;
+    public static void callShowTradeUI(ItemDetails item,bool isSell)
+    {
+        showTradeUI?.Invoke(item,isSell);
     }
 }

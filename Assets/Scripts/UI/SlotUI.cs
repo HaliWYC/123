@@ -138,6 +138,14 @@ namespace ShanHai_IsolatedCity.Inventory
                 {
                     InventoryManager.Instance.swapItem(slotIndex, targetIndex);
                 }
+                else if(slotType == SlotType.NPC背包 && targetSlotUI.slotType == SlotType.人物背包)//Buy
+                {
+                    EventHandler.callShowTradeUI(itemDetails, false);
+                }
+                else if(slotType == SlotType.人物背包 && targetSlotUI.slotType == SlotType.NPC背包)//Sell
+                {
+                    EventHandler.callShowTradeUI(itemDetails, true);
+                }
 
                 //Clean all the highlight
                 inventoryUI.upDateSlotHighLight(-1);

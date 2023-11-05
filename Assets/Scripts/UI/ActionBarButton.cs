@@ -8,15 +8,31 @@ namespace ShanHai_IsolatedCity.Inventory
     {
         public KeyCode key;
         private SlotUI slotUI;
+        private bool canUse;
 
         private void Awake()
         {
             slotUI = GetComponent<SlotUI>();
         }
 
+        private void OnEnable()
+        {
+            EventHandler.updateGameStateEvent += onUpdateGameStateEvent;
+        }
+
+        private void OnDisable()
+        {
+            EventHandler.updateGameStateEvent -= onUpdateGameStateEvent;
+        }
+
+        private void onUpdateGameStateEvent(GameState gameState)
+        {
+            canUse = gameState == GameState.GamePlay;
+        }
+
         private void Update()
         {
-            if (Input.GetKeyDown(key))
+            if (Input.GetKeyDown(key) && canUse)
             {
                 if (slotUI.itemDetails != null)
                 {

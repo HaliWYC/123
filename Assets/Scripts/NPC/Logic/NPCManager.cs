@@ -7,6 +7,9 @@ public class NPCManager : Singleton<NPCManager>
     public SceneRouteDataList_SO sceneRouteDate;
     public List<NPCPosition> npcPositionList;
 
+    [Header("交易数据")]
+    public List<NPCDetails> NPCDetails;
+
     private Dictionary<string, SceneRoute> sceneRouteDict = new Dictionary<string, SceneRoute>();
 
     protected override void Awake()

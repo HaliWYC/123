@@ -1,5 +1,6 @@
- using UnityEngine;
-
+using UnityEngine;
+using System.Collections.Generic;
+using TMPro;
 namespace ShanHai_IsolatedCity.Inventory
 {
 
@@ -12,6 +13,13 @@ namespace ShanHai_IsolatedCity.Inventory
         [Header("背包数据")]
 
         public InventoryBag_SO playerBag;
+
+
+        [Header("交易数据")]
+
+        public int playerMoney;
+        public TextMeshProUGUI playerMoneyText;
+        
 
 
         private void Start()
@@ -206,5 +214,39 @@ namespace ShanHai_IsolatedCity.Inventory
             EventHandler.callUpdateInventoryUI(InventoryLocation.角色, playerBag.itemList);
         }
 
+        public  void tradeItem(ItemDetails itemDetails,int amount,bool isSellTrade)
+        {
+            int cost = itemDetails.itemPrice * amount;
+            
+
+            //Gain the obeject in bag
+            int index = getItemIndexInBag(itemDetails.itemID);
+
+            if (isSellTrade) //Sell 
+            {
+                //TODO:Remember to detect the NPC
+                if (playerBag.itemList[index].itemAmount >= amount && NPCManager.Instance.NPCDetails[0].NPCMoney > (int)(cost*itemDetails.sellPercentage))
+                {
+                    removeItem(itemDetails.itemID, amount);
+                    //Total revenue
+                    cost = (int)(cost * itemDetails.sellPercentage);
+                    playerMoney += cost;
+                }
+                else if(playerMoney-cost>=0)//Buy
+                {
+                    if (checkBagCapacity())
+                    {
+                        addItemAtIndex(itemDetails.itemID, index, amount);
+                    }
+                    playerMoney -= cost;
+                }
+                //Refresh UI
+                EventHandler.callUpdateInventoryUI(InventoryLocation.角色, playerBag.itemList);
+                //EventHandler.callUpdateInventoryUI(InventoryLocation.箱子)
+            }
+        }
+
     }
+
+
 }
