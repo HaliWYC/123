@@ -222,7 +222,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -724,7 +724,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemDataList_SO: {fileID: 11400000, guid: d1c0292a8a049714daee215b49e9b311, type: 2}
   playerBag: {fileID: 11400000, guid: 49e31b5c091594002a88505ba1fd46c3, type: 2}
-  playerMoney: 0
+  playerMoney: 2000
 --- !u!4 &722997929
 Transform:
   m_ObjectHideFlags: 0
@@ -1209,7 +1209,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1364,7 +1364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afcc5fb80010e437da3b56d62f61b248, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bagData: {fileID: 11400000, guid: 98d1995fbd34b47ee880b64d245dc7aa, type: 2}
+  Name: "\u5B59\u7A0B"
 --- !u!1 &1224522315
 GameObject:
   m_ObjectHideFlags: 0
@@ -1660,6 +1660,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1442497211
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1442497212}
+  - component: {fileID: 1442497213}
+  m_Layer: 0
+  m_Name: LightManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1442497212
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442497211}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1442497213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442497211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62072a18c5ed366408c9288bfdfd42c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneLights: []
 --- !u!1 &1592048077
 GameObject:
   m_ObjectHideFlags: 0
@@ -1712,7 +1757,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1962,8 +2007,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 372e832f1f237cc438ddae65e7677e5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startPos: {x: -6, y: -21}
-  finishPos: {x: -16, y: -10}
+  startPos: {x: -1, y: 20}
+  finishPos: {x: -104, y: -6}
   displayMap: {fileID: 208567213}
   displayTile: {fileID: 11400000, guid: d71f1c5218702d34aaff4e06cbe9129c, type: 2}
   displayStartAndFinish: 0
@@ -1990,9 +2035,7 @@ MonoBehaviour:
   - npc: {fileID: 1208964158}
     startScene: City of Hope
     position: {x: 0, y: 20, z: 0}
-  NPCDetails:
-  - NPCName: "\u5B59\u7A0B"
-    NPCMoney: 2000
+  NPCList: {fileID: 11400000, guid: 35b48dedb1807564884902c62d99ac66, type: 2}
 --- !u!1 &2045553871
 GameObject:
   m_ObjectHideFlags: 0
@@ -2076,7 +2119,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2161,7 +2204,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2233,4 +2276,5 @@ SceneRoots:
   - {fileID: 213816954}
   - {fileID: 1075912252}
   - {fileID: 1979990540}
+  - {fileID: 1442497212}
   - {fileID: 436751270}

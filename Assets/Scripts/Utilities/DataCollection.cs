@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -106,8 +106,12 @@ public class NPCPosition
 [System.Serializable]
 public class NPCDetails
 {
+    [Header("基本信息")]
     public string NPCName;
+    
+    [Header("背包信息")]
     public int NPCMoney;
+    public InventoryBag_SO NPCBag;
 }
 
 [System.Serializable]
@@ -127,3 +131,4 @@ public class ScenePath
     public Vector2Int fromGridCell;
     public Vector2Int goToGridCell;
 }
+

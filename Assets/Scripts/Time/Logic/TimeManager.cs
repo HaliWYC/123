@@ -15,6 +15,10 @@ public class TimeManager : Singleton<TimeManager>
 
     private float tikTime;
 
+    private float timeDifference;
+
+    private TimeSpan dawn=new TimeSpan(24,0,0);
+
     public TimeSpan gameTime => new TimeSpan(gameHour, gameMinute, gameSecond);
 
     protected override void Awake()
@@ -51,6 +55,7 @@ public class TimeManager : Singleton<TimeManager>
     {
         EventHandler.callGameMinuteEvent(gameMinute, gameHour, gameDay, gameSeason);
         EventHandler.callGameDateEvent(gameHour, gameDay, gameMonth, gameYear, gameSeason);
+        EventHandler.callLightShiftEvent(gameSeason, getCurrentLightShift(), timeDifference);
     }
     private void Update()
     {
@@ -76,7 +81,7 @@ public class TimeManager : Singleton<TimeManager>
     {
         gameSecond = 0;
         gameMinute = 0;
-        gameHour = 7;
+        gameHour = 6;
         gameDay = 1;
         gameMonth = 1;
         gameYear = 1000;
@@ -123,8 +128,59 @@ public class TimeManager : Singleton<TimeManager>
 
                 }
                 EventHandler.callGameDateEvent(gameHour, gameDay, gameMonth, gameYear, gameSeason);
+                
             }
             EventHandler.callGameMinuteEvent(gameMinute, gameHour, gameDay, gameSeason);
+            //Switch Light
+            EventHandler.callLightShiftEvent(gameSeason, getCurrentLightShift(), timeDifference);
         }
+    }
+
+    /// <summary>
+    /// Return Lightshift and calculate timediffence
+    /// </summary>
+    /// <returns></returns>
+    private LightShift getCurrentLightShift()
+    {
+        if (gameTime > Settings.dawnTime && gameTime < Settings.morningTime)//Dawn to Morning
+        {
+            timeDifference = (float)(gameTime - Settings.dawnTime).TotalMinutes;
+            
+            return LightShift.破晓;
+        }
+        if (gameTime > Settings.morningTime && gameTime < Settings.eveningTime)//Moring to Evening
+        {
+            timeDifference = (float)(gameTime - Settings.morningTime).TotalMinutes;
+            
+            return LightShift.清晨;
+        }
+        if (gameTime > Settings.eveningTime && gameTime < Settings.nightTime)//Moring to Evening
+        {
+            timeDifference = (float)(gameTime - Settings.eveningTime).TotalMinutes;
+            
+            return LightShift.黄昏;
+        }
+        if (gameTime > Settings.nightTime && gameTime < dawn)//Moring to Evening
+        {
+            timeDifference =Mathf.Abs((float)(gameTime - Settings.nightTime).TotalMinutes);
+            
+            return LightShift.夜晚;
+        }
+
+
+        /*if (gameTime > Settings.morningTime && gameTime < Settings.nightTime)//Dawn to Morning
+        {
+            timeDifference = (float)(gameTime - Settings.morningTime).TotalMinutes;
+            return LightShift.清晨;
+        }
+        if (gameTime > Settings.nightTime && gameTime < Settings.morningTime)//Moring to Evening
+        {
+            timeDifference = (float)(gameTime - Settings.nightTime).TotalMinutes;
+            return LightShift.夜晚;
+        }*/
+
+
+        return LightShift.清晨;
+
     }
 }

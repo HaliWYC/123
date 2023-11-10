@@ -7726,6 +7726,8 @@ MonoBehaviour:
   dragItem: {fileID: 1392145823}
   bagUI: {fileID: 867589357}
   tradeUI: {fileID: 626147804}
+  playerMoneyText: {fileID: 1053410020}
+  NPCMoneyText: {fileID: 1982417607}
   baseBag: {fileID: 1089381648}
   slotPrefab: {fileID: 4575808730762909758, guid: 59eade4144f59447c8c45814c2bd8326, type: 3}
   playerSlots:

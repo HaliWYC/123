@@ -48,3 +48,8 @@ public enum GameState
 {
     GamePlay,Pause
 }
+
+public enum LightShift
+{
+    破晓, 清晨, 黄昏, 夜晚
+}

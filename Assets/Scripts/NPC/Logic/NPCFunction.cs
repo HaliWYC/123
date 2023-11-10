@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class NPCFunction : MonoBehaviour
 {
-    public InventoryBag_SO bagData;
+    public string Name;
+    
+    
     private bool isOpen;
+
+    private void Awake()
+    {
+        
+    }
 
     private void Update()
     {
@@ -18,14 +25,17 @@ public class NPCFunction : MonoBehaviour
     public void openShop()
     {
         isOpen = true;
-        EventHandler.callBaseBagOpenEvent(SlotType.NPC背包, bagData);
+        EventHandler.callFindNPCEvent(Name);
+        EventHandler.callBaseBagOpenEvent(SlotType.NPC背包, NPCManager.Instance.getNPCDetail(Name).NPCBag);
         EventHandler.callUpdateGameStateEvent(GameState.Pause);
     }
 
     public void closeShop()
     {
         isOpen = false;
-        EventHandler.callBaseBagCloseEvent(SlotType.NPC背包, bagData);
+        EventHandler.callBaseBagCloseEvent(SlotType.NPC背包, NPCManager.Instance.getNPCDetail(Name).NPCBag);
         EventHandler.callUpdateGameStateEvent(GameState.GamePlay);
     }
+
+
 }

@@ -98,9 +98,14 @@ MonoBehaviour:
     itemIcon: {fileID: 0}
     iconOnWorldSprite: {fileID: 0}
     itemType: 0
+    weaponType: 0
+    weaponQuality: 0
+    itemQuality: 0
     itemDescription: 
     useRadius: 0
     canPickUp: 0
+    canDrop: 0
+    Stackable: 0
     itemPrice: 0
     sellPercentage: 0
 --- !u!1 &7682637942743090629
@@ -155,7 +160,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

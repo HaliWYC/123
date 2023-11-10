@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 
 public class NPCManager : Singleton<NPCManager>
@@ -7,8 +8,8 @@ public class NPCManager : Singleton<NPCManager>
     public SceneRouteDataList_SO sceneRouteDate;
     public List<NPCPosition> npcPositionList;
 
-    [Header("交易数据")]
-    public List<NPCDetails> NPCDetails;
+    [Header("数据")]
+    public NPCList_SO NPCList;
 
     private Dictionary<string, SceneRoute> sceneRouteDict = new Dictionary<string, SceneRoute>();
 
@@ -17,11 +18,10 @@ public class NPCManager : Singleton<NPCManager>
         base.Awake();
         //Debug.Log(sceneRouteDate.sceneRouteList.Count);
         initSceneRouteDict();
-
-        //foreach(NPCPosition position in npcPositionList)
-        //{
-        //    position.npc.position = position.position;
-        //}
+        foreach(NPCPosition position in npcPositionList)
+        {
+            position.npc.position = position.position;
+        }
     }
 
 
@@ -45,6 +45,10 @@ public class NPCManager : Singleton<NPCManager>
         }
     }
 
+    public NPCDetails getNPCDetail(string NPCName)
+    {
+        return NPCList.NPCDetailsList.Find(i => i.NPCName == NPCName);
+    }
 
     /// <summary>
     /// Get the path between two scenes
@@ -56,4 +60,6 @@ public class NPCManager : Singleton<NPCManager>
     {
         return sceneRouteDict[fromSceneName + goToSceneName];
     }
+
+    
 }

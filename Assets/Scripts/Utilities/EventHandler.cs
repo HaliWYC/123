@@ -112,4 +112,16 @@ public static class EventHandler
     {
         showTradeUI?.Invoke(item,isSell);
     }
+
+    public static event Action<string> FindNPCEvent;
+    public static void callFindNPCEvent(string NPCName)
+    {
+        FindNPCEvent?.Invoke(NPCName);
+    }
+
+    public static event Action<Seasons, LightShift, float> lightShiftEvent;
+    public static void callLightShiftEvent(Seasons seasons,LightShift lightShift,float timeDifference)
+    {
+        lightShiftEvent?.Invoke(seasons, lightShift, timeDifference);
+    }
 }

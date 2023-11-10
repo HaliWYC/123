@@ -49,7 +49,7 @@ namespace ShanHai_IsolatedCity.Inventory
                 qualityType.gameObject.SetActive(false);
 
             if (tradeAmount.text != string.Empty)
-                totalPrice.text = (item.itemPrice * int.Parse(tradeAmount.text)).ToString();
+                totalPrice.text = (item.itemPrice * Convert.ToInt32(tradeAmount.text)).ToString();
             else
                 totalPrice.gameObject.SetActive(false);
 
