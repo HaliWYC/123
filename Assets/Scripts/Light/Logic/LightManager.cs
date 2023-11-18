@@ -32,7 +32,6 @@ public class LightManager : Singleton<LightManager>
             foreach (LightControl light in sceneLights)
             {
                 light.changeLightShift(currentSeason, currentLightShift, timeDifference);
-                
             }
         }
 

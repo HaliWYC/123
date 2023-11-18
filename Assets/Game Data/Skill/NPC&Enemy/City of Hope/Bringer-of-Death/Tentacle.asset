@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f39d7febebf86444596fc42f000c8893, type: 3}
+  m_Name: Tentacle
+  m_EditorClassIdentifier: 
+  SkillName: "\u6B7B\u4EA1\u4E4B\u543B"
+  skillQuality: 6
+  skillTargetType: 0
+  skillRangeType: 1
+  skillRange: 0
+  skillEffect: 0
+  QiComsume: 0
+  skillProbability: 0.5

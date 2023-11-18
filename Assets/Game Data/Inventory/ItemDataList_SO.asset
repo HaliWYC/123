@@ -88,3 +88,18 @@ MonoBehaviour:
     Stackable: 1
     itemPrice: 20
     sellPercentage: 0.5
+  - itemID: 1006
+    itemName: "\u5251"
+    itemIcon: {fileID: 21300000, guid: 78bdc1d51cd53a648ac0c56ff5aaf59f, type: 3}
+    iconOnWorldSprite: {fileID: 21300000, guid: 78bdc1d51cd53a648ac0c56ff5aaf59f, type: 3}
+    itemType: 0
+    weaponType: 0
+    weaponQuality: 0
+    itemQuality: 0
+    itemDescription: "\u8FD9\u662F\u4E00\u628A\u666E\u901A\u7684\u5251"
+    useRadius: 9999
+    canPickUp: 0
+    canDrop: 0
+    Stackable: 0
+    itemPrice: 20
+    sellPercentage: 0

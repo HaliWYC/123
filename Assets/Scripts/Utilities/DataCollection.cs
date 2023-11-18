@@ -108,6 +108,14 @@ public class NPCDetails
 {
     [Header("基本信息")]
     public string NPCName;
+    public EnemyType enemyType;
+    public EnemyState enemyState;
+    public int SizeScale;
+
+    [Header("战斗信息")]
+    //后期合并到Attack Data之中
+    public float sightRadius;
+    //public float fightSpeed;
     
     [Header("背包信息")]
     public int NPCMoney;

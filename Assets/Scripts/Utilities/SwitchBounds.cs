@@ -12,8 +12,6 @@ public class SwitchBounds : MonoBehaviour
     {
         EventHandler.afterSceneLoadedEvent -= SwitchConfinerShape;
     }
-
-    //TODO:切换场景的时候更改调用
     private void SwitchConfinerShape()
     {
         PolygonCollider2D confinerShape = GameObject.FindGameObjectWithTag("BoundsConfiner").GetComponent<PolygonCollider2D>();

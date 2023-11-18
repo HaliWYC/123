@@ -51,11 +51,12 @@ namespace ShanHai_IsolatedCity.Transition
             yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
             
             yield return loadSceneSetActive(sceneName);
+
             //Move Player Position
             EventHandler.callMoveToPosition(targetPosition);
-            yield return fade(0);
             EventHandler.callAfterSceneLoadedEvent();
-            
+            yield return fade(0);
+            EventHandler.callAllowPlayerInputEvent(true);
         }
 
         /// <summary>
@@ -75,6 +76,7 @@ namespace ShanHai_IsolatedCity.Transition
         private IEnumerator fade(float targetAlpha)
         {
             isFade = true;
+            EventHandler.callAllowPlayerInputEvent(false);
             fadeCanvasGroup.blocksRaycasts = true;
 
             float speed = Mathf.Abs(fadeCanvasGroup.alpha - targetAlpha) / Settings.fadeDuration;

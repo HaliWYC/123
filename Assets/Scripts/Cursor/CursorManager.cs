@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using ShanHai_IsolatedCity.Map;
 
-public class CursorManager : MonoBehaviour
+public class CursorManager : Singleton<CursorManager>
 {
     public Sprite normal, attack, item, interact;
 
@@ -19,11 +19,11 @@ public class CursorManager : MonoBehaviour
 
     //Cursor Detect
     private Camera mainCamera;
-    private Grid currentGrid;
+    public Grid currentGrid;
     private Vector3 mouseWorldPos;
     private Vector3Int mouseGridPos;
     private bool cursorEnable;
-    private bool cursorPositionValid;
+    public bool cursorPositionValid;
     private ItemDetails currentItem;
     private Transform playertransform => FindObjectOfType<Player>().transform;
 
@@ -156,6 +156,7 @@ public class CursorManager : MonoBehaviour
         //Check whether in the use radius or not
         if (Mathf.Abs(mouseGridPos.x - playerGridPos.x) > currentItem.useRadius || Mathf.Abs(mouseGridPos.y - playerGridPos.y) > currentItem.useRadius)
         {
+            
             setCursorInvalid();
             return;
         }
@@ -163,6 +164,7 @@ public class CursorManager : MonoBehaviour
         //Debug.Log(Mathf.Abs(mouseGridPos.y - playerGridPos.y) > currentItem.useRadius);
         //Debug.Log(cursorPositionValid);
         TileDetails currentTile = GridMapManager.Instance.getTileDetailsOnMousePosition(mouseGridPos);
+        TileDetails playerTile = GridMapManager.Instance.getTileDetailsOnMousePosition(playerGridPos);
 
         if (currentTile != null)
         {
@@ -170,6 +172,9 @@ public class CursorManager : MonoBehaviour
             {
                 case ItemType.商品:
                     if (currentTile.canDropItem&&currentItem.canDrop) setCursorValid(); else setCursorInvalid();
+                    break;
+                case ItemType.武器:
+                    if (playerTile!=null && playerTile.meleeOnly) setCursorValid(); else setCursorInvalid();
                     break;
             }
         }

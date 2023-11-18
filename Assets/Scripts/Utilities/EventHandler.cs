@@ -124,4 +124,27 @@ public static class EventHandler
     {
         lightShiftEvent?.Invoke(seasons, lightShift, timeDifference);
     }
+    public static event Action<bool> allowPlayerInputEvent;
+    public static void callAllowPlayerInputEvent(bool input)
+    {
+        allowPlayerInputEvent?.Invoke(input);
+    }
+
+    /*public static event Action<CharacterInformation, bool> checkCriticalEvent;
+    public static void callCheckCriticalEvent(CharacterInformation character, bool Critical)
+    {
+        checkCriticalEvent?.Invoke(character, Critical);
+    }
+
+    public static event Action<bool> checkConDamageEvent;
+    public static void callCheckConDamageEvent(bool ConDamage)
+    {
+        checkConDamageEvent?.Invoke(ConDamage);
+    }
+
+    public static event Action<bool,int> checkConAttackEvent;
+    public static void callCheckConAttackEvent(bool ConAttack, int count)
+    {
+        checkConAttackEvent?.Invoke(ConAttack, count);
+    }*/
 }

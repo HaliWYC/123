@@ -53,3 +53,26 @@ public enum LightShift
 {
     破晓, 清晨, 黄昏, 夜晚
 }
+
+public enum EnemyState
+{
+    和平,警惕,攻击,巡逻,死亡
+}
+
+public enum EnemyType
+{
+    普通,精英,史诗,神话,Boss,中立
+}
+
+public enum SkillTargetType
+{
+    单体,范围,群体
+}
+public enum SkillRangeType
+{
+    近战,远程
+}
+public enum EffectType
+{
+    伤害,恢复生命
+}

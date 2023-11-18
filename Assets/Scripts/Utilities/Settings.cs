@@ -28,12 +28,18 @@ public class Settings
     public const float pixelSize = 0.05f;
     public const float animationBreakTime = 5f;
     public const int maxGridSize = 9999;
+    public const int stopDistance = 1;
 
     //Light
-    public const float lightChangeDuration = 59f;
+    public const float lightChangeDuration = 30f;
     public const float lightChangeDurationModification = 10;
     public static TimeSpan dawnTime = new TimeSpan(4, 0, 0);
     public static TimeSpan morningTime = new TimeSpan(7, 0, 0);
     public static TimeSpan eveningTime = new TimeSpan(18, 0, 0);
     public static TimeSpan nightTime = new TimeSpan(21, 0, 0);
+
+    //Combat;
+    public const float WoundRecoveryTime = 20;
+    public const float penetrateConstant = 417;
+    public const float criticalConstant = 213;
 }

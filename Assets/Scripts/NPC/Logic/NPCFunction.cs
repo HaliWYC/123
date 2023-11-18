@@ -4,16 +4,8 @@ using UnityEngine;
 
 public class NPCFunction : MonoBehaviour
 {
-    public string Name;
-    
-    
+    public string Name;    
     private bool isOpen;
-
-    private void Awake()
-    {
-        
-    }
-
     private void Update()
     {
         if(isOpen&&Input.GetKeyDown(KeyCode.Escape))

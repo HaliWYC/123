@@ -9,7 +9,7 @@ public class NPCManager : Singleton<NPCManager>
     public List<NPCPosition> npcPositionList;
 
     [Header("数据")]
-    public NPCList_SO NPCList;
+    public List<NPCList_SO> NPCList;
 
     private Dictionary<string, SceneRoute> sceneRouteDict = new Dictionary<string, SceneRoute>();
 
@@ -47,7 +47,11 @@ public class NPCManager : Singleton<NPCManager>
 
     public NPCDetails getNPCDetail(string NPCName)
     {
-        return NPCList.NPCDetailsList.Find(i => i.NPCName == NPCName);
+        foreach(NPCList_SO NPCList_SO in NPCList)
+        {
+            return NPCList_SO.NPCDetailsList.Find(i => i.NPCName == NPCName);
+        }
+        return null;
     }
 
     /// <summary>

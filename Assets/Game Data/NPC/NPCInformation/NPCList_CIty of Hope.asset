@@ -14,5 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NPCDetailsList:
   - NPCName: "\u5B59\u7A0B"
+    enemyType: 5
+    enemyState: 4
+    SizeScale: 1
+    sightRadius: 8
+    fightSpeed: 2
     NPCMoney: 400
     NPCBag: {fileID: 11400000, guid: 98d1995fbd34b47ee880b64d245dc7aa, type: 2}
+  - NPCName: "\u6B7B\u4EA1\u4F7F\u8005"
+    enemyType: 0
+    enemyState: 4
+    SizeScale: 4
+    sightRadius: 8
+    fightSpeed: 5
+    NPCMoney: 100
+    NPCBag: {fileID: 11400000, guid: c7549b6ca58051d4cbb1627fd70068e4, type: 2}
+  - NPCName: "\u9A91\u58EB"
+    enemyType: 1
+    enemyState: 4
+    SizeScale: 2
+    sightRadius: 5
+    fightSpeed: 3
+    NPCMoney: 100
+    NPCBag: {fileID: 11400000, guid: 1635c876c8931724b8d0d11de3180fff, type: 2}

@@ -156,5 +156,12 @@ namespace ShanHai_IsolatedCity.Map
             }
             return false;
         }
+
+        public TileDetails getTileDetailsAtTargetPosition(Vector3 targetPos)
+        {
+            Vector3Int gridPos = new Vector3Int((int)targetPos.x, (int)targetPos.y, 0);
+            string key = gridPos.x + "x" + gridPos.y + "y" + SceneManager.GetActiveScene().name;
+            return getTileDetails(key) != null ? getTileDetails(key) : null;
+        }
     }
 }

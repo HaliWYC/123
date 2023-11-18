@@ -23,10 +23,10 @@ public class LightControl : MonoBehaviour
 
         if (timeDifference / Settings.lightChangeDurationModification < Settings.lightChangeDuration)
         {
-            var colorOffSet = (currenLightDetails.lightColor - currentLight.color) / Settings.lightChangeDuration * timeDifference / Settings.lightChangeDurationModification;
+            var colorOffSet = (currenLightDetails.lightColor - currentLight.color) / Settings.lightChangeDuration * timeDifference;
             currentLight.color += colorOffSet;
-            DOTween.To(() => currentLight.color, c => currentLight.color = c, currenLightDetails.lightColor, Settings.lightChangeDuration - timeDifference / Settings.lightChangeDurationModification);
-            DOTween.To(() => currentLight.intensity, i => currentLight.intensity = i, currenLightDetails.lightAmount, Settings.lightChangeDuration - timeDifference / Settings.lightChangeDurationModification);
+            DOTween.To(() => currentLight.color, c => currentLight.color = c, currenLightDetails.lightColor, Settings.lightChangeDuration - timeDifference);
+            DOTween.To(() => currentLight.intensity, i => currentLight.intensity = i, currenLightDetails.lightAmount, Settings.lightChangeDuration - timeDifference);
         }
         if (timeDifference / Settings.lightChangeDurationModification > Settings.lightChangeDuration )
         {

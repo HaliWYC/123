@@ -21,6 +21,11 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
         }
     }
 
+    public static bool isInitialized
+    {
+        get { return instance != null; }
+    }
+
     protected virtual void OnDestroy()
     {
         if (instance == this)
