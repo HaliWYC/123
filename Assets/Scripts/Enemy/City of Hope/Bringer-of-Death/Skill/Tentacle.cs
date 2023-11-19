@@ -8,15 +8,12 @@ public class Tentacle : MonoBehaviour
     private Animator anim;
     public SkillData_SO skillData;
 
-    private void Start()
+    private void Awake()
     {
         anim = GetComponent<Animator>();
     }
-    public void generateTentacle(GameObject tentacle)
+    public void generateTentacle()
     {
-        Vector3 targetPos = new Vector3(attackTarget.transform.position.x + 0.2f, attackTarget.transform.position.y + 1f, 0);
-        transform.position = targetPos;
-        Instantiate(tentacle, targetPos, Quaternion.identity);
         anim.SetTrigger("isGenerated");
     }
 }

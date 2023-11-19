@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f39d7febebf86444596fc42f000c8893, type: 3}
   m_Name: Tentacle
   m_EditorClassIdentifier: 
-  SkillName: "\u6B7B\u4EA1\u4E4B\u543B"
+  SkillName: Kiss of Death
   skillQuality: 6
   skillTargetType: 0
   skillRangeType: 1
-  skillRange: 0
   skillEffect: 0
-  QiComsume: 0
+  QiComsume: 20
+  skillRange: 100
   skillProbability: 0.5

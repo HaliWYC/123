@@ -12,8 +12,8 @@ public class SkillData_SO : ScriptableObject
     [Header("技能属性")]
     public SkillTargetType skillTargetType;
     public SkillRangeType skillRangeType;
-    public int skillRange;
     public EffectType skillEffect;
     public int QiComsume;
+    public float skillRange;
     public float skillProbability;
 }

@@ -325,6 +325,7 @@ public class CharacterInformation : MonoBehaviour
         
         int ConDamage = continuousDamage(attacker, damage);
         CurrentHealth = Mathf.Max(CurrentHealth - finalDamage, 0);
+        Debug.Log(CurrentHealth);
         defender.CurrentWound += attacker.CreateWound;
         StartCoroutine(calculateFatal(attacker.Fatal_Enhancement,defender.FatalDefense));
         //Instantiate the damage each time

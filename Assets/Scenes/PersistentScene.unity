@@ -1162,10 +1162,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: "\u6B7B\u4EA1\u4F7F\u8005"
+  attackTarget: {fileID: 0}
   isPeace: 0
   Attack: 0
   isAttackEnd: 0
   conAttackTime: 0
+  isSkilling: 0
   attackPos: {x: 0, y: 0, z: 0}
   PatrolRange: 8
   lookAtTime: 3
@@ -1182,7 +1184,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deb4a42eb36221c47b55ff45423ba2b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillList: []
+  skillList:
+  - {fileID: 11400000, guid: af8fe350ea402f44489edc1c1b379926, type: 2}
 --- !u!1 &975677810
 GameObject:
   m_ObjectHideFlags: 0
@@ -1372,10 +1375,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: "\u9A91\u58EB"
+  attackTarget: {fileID: 0}
   isPeace: 0
   Attack: 0
   isAttackEnd: 0
   conAttackTime: 0
+  isSkilling: 0
   attackPos: {x: 0, y: 0, z: 0}
   PatrolRange: 3
   lookAtTime: 10
@@ -1890,10 +1895,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: "\u5B59\u7A0B"
+  attackTarget: {fileID: 0}
   isPeace: 0
   Attack: 0
   isAttackEnd: 0
   conAttackTime: 0
+  isSkilling: 0
   attackPos: {x: 0, y: 0, z: 0}
   PatrolRange: 0
   lookAtTime: 0

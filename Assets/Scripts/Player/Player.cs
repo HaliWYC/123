@@ -263,11 +263,11 @@ public class Player : MonoBehaviour
         
         if (attackTarget != null)
         {
-            if (transform.isFacingTarget(attackTarget.transform))
-            {
+            //if (transform.isFacingTarget(attackTarget.transform))
+            //{
                 var targetInformation = attackTarget.GetComponent<CharacterInformation>();
                 targetInformation.finalDamage(playerInformation, targetInformation);
-            }
+            //}
         }
         
     }

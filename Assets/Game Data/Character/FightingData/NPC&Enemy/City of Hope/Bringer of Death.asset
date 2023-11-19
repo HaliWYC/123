@@ -24,18 +24,20 @@ MonoBehaviour:
   currentVigor: 10
   maxWound: 20
   currentWound: 0
-  maxQi: 5
-  currentQi: 5
+  maxQi: 200
+  currentQi: 200
   maxMorale: 20
   currentMorale: 20
   Argility: 2
   Resilience: 2
-  skillCooling: 0.3
   speed: 5
+  fatalLevel: 0
+  woundRecovery: 0
+  skillCooling: 0.3
   Attack: 10
   createWound: 2
   Penetrate: 3
-  criticalPoint: 40
+  criticalPoint: 103
   AttackCooling: 0.2
   meleeRange: 1.5
   rangedRange: 1.8

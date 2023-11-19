@@ -11,9 +11,9 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 {
     public string Name;
 
-    private NPCDetails npcDetails;
-
-    protected GameObject attackTarget;
+    protected NPCDetails npcDetails;
+    [HideInInspector]
+    public GameObject attackTarget;
     private Collider2D coll;
     protected Animator anim;
     protected CharacterInformation enemyInformation;
@@ -33,10 +33,12 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     [HideInInspector]
     public float conAttackTime;
     private float lastAttackTime;
-    [HideInInspector]
     private float direction;
 
     public bool isSkilling;
+    protected float skillRange;
+    protected bool isSkillRange;
+    protected bool canSkill;
 
     private Vector3 originalPos;
     [HideInInspector]
@@ -62,6 +64,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         enemyInformation = GetComponent<CharacterInformation>();
         direction = transform.GetComponent<Transform>().localScale.x;
         isAttackEnd = true;
+        
         //sightRadius = npcDetails.sightRadius;
     }
 
@@ -75,7 +78,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         if (!GameManager.isInitialized) return;
         GameManager.Instance.removeObserver(this);
     }
-    private void Start()
+    protected virtual void Start()
     {
         npcDetails = NPCManager.Instance.getNPCDetail(Name);
         speed = enemyInformation.Speed;
@@ -96,8 +99,9 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         GameManager.Instance.addObserver(this);
     }
 
-    private void Update()
+    protected virtual void Update()
     {
+        
         isDead = enemyInformation.CurrentHealth == 0;
         if (!playerDead)
         {
@@ -175,7 +179,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                     //TODO：后期加上警惕的动作
                     if (remainLookAtTime > 0)
                     {
-                        stopMoving();
+                        
                         remainLookAtTime -= Time.deltaTime;
                     }
                     else if (isPeace)
@@ -196,8 +200,6 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                 if (targetInMeleeRange())
                 {
                     isChase = false;
-                    //chaseTheEnemy(transform.position);
-                    stopMoving();
                     if (!isSkilling)
                     {
                         if (lastAttackTime < 0)
@@ -205,7 +207,6 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                             lastAttackTime = enemyInformation.fightingData.AttackCooling;
                             if (isAttackEnd)
                             {
-                                isAttackEnd = false;
                                 Attack = true;
                                 enemyInformation.isCritical = Random.value < (enemyInformation.CriticalPoint / Settings.criticalConstant);
                                 enemyInformation.isConDamage = Random.value < enemyInformation.Continuous_DamageRate;
@@ -213,6 +214,10 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                             attack();
                         }
                     }
+                    //else
+                    //{
+                    //    stopAllAction();
+                    //}
                 }
 
 
@@ -260,6 +265,11 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         if (targetInRangedRange())
         {
 
+        }
+        
+        if (isSkillRange &&canSkill)
+        {
+            anim.SetTrigger("Skill");
         }
     }
 
@@ -310,9 +320,11 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     }
 
-    private void stopMoving()
+    private void stopAllAction()
     {
-        transform.position = transform.position;
+        //FIXME：后期设置一个bool值更新action
+        Attack = false;
+        isAttackEnd = false;
     }
 
     public void stopAttackMoving()
@@ -351,8 +363,8 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         }
         
     }
-
-    private bool targetInMeleeRange()
+    #region CheckRange
+    protected bool targetInMeleeRange()
     {
         if (attackTarget != null)
             return Vector3.Distance(attackTarget.transform.position, transform.position) <= enemyInformation.MeleeRange;
@@ -360,18 +372,18 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             return false;
     }
 
-    private bool targetInRangedRange()
+    protected bool targetInRangedRange()
     {
         if (attackTarget != null)
             return Vector3.Distance(attackTarget.transform.position, transform.position) <= enemyInformation.RangedRange;
         else
             return false;
     }
-    private bool targetInSkillRange(float skillRange)
+    protected bool targetInSkillRange(float skillRange)
     {
         return Vector3.Distance(attackTarget.transform.position, transform.position) <= skillRange;
     }
-
+    #endregion
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
@@ -380,14 +392,17 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     protected virtual void hit()
     {
-        
+        //Debug.Log("1");
         if (attackTarget != null )
         {
-            if(transform.isFacingTarget(attackTarget.transform))
-            {
+            //Debug.Log("2");
+            //if (transform.isFacingTarget(attackTarget.transform))
+            //{
                 var targetInformation = attackTarget.GetComponent<CharacterInformation>();
+                //Debug.Log("3");
                 targetInformation.finalDamage(enemyInformation, targetInformation);
-            }
+                //Debug.Log("4");
+            //}
         }
     }
 

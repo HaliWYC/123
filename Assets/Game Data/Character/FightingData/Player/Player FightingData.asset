@@ -34,7 +34,7 @@ MonoBehaviour:
   fatalLevel: 0
   woundRecovery: 0
   skillCooling: 0.5
-  Attack: 10
+  Attack: 40
   createWound: 2
   Penetrate: 3
   criticalPoint: 213
