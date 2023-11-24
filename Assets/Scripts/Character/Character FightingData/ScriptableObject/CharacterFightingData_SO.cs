@@ -50,4 +50,5 @@ public class CharacterFightingData_SO : ScriptableObject
     public int penetrateDefense;
     public float criticalDefense;
     public float fatalDefense;
+    public float parryCoolDown;
 }

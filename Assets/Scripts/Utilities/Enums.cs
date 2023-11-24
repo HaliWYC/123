@@ -74,5 +74,15 @@ public enum SkillRangeType
 }
 public enum EffectType
 {
-    伤害,恢复生命
+    单次造成伤害,持续造成伤害,单次恢复生命,持续恢复生命,单次造成伤口,持续造成伤口,单次治疗伤口,持续治疗伤口,造成眩晕,免疫
+}
+
+public enum BuffStateType
+{
+    Once,Sustainable,Permanent
+}
+
+public enum BuffStackType
+{
+    StackTurn,StackValue
 }

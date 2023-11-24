@@ -42,4 +42,7 @@ public class Settings
     public const float WoundRecoveryTime = 20;
     public const float penetrateConstant = 417;
     public const float criticalConstant = 213;
+
+    //Skill
+    public const float sustainEffectUpdateTime = 3f;
 }

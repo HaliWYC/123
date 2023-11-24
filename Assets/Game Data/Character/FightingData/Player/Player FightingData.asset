@@ -34,8 +34,8 @@ MonoBehaviour:
   fatalLevel: 0
   woundRecovery: 0
   skillCooling: 0.5
-  Attack: 40
-  createWound: 2
+  Attack: 0
+  createWound: 10
   Penetrate: 3
   criticalPoint: 213
   AttackCooling: 0.3
@@ -49,3 +49,4 @@ MonoBehaviour:
   penetrateDefense: 1
   criticalDefense: 0.1
   fatalDefense: 0.01
+  parryCoolDown: 0.3

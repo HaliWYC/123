@@ -10,14 +10,14 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour,IEndGameObserver
 {
     public string Name;
-
-    protected NPCDetails npcDetails;
     [HideInInspector]
     public GameObject attackTarget;
     private Collider2D coll;
+    private float speed;
     protected Animator anim;
     protected CharacterInformation enemyInformation;
-    private float speed;
+    protected NPCDetails npcDetails;
+
 
     [Header("状态")]
     public bool isPeace;
@@ -25,21 +25,23 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     private bool isMoving;
     private bool isDead;
     private bool playerDead;
+    //private bool foundTarget;
+
+    [Header("战斗")]
     [HideInInspector]
     public bool Attack;
     [HideInInspector]
     public bool isAttackEnd;
-    protected bool isConAttack;
     [HideInInspector]
     public float conAttackTime;
-    private float lastAttackTime;
-    private float direction;
-
-    public bool isSkilling;
+    protected bool isConAttack;
+    protected float lastAttackTime;
     protected float skillRange;
     protected bool isSkillRange;
     protected bool canSkill;
 
+    [Header("位置")]
+    private float direction;
     private Vector3 originalPos;
     [HideInInspector]
     public Vector3 attackPos;
@@ -83,7 +85,6 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         npcDetails = NPCManager.Instance.getNPCDetail(Name);
         speed = enemyInformation.Speed;
         originalPos = transform.position;
-        isSkilling = false;
         if (isPeace)
         {
             npcDetails.enemyState = EnemyState.和平;
@@ -135,7 +136,6 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     {
         if (isDead)
             npcDetails.enemyState = EnemyState.死亡;
-
         else if (findPlayer())
         {
             if (transform.CompareTag("Enemy"))
@@ -179,7 +179,6 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                     //TODO：后期加上警惕的动作
                     if (remainLookAtTime > 0)
                     {
-                        
                         remainLookAtTime -= Time.deltaTime;
                     }
                     else if (isPeace)
@@ -197,23 +196,22 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                     }
 
                 }
-                if (targetInMeleeRange())
+                if (targetInMeleeRange() || targetInRangedRange())
                 {
                     isChase = false;
-                    if (!isSkilling)
+                    if (lastAttackTime < 0)
                     {
-                        if (lastAttackTime < 0)
+                        refreshAttackTime();
+                        if (isAttackEnd)
                         {
-                            lastAttackTime = enemyInformation.fightingData.AttackCooling;
-                            if (isAttackEnd)
-                            {
-                                Attack = true;
-                                enemyInformation.isCritical = Random.value < (enemyInformation.CriticalPoint / Settings.criticalConstant);
-                                enemyInformation.isConDamage = Random.value < enemyInformation.Continuous_DamageRate;
-                            }
+                            Attack = true;
+                            enemyInformation.isCritical = Random.value < (enemyInformation.CriticalPoint / Settings.criticalConstant);
+                            enemyInformation.isConDamage = Random.value < enemyInformation.Continuous_DamageRate;
                             attack();
                         }
                     }
+
+
                     //else
                     //{
                     //    stopAllAction();
@@ -256,20 +254,22 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     private void attack()
     {
-        if (targetInMeleeRange())
-        {
-            
-            anim.SetTrigger("isAttack");
-
-        }
-        if (targetInRangedRange())
-        {
-
-        }
-        
-        if (isSkillRange &&canSkill)
+        if (isSkillRange && canSkill)
         {
             anim.SetTrigger("Skill");
+        }
+        else
+        {
+            if (targetInMeleeRange())
+            {
+
+                anim.SetTrigger("isAttack");
+
+            }
+            if (targetInRangedRange())
+            {
+
+            }
         }
     }
 
@@ -281,16 +281,19 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     private bool findPlayer()
     {
         var colliders = Physics2D.OverlapCircleAll(transform.position, npcDetails.sightRadius);
-
+        /*if (foundTarget)
+            return true;*/
         foreach(var target in colliders)
         {
             if (target.CompareTag("Player"))
             {
                 attackTarget = target.gameObject;
+                //foundTarget = true;
                 return true;
             }
         }
         attackTarget = null;
+        //foundTarget = false;
         return false;
 
     }
@@ -319,14 +322,21 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         
 
     }
-
+    #region Events
     private void stopAllAction()
     {
         //FIXME：后期设置一个bool值更新action
         Attack = false;
         isAttackEnd = false;
     }
-
+    public void refreshAttackTime()
+    {
+        lastAttackTime = enemyInformation.AttackCooling;
+    }
+    public void setAttackTime(float time)
+    {
+        lastAttackTime = time;
+    }
     public void stopAttackMoving()
     {
         transform.position = attackPos;
@@ -336,7 +346,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     {
         attackPos = targetPos;
     }
-
+    #endregion
     /// <summary>
     /// Generate a way point after check it is available
     /// </summary>
@@ -400,6 +410,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             //{
                 var targetInformation = attackTarget.GetComponent<CharacterInformation>();
                 //Debug.Log("3");
+                if(!attackTarget.GetComponent<Player>().isParry)
                 targetInformation.finalDamage(enemyInformation, targetInformation);
                 //Debug.Log("4");
             //}

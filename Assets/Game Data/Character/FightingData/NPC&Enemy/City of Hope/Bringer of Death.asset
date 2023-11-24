@@ -35,7 +35,7 @@ MonoBehaviour:
   woundRecovery: 0
   skillCooling: 0.3
   Attack: 10
-  createWound: 2
+  createWound: 0
   Penetrate: 3
   criticalPoint: 103
   AttackCooling: 0.2

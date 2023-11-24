@@ -44,7 +44,7 @@ MonoBehaviour:
   criticalmutiple: 0
   fatal_Enhancement: 0
   continuous_DamageRate: 0
-  continuous_AttackRate: 0.9
+  continuous_AttackRate: 0.4
   Defense: 20
   penetrateDefense: 100
   criticalDefense: 100

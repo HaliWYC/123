@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -6,7 +6,6 @@ using UnityEngine;
 public class CharacterInformation : MonoBehaviour
 {
     public CharacterInformation_SO templateInformation;
-
     public CharacterInformation_SO characterInformation;
     public CharacterFightingData_SO templateFightingData;
     public CharacterFightingData_SO fightingData;
@@ -20,29 +19,10 @@ public class CharacterInformation : MonoBehaviour
         if (templateFightingData != null)
             fightingData = Instantiate(templateFightingData);
     }
-    private void OnEnable()
-    {
-
-    }
-
     private void Update()
     {
         woundRecovery();
     }
-
-
-    
-    private void OnDisable()
-    {
-
-        
-    }
-
-    
-
-
-
-    
     #region basicInfor
     public int prestigeLevel
     {
@@ -278,6 +258,11 @@ public class CharacterInformation : MonoBehaviour
         get { if (fightingData != null) return fightingData.fatalDefense; else return 0; }
         set { fightingData.fatalDefense = value; }
     }
+    public float ParryCoolDown
+    {
+        get { if (fightingData != null) return fightingData.parryCoolDown; else return 0; }
+        set { fightingData.parryCoolDown = value; }
+    }
     #endregion
 
     #region EffectDetection
@@ -313,13 +298,8 @@ public class CharacterInformation : MonoBehaviour
         if (attacker.isCritical)
         {
             damage *=Mathf.Max((1 + attacker.Criticalmutiple - defender.CriticalDefense),1);
-            
-            //Debug.Log("Critical"+(int)damage);
-        }
-        if (attacker.isCritical)
-        {
-            //Debug.Log(defender);
             defender.GetComponent<Animator>().SetTrigger("Hurt");
+            //Debug.Log("Critical"+(int)damage);
         }
         int finalDamage = (int)damage;
         
@@ -383,7 +363,6 @@ public class CharacterInformation : MonoBehaviour
         PenetrateDefense -= (int)(templateFightingData.penetrateDefense * finalFatal);
         CriticalDefense -= templateFightingData.criticalDefense * finalFatal;
         FatalDefense -= templateFightingData.fatalDefense * finalFatal;
-
         checkExceedLimit();
     }
 

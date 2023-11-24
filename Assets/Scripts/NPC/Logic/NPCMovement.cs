@@ -142,8 +142,13 @@ public class NPCMovement : MonoBehaviour
             }
             
         }
+        
         if (matchSchedule != null)
-            buildSchedulePath(matchSchedule); 
+        {
+            Debug.Log(matchSchedule);
+            buildSchedulePath(matchSchedule);
+        }
+
     }
 
     private void checkVisiable()

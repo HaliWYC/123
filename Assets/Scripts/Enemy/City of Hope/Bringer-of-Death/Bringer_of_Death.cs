@@ -5,8 +5,8 @@ using UnityEngine;
 public class Bringer_of_Death : EnemyController
 {
     public GameObject tentaclePrefab;
-    private bool hasSkill;
     //TODO:后期加上随机生成其中一个技能
+    private float timeAfterLastSkill;
     private SkillData_SO skill;
     protected override void Start()
     {
@@ -19,21 +19,13 @@ public class Bringer_of_Death : EnemyController
     protected override void Update()
     {
         base.Update();
-        
-        //if (skill != null && Random.value <= skill.skillProbability && !hasSkill&& enemyInformation.CurrentQi >= skill.QiComsume)
-        //{
-        //    enemyInformation.CurrentQi -= skill.QiComsume;
-        //    isSkillRange = true;
-        //    canSkill = true;
-        //    hasSkill = true;
-        //}
-        if(skill!=null && Random.value <= skill.skillProbability && enemyInformation.CurrentQi>=skill.QiComsume)
+        if (timeAfterLastSkill > 0)
+            timeAfterLastSkill -= Time.deltaTime;
+        if(skill!=null && Random.value <= skill.skillProbability && enemyInformation.CurrentQi>=skill.QiComsume&&timeAfterLastSkill<=0 && skill.canSpell)
         {
-
             isSkillRange = true;
             canSkill = true;
         }
-        
     }
 
     //Skill Death Tentacle
@@ -42,33 +34,32 @@ public class Bringer_of_Death : EnemyController
         //TODO:后期变成一个泛用技能
         if (attackTarget != null )
         {
-            SkillData_SO skill = GetComponent<Skills>().getSkillDataByName("Kiss of Death");
-            
-            if (targetInSkillRange(skill.skillRange))
+            Skills currentSkill = GetComponent<Skills>();
+            SkillData_SO skillData = currentSkill.getSkillDataByName("Kiss_of_Death");
+            if (targetInSkillRange(skillData.skillRange))
             {
-                bool isInRange=false;
-                switch (skill.skillRangeType)
+                bool isInRange = false;
+                switch (skillData.skillRangeType)
                 {
                     case SkillRangeType.近战:
-                        isInRange=targetInMeleeRange();
+                        isInRange = targetInMeleeRange();
                         break;
                     case SkillRangeType.远程:
                         isInRange = targetInRangedRange();
                         break;
                 }
-                if (isInRange)
+                if (isInRange &&skillData.canSpell)
                 {
                     Vector3 targetPos = new Vector3(attackTarget.transform.position.x + 0.2f, attackTarget.transform.position.y + 1f, 0);
-                    transform.position = targetPos;
                     var tentacle = Instantiate(tentaclePrefab, targetPos, Quaternion.identity);
                     tentacle.GetComponent<Tentacle>().attackTarget = attackTarget;
-                    isSkilling = true;
-                    skillRange = skill.skillRange;
+                    skillRange = skillData.skillRange;
                     tentacle.GetComponent<Tentacle>().generateTentacle();
-                    enemyInformation.CurrentQi -= skill.QiComsume;
+                    tentacle.GetComponent<Tentacle>().updateData(skillData, attackTarget.GetComponent<CharacterInformation>());
+                    enemyInformation.CurrentQi -= skillData.QiComsume;
                     skillRange = npcDetails.sightRadius;
                     canSkill = false;
-                    isSkilling = false;
+                    currentSkill.callSkill("Kiss_of_Death");
                 }
                 //TODO: 后期加上技能效果    
             }

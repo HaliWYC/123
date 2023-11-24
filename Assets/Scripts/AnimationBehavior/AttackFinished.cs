@@ -37,8 +37,10 @@ public class AttackFinished : StateMachineBehaviour
     {
         if (animator.gameObject.CompareTag("NPC") || animator.gameObject.CompareTag("Enemy"))
         {
-            animator.GetComponent<EnemyController>().Attack = false;
-            animator.GetComponent<EnemyController>().isAttackEnd = true;
+            EnemyController enemy = animator.GetComponent<EnemyController>();
+            enemy.Attack = false;
+            enemy.refreshAttackTime();
+            enemy.isAttackEnd = true;
         }
         else if (animator.gameObject.CompareTag("Player"))
         {

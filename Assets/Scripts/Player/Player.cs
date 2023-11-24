@@ -25,9 +25,11 @@ public class Player : MonoBehaviour
 
     //Player Attack
     private float lastAttackTime;
+    private float lastParryTime;
     private GameObject attackTarget;
     public bool isAttackEnd;
     private bool isAttack;
+    public bool isParry;
     private bool isDead;
 
 
@@ -67,7 +69,9 @@ public class Player : MonoBehaviour
             inputControl.Enable();
 
         lastAttackTime -= Time.deltaTime;
+        lastParryTime -= Time.deltaTime;
         playerAttack();
+        playerParry();
         movementInput = inputControl.Gameplay.Move.ReadValue<Vector2>();
         
         switchAnimation();
@@ -237,12 +241,22 @@ public class Player : MonoBehaviour
             lastAttackTime = playerInformation.AttackCooling;
             if (isAttackEnd && attackTarget!=null)
             {
-                
                 playerInformation.isCritical = UnityEngine.Random.value < (playerInformation.CriticalPoint / Settings.criticalConstant);
                 playerInformation.isConDamage = UnityEngine.Random.value < (playerInformation.Continuous_DamageRate);
             }
             anim.SetTrigger("Attack");
             isAttack = true;
+        }
+    }
+
+    public void playerParry()
+    {
+        if (isDead) return;
+        if(lastParryTime<0 && Input.GetMouseButtonDown(1))
+        {
+            lastParryTime = playerInformation.ParryCoolDown;
+            isParry = true;
+            anim.SetTrigger("Parry");
         }
     }
 
