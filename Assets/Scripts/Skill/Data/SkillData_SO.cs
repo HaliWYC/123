@@ -14,7 +14,7 @@ public class SkillData_SO : ScriptableObject
     public SkillTargetType skillTargetType;
     public SkillRangeType skillRangeType;
     public EffectType skillEffect;
-    public int QiComsume;
+    //public int QiComsume;
     public int effectTurn;
     public float skillRange;
     public float timeAfterSpell;

@@ -21,7 +21,7 @@ public class Bringer_of_Death : EnemyController
         base.Update();
         if (timeAfterLastSkill > 0)
             timeAfterLastSkill -= Time.deltaTime;
-        if(skill!=null && Random.value <= skill.skillProbability && enemyInformation.CurrentQi>=skill.QiComsume&&timeAfterLastSkill<=0 && skill.canSpell)
+        if(skill!=null && Random.value <= skill.skillProbability && timeAfterLastSkill<=0 && skill.canSpell)
         {
             isSkillRange = true;
             canSkill = true;
@@ -56,7 +56,6 @@ public class Bringer_of_Death : EnemyController
                     skillRange = skillData.skillRange;
                     tentacle.GetComponent<Tentacle>().generateTentacle();
                     tentacle.GetComponent<Tentacle>().updateData(skillData, attackTarget.GetComponent<CharacterInformation>());
-                    enemyInformation.CurrentQi -= skillData.QiComsume;
                     skillRange = npcDetails.sightRadius;
                     canSkill = false;
                     currentSkill.callSkill("Kiss_of_Death");
