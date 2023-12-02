@@ -3327,6 +3327,10 @@ MonoBehaviour:
   qiImage: {fileID: 679666544}
   moraleImage: {fileID: 93116161}
   woundImage: {fileID: 1300314343}
+  healthText: {fileID: 2003434629}
+  qiText: {fileID: 727992920}
+  moraleText: {fileID: 280437077}
+  woundText: {fileID: 843690046}
 --- !u!1 &493568010
 GameObject:
   m_ObjectHideFlags: 0
@@ -5232,7 +5236,7 @@ GameObject:
   - component: {fileID: 727992921}
   - component: {fileID: 727992920}
   m_Layer: 5
-  m_Name: HealthText (1)
+  m_Name: QiText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CharacterInformation : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class CharacterInformation : MonoBehaviour
     public CharacterFightingData_SO fightingData;
 
     private float lastWoundRecoverTime;
+    public bool isUndefeated;
+
+    public UnityEvent<CharacterInformation> healthChange;
 
     private void Awake()
     {
@@ -282,6 +286,11 @@ public class CharacterInformation : MonoBehaviour
         return currentWound >= maxWound;
     }
 
+    public void setUndefeated(bool undefeated)
+    {
+        isUndefeated = undefeated;
+    }
+
     #endregion
 
     #region Combat
@@ -389,9 +398,8 @@ public class CharacterInformation : MonoBehaviour
             CurrentWound--;
         }
     }
-    public void recoverFatal()
+    public void recoverFatal(float recover)
     {
-        float recover = FatalLevel * 0.2f;
         MaxHealth = (int)(templateFightingData.maxHealth * recover);
         MaxVigor = (int)(templateFightingData.maxVigor * recover);
         MaxQi = (int)(templateFightingData.maxQi * recover);

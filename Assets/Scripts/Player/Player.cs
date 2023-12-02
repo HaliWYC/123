@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
     //Player Attack
     private float lastAttackTime;
     private float lastParryTime;
+    private float parryDuration=0.2f;
+    private float currentParryDuration;
     private GameObject attackTarget;
     public bool isAttackEnd;
     private bool isAttack;
@@ -76,7 +78,13 @@ public class Player : MonoBehaviour
         
         switchAnimation();
         Running();
-        
+        if (playerInformation.isUndefeated)
+        {
+            currentParryDuration -= Time.deltaTime;
+            if (currentParryDuration <= 0)
+                playerInformation.setUndefeated(false);
+        }
+
     }
 
     private void FixedUpdate()
@@ -260,6 +268,16 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void parryEffect()
+    {
+        if (!playerInformation.isUndefeated)
+        {
+            playerInformation.setUndefeated(true);
+            currentParryDuration = parryDuration;
+        }
+
+    }
+
     private void OnTriggerEnter2D(Collider2D target)
     {
         if (target.CompareTag("NPC") || target.CompareTag("Enemy"))
@@ -274,6 +292,11 @@ public class Player : MonoBehaviour
 
     public void hit()
     {
+        if (attackTarget.GetComponent<CharacterInformation>().isUndefeated)
+        {
+            Debug.Log("Undefeated");
+            return;
+        }
         
         if (attackTarget != null)
         {

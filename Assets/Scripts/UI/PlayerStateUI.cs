@@ -10,6 +10,17 @@ public class PlayerStateUI : MonoBehaviour
     public Image moraleImage;
     public Image woundImage;
 
+    public Text healthText;
+    public Text qiText;
+    public Text moraleText;
+    public Text woundText;
+
+    private void Update()
+    {
+        updateHealth();
+    }
+
+
     /// <summary>
     /// Receive the change on the health percentage
     /// </summary>
@@ -18,4 +29,13 @@ public class PlayerStateUI : MonoBehaviour
     {
         healthImage.fillAmount = percentage;
     }
+
+    //FiXEDME:Using event to listen the data change rather than update it evenytime
+    private void updateHealth()
+    {
+        float healthPercentage = (float)GameManager.Instance.playerInformation.CurrentHealth / GameManager.Instance.playerInformation.MaxHealth;
+        onHealthChange(healthPercentage);
+        healthText.text = GameManager.Instance.playerInformation.CurrentHealth.ToString() + " / " + GameManager.Instance.playerInformation.MaxHealth.ToString();
+    }
+
 }

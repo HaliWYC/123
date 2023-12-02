@@ -32,7 +32,13 @@ public class Bringer_of_Death : EnemyController
     public void callTheTentacle()
     {
         //TODO:后期变成一个泛用技能
-        if (attackTarget != null )
+        if (attackTarget.GetComponent<CharacterInformation>().isUndefeated)
+        {
+            Debug.Log("Undefeated");
+            return;
+        }
+
+        if (attackTarget != null)
         {
             Skills currentSkill = GetComponent<Skills>();
             SkillData_SO skillData = currentSkill.getSkillDataByName("Kiss_of_Death");

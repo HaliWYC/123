@@ -536,7 +536,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10.8
+  orthographic size: 0
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1148,6 +1148,10 @@ MonoBehaviour:
   characterInformation: {fileID: 0}
   templateFightingData: {fileID: 11400000, guid: c91cca1c47ff3e9429c2336dd3518e45, type: 2}
   fightingData: {fileID: 0}
+  isUndefeated: 0
+  healthChange:
+    m_PersistentCalls:
+      m_Calls: []
   isCritical: 0
   isFatal: 0
   isConDamage: 0
@@ -1341,6 +1345,10 @@ MonoBehaviour:
   characterInformation: {fileID: 0}
   templateFightingData: {fileID: 11400000, guid: 02bfb376c50f9db4cb87ffd00e8746e7, type: 2}
   fightingData: {fileID: 0}
+  isUndefeated: 0
+  healthChange:
+    m_PersistentCalls:
+      m_Calls: []
   isCritical: 0
   isFatal: 0
   isConDamage: 0
@@ -1972,6 +1980,10 @@ MonoBehaviour:
   characterInformation: {fileID: 0}
   templateFightingData: {fileID: 11400000, guid: 27e13eabc053f9e41971041b2d415a0e, type: 2}
   fightingData: {fileID: 0}
+  isUndefeated: 0
+  healthChange:
+    m_PersistentCalls:
+      m_Calls: []
   isCritical: 0
   isFatal: 0
   isConDamage: 0
@@ -2181,6 +2193,22 @@ MonoBehaviour:
   characterInformation: {fileID: 0}
   templateFightingData: {fileID: 11400000, guid: c6d468bc009cde84d8270f4787b020f6, type: 2}
   fightingData: {fileID: 0}
+  isUndefeated: 0
+  healthChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: afa530375caf524428b9682b337f9ad1, type: 2}
+        m_TargetAssemblyTypeName: CharacterEvent_SO, Assembly-CSharp
+        m_MethodName: callEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   isCritical: 0
   isFatal: 0
   isConDamage: 0

@@ -1,6 +1,7 @@
 ﻿using ShanHai_IsolatedCity.Map;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterInformation))]
@@ -202,6 +203,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                     if (lastAttackTime < 0)
                     {
                         refreshAttackTime();
+                        //FIXEDME:使用携程记录攻击结束
                         if (isAttackEnd)
                         {
                             Attack = true;
@@ -402,7 +404,14 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     protected virtual void hit()
     {
-        //Debug.Log("1");
+        if (attackTarget.GetComponent<CharacterInformation>().isUndefeated)
+        {
+            Debug.Log("Undefeated");
+            lastAttackTime = enemyInformation.AttackCooling+5f;
+            return;
+        }
+
+
         if (attackTarget != null )
         {
             //Debug.Log("2");
@@ -410,7 +419,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             //{
                 var targetInformation = attackTarget.GetComponent<CharacterInformation>();
                 //Debug.Log("3");
-                if(!attackTarget.GetComponent<Player>().isParry)
+                //if(!attackTarget.GetComponent<Player>().isParry)
                 targetInformation.finalDamage(enemyInformation, targetInformation);
                 //Debug.Log("4");
             //}
