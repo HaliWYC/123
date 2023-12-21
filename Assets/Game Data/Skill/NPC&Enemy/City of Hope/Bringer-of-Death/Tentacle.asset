@@ -20,8 +20,8 @@ MonoBehaviour:
   skillEffect: 1
   effectTurn: 2
   skillRange: 100
-  timeAfterSpell: 4
-  currentCoolDown: -0.0046339566
+  timeAfterSpell: 0
+  currentCoolDown: -0.0014686482
   CoolDown: 10
   skillProbability: 0.5
   effectValue: 4

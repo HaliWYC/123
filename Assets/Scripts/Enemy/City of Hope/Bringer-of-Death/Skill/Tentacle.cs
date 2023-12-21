@@ -7,10 +7,13 @@ public class Tentacle : Skills
     private Animator anim;
     private SkillData_SO tentacleData;
     private CharacterInformation targetInfor;
-    public void updateData(SkillData_SO tentacle,CharacterInformation target)
+    private CharacterInformation Skiller;
+
+    public void updateData(SkillData_SO tentacle, CharacterInformation skiller, CharacterInformation target)
     {
         tentacleData = tentacle;
         targetInfor = target;
+        Skiller = skiller;
     }
 
 
@@ -18,6 +21,7 @@ public class Tentacle : Skills
     {
         base.Awake();
         anim = GetComponent<Animator>();
+        
     }
     public void generateTentacle()
     {
@@ -26,6 +30,6 @@ public class Tentacle : Skills
 
     public void tentacleEffect()
     {
-        skillEffects(tentacleData, targetInfor);
+        skillEffects(tentacleData, Skiller, targetInfor);
     }
 }

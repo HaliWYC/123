@@ -148,6 +148,7 @@ public class CursorManager : Singleton<CursorManager>
     #endregion
     private void checkCursorValid()
     {
+        
         mouseWorldPos = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -mainCamera.transform.position.z));
         mouseGridPos = currentGrid.WorldToCell(mouseWorldPos);
 

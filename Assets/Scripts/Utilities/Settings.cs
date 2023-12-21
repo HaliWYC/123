@@ -42,7 +42,12 @@ public class Settings
     public const float WoundRecoveryTime = 20;
     public const float penetrateConstant = 417;
     public const float criticalConstant = 213;
-
+    public const float dodgeConstant = 171;
+    public const float skillDodgeConstant = 213;
+    //DamageTextPop
+    public const float popDamageTextScaleSpeed = 1.0f;
+    public const float popDamageTextDisappearTime = 1.5f;
+    public const float popDamageTextAlphaSpeed = 4.0f;
     //Skill
     public const float sustainEffectUpdateTime = 3f;
 }

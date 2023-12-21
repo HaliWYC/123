@@ -28,13 +28,14 @@ MonoBehaviour:
   currentQi: 20
   maxMorale: 50
   currentMorale: 50
-  Argility: 10
+  Argility: 181
   Resilience: 10
   speed: 500
   fatalLevel: 0
   woundRecovery: 0
   skillCooling: 0.5
   Attack: 0
+  attackAccuracy: 0
   createWound: 10
   Penetrate: 3
   criticalPoint: 213
@@ -45,7 +46,7 @@ MonoBehaviour:
   fatal_Enhancement: 0
   continuous_DamageRate: 1
   continuous_AttackRate: 0.1
-  Defense: 200
+  Defense: 10
   penetrateDefense: 1
   criticalDefense: 0.1
   fatalDefense: 0.01

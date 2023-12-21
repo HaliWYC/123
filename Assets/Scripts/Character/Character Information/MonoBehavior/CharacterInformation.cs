@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,7 +14,10 @@ public class CharacterInformation : MonoBehaviour
     public bool isUndefeated;
 
     public UnityEvent<CharacterInformation> healthChange;
-
+    public UnityEvent<CharacterInformation> qiChange;
+    public UnityEvent<CharacterInformation> woundChange;
+    public UnityEvent<CharacterInformation> moraleChange;
+    public UnityEvent criticalShakeEvent;
     private void Awake()
     {
         if (templateInformation != null)
@@ -23,17 +25,22 @@ public class CharacterInformation : MonoBehaviour
         if (templateFightingData != null)
             fightingData = Instantiate(templateFightingData);
     }
+    private void Start()
+    {
+        isUndefeated = false;
+    }
+
     private void Update()
     {
         woundRecovery();
     }
     #region basicInfor
-    public int prestigeLevel
+    public int PrestigeLevel
     {
         get { if (characterInformation != null) return characterInformation.prestigeLevel; else return 0; }
         set { characterInformation.prestigeLevel = value; }
     }
-    public int currentPrestige
+    public int CurrentPrestige
     {
         get { if (characterInformation != null) return characterInformation.currentPrestige; else return 0; }
         set { characterInformation.currentPrestige = value; }
@@ -187,6 +194,11 @@ public class CharacterInformation : MonoBehaviour
         get { if (fightingData != null) return fightingData.Attack; else return 0; }
         set { fightingData.Attack = value; }
     }
+    public int AttackAccuracy
+    {
+        get { if (fightingData != null) return fightingData.attackAccuracy; else return 0; }
+        set { fightingData.attackAccuracy = value; }
+    }
     public int CreateWound
     {
         get { if (fightingData != null) return fightingData.createWound; else return 0; }
@@ -296,6 +308,11 @@ public class CharacterInformation : MonoBehaviour
     #region Combat
     public void finalDamage(CharacterInformation attacker, CharacterInformation defender)
     {
+        if (dodged(attacker, defender))
+        {
+            EventHandler.callDamageTextPopEvent(defender.transform, 0, AttackEffectType.Dodged);
+            return;
+        }
         int attack = attacker.Attack;
         //Debug.Log(attack);
         int defense = defender.Defense;
@@ -303,79 +320,106 @@ public class CharacterInformation : MonoBehaviour
         int penetrateRate = (int)(Mathf.Max((attacker.Penetrate - defender.PenetrateDefense), 0)/Settings.penetrateConstant);
 
         float damage = Mathf.Max((attack * (1 + Random.Range(-0.05f, 0.05f))) - defense * (1 - penetrateRate),0);
-        //Debug.Log(characterInformation);
-        if (attacker.isCritical)
+
+        if (criticalDamage(attacker, defender, damage))
         {
-            damage *=Mathf.Max((1 + attacker.Criticalmutiple - defender.CriticalDefense),1);
-            defender.GetComponent<Animator>().SetTrigger("Hurt");
-            //Debug.Log("Critical"+(int)damage);
+            EventHandler.callDamageTextPopEvent(defender.transform, (int)damage, AttackEffectType.Critical);
         }
-        int finalDamage = (int)damage;
+        else
+        {
+            EventHandler.callDamageTextPopEvent(defender.transform, (int)damage, AttackEffectType.Normal);
+        }
+        CurrentHealth = Mathf.Max(CurrentHealth - (int)damage, 0);
+        continuousDamage(attacker, defender, damage);
         
-        int ConDamage = continuousDamage(attacker, damage);
-        CurrentHealth = Mathf.Max(CurrentHealth - finalDamage, 0);
-        Debug.Log(CurrentHealth);
+        //GameManager.Instance.initDamageText(defender.transform, (int)damage);
+        
+        //Debug.Log(CurrentHealth);
         defender.CurrentWound += attacker.CreateWound;
-        StartCoroutine(calculateFatal(attacker.Fatal_Enhancement,defender.FatalDefense));
+        defender.woundChange?.Invoke(defender);
+        if(checkIsFatal(CurrentWound, MaxWound))
+        StartCoroutine(calculateFatal(attacker.Fatal_Enhancement,defender.FatalDefense,defender));
         //Instantiate the damage each time
-        if (ConDamage > 0)
-            CurrentHealth = Mathf.Max(CurrentHealth - ConDamage, 0);
-        //TODO:UpdateUI/UpdateXP
     }
-    private int continuousDamage(CharacterInformation attacker, float damage)
+    private void continuousDamage(CharacterInformation attacker, CharacterInformation defender, float damage)
     {
         
         if (attacker.isConDamage)
         {
             float finalConDamage = (1 + Random.Range(-0.1f, 0.1f)) * damage;
-
-            //Debug.Log("ConDamage" + damage + finalConDamage);
-            return (int)finalConDamage;
+            defender.CurrentHealth = Mathf.Max(defender.CurrentHealth - (int)finalConDamage, 0);
+            //Instantiate Damage;
+            //GameManager.Instance.initDamageText(defender.transform, (int)damage);
+            EventHandler.callDamageTextPopEvent(defender.transform, (int)damage, AttackEffectType.continuousDamage);
         }
-        return 0;
+        return;
     }
     
-    private IEnumerator calculateFatal(float fatalEnhance, float fatalDefense)
+    private bool criticalDamage(CharacterInformation attacker, CharacterInformation defender, float damage)
+    {
+        if (attacker.isCritical)
+        {
+            damage *= Mathf.Max((1 + attacker.Criticalmutiple - defender.CriticalDefense), 1);
+            defender.GetComponent<Animator>().SetTrigger("Hurt");
+            defender.criticalShakeEvent?.Invoke();
+            return true;
+            //Debug.Log("Critical"+(int)damage);
+        }
+        return false;
+    }
+
+    private bool dodged(CharacterInformation attacker, CharacterInformation defender)
+    {
+        if ((defender.Argility - attacker.AttackAccuracy) / Settings.dodgeConstant >= Random.Range(0, 1))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private IEnumerator calculateFatal(float fatalEnhance, float fatalDefense,CharacterInformation defender)
     {
         while(checkIsFatal(CurrentWound, MaxWound))
         {
             updateFatal(fatalEnhance, fatalDefense);
             yield return null;
             CurrentWound -= MaxWound;
-            FatalLevel = (int)((MaxHealth / (float)templateFightingData.maxHealth) * 5);
+            defender.healthChange?.Invoke(defender);
+            defender.qiChange?.Invoke(defender);
+            defender.woundChange?.Invoke(defender);
+            defender.moraleChange?.Invoke(defender);
+            yield return null;
         }
-        
-        
     }
 
     private void updateFatal(float fatalEnhance, float fatalDefense)
     {
         float finalFatal = Mathf.Max((fatalEnhance-fatalDefense + 0.2f), 0.2f);
-        MaxHealth -= (int)(templateFightingData.maxHealth * finalFatal);
-        MaxVigor -= (int)(templateFightingData.maxVigor * finalFatal);
-        MaxQi -= (int)(templateFightingData.maxQi * finalFatal);
-        MaxMorale -= (int)(templateFightingData.maxMorale * finalFatal);
-        Speed -= (int)(templateFightingData.speed * finalFatal);
-        Argility -= (int)(templateFightingData.Argility * finalFatal);
-        Resilience -= (int)(templateFightingData.Resilience * finalFatal);
-        SkillCooling -= templateFightingData.skillCooling * finalFatal;
-        Attack -= (int)(templateFightingData.Attack * finalFatal);
-        CreateWound -= (int)(templateFightingData.createWound * finalFatal);
-        Penetrate -= (int)(templateFightingData.Penetrate * finalFatal);
-        CriticalPoint -= (int)(templateFightingData.criticalPoint * finalFatal);
+        MaxHealth = Mathf.Max(MaxHealth - (int)(templateFightingData.maxHealth * finalFatal), 0);
+        MaxVigor = Mathf.Max(MaxVigor - (int)(templateFightingData.maxVigor * finalFatal), 0);
+        MaxQi = Mathf.Max(MaxQi - (int)(templateFightingData.maxQi * finalFatal), 0);
+        MaxMorale = Mathf.Max(MaxMorale - (int)(templateFightingData.maxMorale * finalFatal), 0);
+        Speed = Mathf.Max(Speed - (int)(templateFightingData.speed * finalFatal), 0);
+        Argility = Mathf.Max(Argility - (int)(templateFightingData.Argility * finalFatal), 0);
+        Resilience = Mathf.Max(Resilience - (int)(templateFightingData.Resilience * finalFatal), 0);
+        SkillCooling = Mathf.Max(SkillCooling - templateFightingData.skillCooling * finalFatal, 0);
+        Attack = Mathf.Max(Attack - (int)(templateFightingData.Attack * finalFatal), 0);
+        CreateWound = Mathf.Max(CreateWound - (int)(templateFightingData.createWound * finalFatal), 0);
+        Penetrate = Mathf.Max(Penetrate - (int)(templateFightingData.Penetrate * finalFatal), 0);
+        CriticalPoint = Mathf.Max(CriticalPoint - (int)(templateFightingData.criticalPoint * finalFatal), 0);
         //AttackCooling -= templateFightingData.AttackCooling * finalFatal;
-        Criticalmutiple -= templateFightingData.criticalmutiple * finalFatal;
-        Fatal_Enhancement -= templateFightingData.fatal_Enhancement * finalFatal;
-        Continuous_DamageRate -= templateFightingData.continuous_DamageRate * finalFatal;
-        Continuous_AttackRate -= templateFightingData.continuous_AttackRate * finalFatal;
-        Defense -= (int)(templateFightingData.Defense * finalFatal);
-        PenetrateDefense -= (int)(templateFightingData.penetrateDefense * finalFatal);
-        CriticalDefense -= templateFightingData.criticalDefense * finalFatal;
-        FatalDefense -= templateFightingData.fatalDefense * finalFatal;
+        Criticalmutiple = Mathf.Max(Criticalmutiple - templateFightingData.criticalmutiple * finalFatal, 0);
+        Fatal_Enhancement = Mathf.Max(Fatal_Enhancement - templateFightingData.fatal_Enhancement * finalFatal, 0);
+        Continuous_DamageRate = Mathf.Max(Continuous_DamageRate - templateFightingData.continuous_DamageRate * finalFatal, 0);
+        Continuous_AttackRate = Mathf.Max(Continuous_AttackRate - templateFightingData.continuous_AttackRate * finalFatal, 0);
+        Defense = Mathf.Max(Defense - (int)(templateFightingData.Defense * finalFatal), 0);
+        PenetrateDefense = Mathf.Max(PenetrateDefense - (int)(templateFightingData.penetrateDefense * finalFatal), 0);
+        CriticalDefense = Mathf.Max(CriticalDefense - templateFightingData.criticalDefense * finalFatal, 0);
+        FatalDefense = Mathf.Max(FatalDefense - templateFightingData.fatalDefense * finalFatal, 0);
         checkExceedLimit();
     }
 
-    private void checkExceedLimit()
+    public void checkExceedLimit()
     {
         if (CurrentHealth > MaxHealth)
             CurrentHealth = MaxHealth;

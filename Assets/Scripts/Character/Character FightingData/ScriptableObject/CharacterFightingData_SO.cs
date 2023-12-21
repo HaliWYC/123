@@ -34,6 +34,7 @@ public class CharacterFightingData_SO : ScriptableObject
 
     [Header("攻击属性")]
     public int Attack;
+    public int attackAccuracy;
     public int createWound;
     public int Penetrate;
     public int criticalPoint;

@@ -34,7 +34,6 @@ public class Player : MonoBehaviour
     public bool isParry;
     private bool isDead;
 
-
     private void Awake()
     {
         
@@ -50,6 +49,10 @@ public class Player : MonoBehaviour
     {
         //FIXME Use in load the scene
         GameManager.Instance.registerPlayer(playerInformation);
+        playerInformation.healthChange?.Invoke(playerInformation);
+        playerInformation.qiChange?.Invoke(playerInformation);
+        playerInformation.woundChange?.Invoke(playerInformation);
+        playerInformation.moraleChange?.Invoke(playerInformation);
     }
 
     private void Update()
@@ -292,19 +295,16 @@ public class Player : MonoBehaviour
 
     public void hit()
     {
-        if (attackTarget.GetComponent<CharacterInformation>().isUndefeated)
-        {
-            Debug.Log("Undefeated");
-            return;
-        }
-        
         if (attackTarget != null)
         {
-            //if (transform.isFacingTarget(attackTarget.transform))
-            //{
-                var targetInformation = attackTarget.GetComponent<CharacterInformation>();
-                targetInformation.finalDamage(playerInformation, targetInformation);
-            //}
+            if (attackTarget.GetComponent<CharacterInformation>().isUndefeated)
+            {
+                EventHandler.callDamageTextPopEvent(attackTarget.transform, 0, AttackEffectType.Undefeated);
+                return;
+            }
+            
+            var targetInformation = attackTarget.GetComponent<CharacterInformation>();
+            targetInformation.finalDamage(playerInformation, targetInformation);
         }
         
     }

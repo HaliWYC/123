@@ -81,11 +81,11 @@ namespace ShanHai_IsolatedCity.Inventory
             }
         }
 
-        private void onShowTradeUI(ItemDetails item, bool isSell )
+        private void onShowTradeUI(ItemDetails item, bool isSell, ItemType itemType)
         {
             tradeUI.gameObject.SetActive(true);
-            
-            tradeUI.setUPTradeUI(item, isSell);
+
+            tradeUI.setUPTradeUI(item, isSell, itemType);
         }
 
         private void onUpdateInventoryUI(InventoryLocation location, List<InventoryItem> list)
@@ -112,18 +112,7 @@ namespace ShanHai_IsolatedCity.Inventory
                     break;
 
                 case InventoryLocation.箱子:
-                    /*int emptySlot = 0;
-                    for (int i = 0; i < bagSlots.Count; i++)
-                    {
-                        if (list[i].itemAmount == 0 || list[i].itemID == 0)
-                            bagSlots[i].gameObject.SetActive(false);
-
-                        if (list[i].itemAmount>0)
-                        {
-                            var Item = InventoryManager.Instance.getItemDetails(list[i].itemID);
-                            bagSlots[i-emptySlot].upDateSlot(Item, list[i].itemAmount);
-                        }
-                    }*/
+           
                     for (int i = 0; i < bagSlots.Count; i++)
                     {
                         if (list[i].itemAmount == 0 || list[i].itemID == 0)

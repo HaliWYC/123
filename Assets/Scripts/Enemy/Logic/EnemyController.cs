@@ -404,25 +404,22 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     protected virtual void hit()
     {
-        if (attackTarget.GetComponent<CharacterInformation>().isUndefeated)
-        {
-            Debug.Log("Undefeated");
-            lastAttackTime = enemyInformation.AttackCooling+5f;
-            return;
-        }
-
-
         if (attackTarget != null )
         {
-            //Debug.Log("2");
-            //if (transform.isFacingTarget(attackTarget.transform))
-            //{
-                var targetInformation = attackTarget.GetComponent<CharacterInformation>();
-                //Debug.Log("3");
-                //if(!attackTarget.GetComponent<Player>().isParry)
-                targetInformation.finalDamage(enemyInformation, targetInformation);
-                //Debug.Log("4");
-            //}
+            if (attackTarget.GetComponent<CharacterInformation>().isUndefeated)
+            {
+                EventHandler.callDamageTextPopEvent(attackTarget.transform, 0, AttackEffectType.Undefeated);
+                lastAttackTime = enemyInformation.AttackCooling + 5f;
+                return;
+            }
+            var targetInformation = attackTarget.GetComponent<CharacterInformation>();
+
+            targetInformation.finalDamage(enemyInformation, targetInformation);
+            if (attackTarget.CompareTag("Player"))
+            {
+                attackTarget.GetComponent<CharacterInformation>().healthChange?.Invoke(attackTarget.GetComponent<CharacterInformation>());
+            }
+
         }
     }
 

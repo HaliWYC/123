@@ -35,6 +35,7 @@ MonoBehaviour:
   woundRecovery: 0
   skillCooling: 0.3
   Attack: 10
+  attackAccuracy: 10
   createWound: 0
   Penetrate: 3
   criticalPoint: 103
@@ -43,9 +44,10 @@ MonoBehaviour:
   rangedRange: 1.8
   criticalmutiple: 1.5
   fatal_Enhancement: 0
-  continuous_DamageRate: 0.2
+  continuous_DamageRate: 1
   continuous_AttackRate: 0.01
   Defense: 4
   penetrateDefense: 1
   criticalDefense: 0.1
   fatalDefense: 0.05
+  parryCoolDown: 0

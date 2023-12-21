@@ -29,54 +29,32 @@ namespace ShanHai_IsolatedCity.Inventory
             submit.onClick.AddListener(tradeItem);
         }
 
-        public void setUPTradeUI(ItemDetails item, bool isSell)
+        public void setUPTradeUI(ItemDetails item, bool isSell, ItemType itemType)
         {
             this.itemDetails = item;
             itemIcon.sprite = item.itemIcon;
             itemName.text = item.itemName;
             isSellTrade = isSell;
             tradeAmount.text = string.Empty;
-            qualityType.text = item.itemQuality.ToString();
-            weaponQuaity.text = item.weaponQuality.ToString();
-
-            isWeapon = item.weaponType switch { WeaponType.非武器 => false, _ => true };
-
-            weaponQuaity.gameObject.SetActive(isWeapon);
-
-            if (!isWeapon)
-                qualityType.gameObject.SetActive(true);
-            else
-                qualityType.gameObject.SetActive(false);
-
+            switch (itemType)
+            {
+                case ItemType.武器:
+                    WeaponDetails weapon = (WeaponDetails)item;
+                    weaponQuaity.text = weapon.weaponQuality.ToString();
+                    weaponQuaity.gameObject.SetActive(true);
+                    qualityType.gameObject.SetActive(false);
+                    break;
+                case ItemType.商品:
+                    qualityType.text = item.itemQuality.ToString();
+                    qualityType.gameObject.SetActive(true);
+                    weaponQuaity.gameObject.SetActive(false);
+                    break;
+            }
+            
             if (tradeAmount.text != string.Empty)
                 totalPrice.text = (item.itemPrice * Convert.ToInt32(tradeAmount.text)).ToString();
             else
                 totalPrice.gameObject.SetActive(false);
-
-
-
-            //qualityType.text = item.itemQuality switch {
-            //    QualityType.赤 => "赤",
-            //    QualityType.橙 => "橙",
-            //    QualityType.黄=>"黄",
-            //    QualityType.绿=>"绿",
-            //    QualityType.青=>"青",
-            //    QualityType.蓝=>"蓝",
-            //    QualityType.紫=>"紫",
-            //    _=>"灰"
-            //};
-
-
-            //weaponQuaity.text = item.weaponQuality switch {
-            //    WeaponQualityType.神器=>"神器",
-            //    WeaponQualityType.传说=>"传说",
-            //    WeaponQualityType.史诗=>"史诗",
-            //    WeaponQualityType.卓越=>"卓越",
-            //    WeaponQualityType.精良=>"精良",
-            //    WeaponQualityType.优秀=>"优秀",
-            //    WeaponQualityType.普通=>"普通",
-            //    _=>"残品"
-            //};
 
         }
 

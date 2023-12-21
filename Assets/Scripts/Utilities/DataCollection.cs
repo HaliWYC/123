@@ -14,10 +14,6 @@ public class ItemDetails
 
     public ItemType itemType;
 
-    public WeaponType weaponType;
-
-    public WeaponQualityType weaponQuality;
-
     public QualityType itemQuality;
 
     [TextArea]
@@ -33,10 +29,21 @@ public class ItemDetails
 
     public int itemPrice;
 
+
+
     [Range(0, 1)]
     public float sellPercentage;
 
 }
+public class WeaponDetails : ItemDetails
+{
+    public WeaponType weaponType;
+
+    public WeaponQualityType weaponQuality;
+
+    public CharacterFightingData_SO weaponData;
+}
+
 
 [System.Serializable]
 public struct InventoryItem

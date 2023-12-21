@@ -82,6 +82,11 @@ public enum BuffStateType
     Once,Sustainable,Permanent
 }
 
+public enum AttackEffectType
+{
+    Normal,Critical,continuousDamage,continuouseAttack,Skill,Undefeated,Dodged
+}
+
 public enum BuffStackType
 {
     StackTurn,StackValue

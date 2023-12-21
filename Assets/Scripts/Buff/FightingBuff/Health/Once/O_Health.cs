@@ -7,9 +7,10 @@ public class O_Health : BuffBase
     public override void launch()
     {
         if (isPro)
-            buffTarget.CurrentHealth = (int)(buffTarget.CurrentHealth + currentBuffValue);
+            buffTarget.CurrentHealth = Mathf.Min((int)(buffTarget.CurrentHealth + currentBuffValue), buffTarget.MaxHealth);
         else
-            buffTarget.CurrentHealth = (int)(buffTarget.CurrentHealth - currentBuffValue);
+            buffTarget.CurrentHealth = Mathf.Max((int)(buffTarget.CurrentHealth - currentBuffValue), 0);
+        buffTarget.GetComponent<CharacterInformation>().healthChange?.Invoke(buffTarget.GetComponent<CharacterInformation>());
         stateFinished += onStateFinished;
     }
 

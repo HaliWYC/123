@@ -107,10 +107,10 @@ public static class EventHandler
         updateGameStateEvent?.Invoke(gameState);
     }
 
-    public static event Action<ItemDetails, bool> showTradeUI;
-    public static void callShowTradeUI(ItemDetails item,bool isSell)
+    public static event Action<ItemDetails, bool, ItemType> showTradeUI;
+    public static void callShowTradeUI(ItemDetails item, bool isSell, ItemType itemType)
     {
-        showTradeUI?.Invoke(item,isSell);
+        showTradeUI?.Invoke(item, isSell, itemType);
     }
 
     public static event Action<string> FindNPCEvent;
@@ -128,6 +128,12 @@ public static class EventHandler
     public static void callAllowPlayerInputEvent(bool input)
     {
         allowPlayerInputEvent?.Invoke(input);
+    }
+
+    public static event Action<Transform, int, AttackEffectType> damageTextPopEvent;
+    public static void callDamageTextPopEvent(Transform targetPos, int damage, AttackEffectType attackEffect)
+    {
+        damageTextPopEvent?.Invoke(targetPos, damage, attackEffect);
     }
 
     //Buff

@@ -61,7 +61,7 @@ public class Bringer_of_Death : EnemyController
                     tentacle.GetComponent<Tentacle>().attackTarget = attackTarget;
                     skillRange = skillData.skillRange;
                     tentacle.GetComponent<Tentacle>().generateTentacle();
-                    tentacle.GetComponent<Tentacle>().updateData(skillData, attackTarget.GetComponent<CharacterInformation>());
+                    tentacle.GetComponent<Tentacle>().updateData(skillData, GetComponent<CharacterInformation>(), attackTarget.GetComponent<CharacterInformation>());
                     skillRange = npcDetails.sightRadius;
                     canSkill = false;
                     currentSkill.callSkill("Kiss_of_Death");

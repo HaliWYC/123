@@ -11,16 +11,15 @@ public class Skills : MonoBehaviour
 
     protected virtual void Awake()
     {
-        if (CompareTag("NPC") || CompareTag("Enemy"))
+        /*if (CompareTag("NPC") || CompareTag("Enemy"))
         {
             skiller = GetComponent<EnemyController>().gameObject;
             
         }
         else if (CompareTag("Player"))
-            skiller = GetComponent<Player>().gameObject;
+            skiller = GetComponent<Player>().gameObject;*/
         if (templateSkillList != null)
             skillList = templateSkillList;
-        
     }
     protected virtual void Update()
     {
@@ -70,8 +69,14 @@ public class Skills : MonoBehaviour
         calledSkill.canSpell = false;
     }
 
-    public void skillEffects(SkillData_SO currentSkill, CharacterInformation defender)
+    public void skillEffects(SkillData_SO currentSkill, CharacterInformation skiller, CharacterInformation defender)
     {
+        if (checkDodged(skiller, defender, currentSkill.perfectAccurate))
+        {
+            EventHandler.callDamageTextPopEvent(attackTarget.transform, 0, AttackEffectType.Dodged);
+            return;
+        }
+
         switch (currentSkill.skillEffect)
         {
             case EffectType.单次造成伤害:
@@ -79,7 +84,19 @@ public class Skills : MonoBehaviour
                 break;
             case EffectType.持续造成伤害:
                 attackTarget.AddComponent<S_Health>().SetUp(defender, currentSkill.durationTime, currentSkill.effectTurn,BuffStateType.Sustainable,currentSkill.effectValue,false,currentSkill.effectStackable);
+                
                 break;
         }
+    }
+    public bool checkDodged(CharacterInformation attacker, CharacterInformation defender, bool perfectAccurate)
+    {
+        if (perfectAccurate)
+            return false;
+        if ((defender.Argility - attacker.AttackAccuracy) / Settings.skillDodgeConstant >= Random.Range(0, 1))
+        {
+            
+            return true;
+        }
+        return false;
     }
 }

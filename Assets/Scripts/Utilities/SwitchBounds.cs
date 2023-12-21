@@ -3,14 +3,22 @@ using UnityEngine;
 
 public class SwitchBounds : MonoBehaviour
 {
+    public CinemachineImpulseSource impulseSource;
+    public VoidEvent_SO criticalShakeEvent;
     private void OnEnable()
     {
         EventHandler.afterSceneLoadedEvent += SwitchConfinerShape;
+        criticalShakeEvent.onEventIsCalled += criticalImpulseEvent;
     }
 
     private void OnDisable()
     {
         EventHandler.afterSceneLoadedEvent -= SwitchConfinerShape;
+        criticalShakeEvent.onEventIsCalled -= criticalImpulseEvent;
+    }
+    private void criticalImpulseEvent()
+    {
+        impulseSource.GenerateImpulse();
     }
     private void SwitchConfinerShape()
     {

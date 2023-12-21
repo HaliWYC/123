@@ -24,5 +24,6 @@ public class SkillData_SO : ScriptableObject
     public float effectValue;
     public float durationTime;
     public bool effectStackable;
+    public bool perfectAccurate;
 
 }
