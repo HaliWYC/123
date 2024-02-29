@@ -27,7 +27,7 @@ public class NPCMovement : MonoBehaviour
     private float minSpeed = 1;
     private float maxSpeed = 3;
     private Vector2 dir;
-    public bool isMoving;
+    public bool isNPCMoving;
 
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -72,24 +72,24 @@ public class NPCMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        EventHandler.afterSceneLoadedEvent += onAfterSceneLoadedEvent;
-        EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
-        EventHandler.gameMinuteEvent += onGameMinuteEvent;
+        EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
+        EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
+        EventHandler.GameMinuteEvent += OnGameMinuteEvent;
     }
 
     
 
     private void OnDisable()
     {
-        EventHandler.afterSceneLoadedEvent -= onAfterSceneLoadedEvent;
-        EventHandler.beforeSceneUnloadEvent -= onBeforeSceneUnloadEvent;
-        EventHandler.gameMinuteEvent += onGameMinuteEvent;
+        EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
+        EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
+        EventHandler.GameMinuteEvent -= OnGameMinuteEvent;
     }
 
     private void Update()
     {
         if (sceneLoaded)
-            switchAnimation();
+            SwitchAnimation();
 
         //Counting
         animationBreakTime -= Time.deltaTime;
@@ -99,20 +99,20 @@ public class NPCMovement : MonoBehaviour
     private void FixedUpdate()
     {
         if(sceneLoaded)
-        movement();
+        Movement();
     }
 
-    private void onBeforeSceneUnloadEvent()
+    private void OnBeforeSceneUnloadEvent()
     {
         sceneLoaded = false;
     } 
-    private void onAfterSceneLoadedEvent()
+    private void OnAfterSceneLoadedEvent()
     {
         grid = FindObjectOfType<Grid>();
-        checkVisiable();
+        CheckVisible();
         if (!isInitailised)
         {
-            initNPC();
+            InitNPC();
             //Debug.Log("Yes");
             isInitailised = true;
         }
@@ -121,7 +121,7 @@ public class NPCMovement : MonoBehaviour
 
     }
 
-    private void onGameMinuteEvent(int minute, int hour,int day,  Seasons season)
+    private void OnGameMinuteEvent(int minute, int hour,int day,  Seasons season)
     {
         int time = (hour * 100) + minute;
 
@@ -145,26 +145,26 @@ public class NPCMovement : MonoBehaviour
         
         if (matchSchedule != null)
         {
-            Debug.Log(matchSchedule);
-            buildSchedulePath(matchSchedule);
+
+            BuildSchedulePath(matchSchedule);
         }
 
     }
 
-    private void checkVisiable()
+    public void CheckVisible()
     {
         
         if(currentScene == SceneManager.GetActiveScene().name)
         {
-            setActiveInScene();
+            SetActiveInScene();
         }
         else
         {
-            setInactiveInScene();
+            SetInactiveInScene();
         }
     }
 
-    private void initNPC()
+    private void InitNPC()
     {
         targetScene = currentScene;
 
@@ -175,7 +175,7 @@ public class NPCMovement : MonoBehaviour
         
     }
 
-    private void movement()
+    private void Movement()
     {
         if (!npcMove)
         {
@@ -186,33 +186,33 @@ public class NPCMovement : MonoBehaviour
 
                 currentScene = step.sceneName;
 
-                checkVisiable();
+                CheckVisible();
 
                 nextGridPosition = (Vector3Int)step.gridCoordinate;
                 //Debug.Log(nextGridPosition);
 
                 TimeSpan stepTime = new TimeSpan(step.hour, step.minute, step.second);
 
-                moveToGridPosition(nextGridPosition, stepTime);
+                MoveToGridPosition(nextGridPosition, stepTime);
             }
-            else if (!isMoving && canPlayStopAnimaiton)
+            else if (!isNPCMoving && canPlayStopAnimaiton)
             {
-                StartCoroutine(setStopAnimation());
+                StartCoroutine(SetStopAnimation());
             }
         }
         
 
     }
 
-    private void moveToGridPosition(Vector3Int gridPos, TimeSpan stepTime)
+    private void MoveToGridPosition(Vector3Int gridPos, TimeSpan stepTime)
     {
-        StartCoroutine(moveRoutine(gridPos, stepTime));
+        StartCoroutine(MoveRoutine(gridPos, stepTime));
     }
 
-    private IEnumerator moveRoutine(Vector3Int gridPos, TimeSpan stepTime)
+    private IEnumerator MoveRoutine(Vector3Int gridPos, TimeSpan stepTime)
     {
         npcMove = true;
-        nextWorldPosition = getWorldPosition(gridPos);
+        nextWorldPosition = GetWorldPosition(gridPos);
         //Remains time
         if (stepTime > gameTime)
         {
@@ -244,7 +244,7 @@ public class NPCMovement : MonoBehaviour
     /// Build the path accroding to the schedule
     /// </summary>
     /// <param name="schedule"></param>
-    public void buildSchedulePath(ScheduleDetails schedule)
+    public void BuildSchedulePath(ScheduleDetails schedule)
     {
         movementSteps.Clear();
         currentSchedule = schedule;
@@ -254,11 +254,11 @@ public class NPCMovement : MonoBehaviour
 
         if (schedule.targetScene == currentScene)
         {
-            AStar.Instance.buildPath(schedule.targetScene, (Vector2Int)currentGridPosition, schedule.targetGridposition, movementSteps);
+            AStar.Instance.BuildPath(schedule.targetScene, (Vector2Int)currentGridPosition, schedule.targetGridposition, movementSteps);
         }
         else if (schedule.targetScene != currentScene)
         {
-            SceneRoute sceneRoute = NPCManager.Instance.getSceneroute(currentScene, schedule.targetScene);
+            SceneRoute sceneRoute = NPCManager.Instance.GetSceneroute(currentScene, schedule.targetScene);
 
             if (sceneRoute != null)
             {
@@ -287,7 +287,7 @@ public class NPCMovement : MonoBehaviour
 
                     //Debug.Log(fromPos + goToPos);
 
-                    AStar.Instance.buildPath(path.sceneName, fromPos, goToPos, movementSteps);
+                    AStar.Instance.BuildPath(path.sceneName, fromPos, goToPos, movementSteps);
                 }
             }
         }
@@ -295,11 +295,11 @@ public class NPCMovement : MonoBehaviour
 
         if (movementSteps.Count > 1)
         {
-            updatTimeOnPath();
+            UpdatTimeOnPath();
         }
     }
 
-    private void updatTimeOnPath()
+    private void UpdatTimeOnPath()
     {
         MovementStep previousStep = null;
         TimeSpan currentGameTime = gameTime;
@@ -317,7 +317,7 @@ public class NPCMovement : MonoBehaviour
             step.second = currentGameTime.Seconds;
 
             TimeSpan gridMovementStepTime;
-            if(moveInDiagonal(step,previousStep))
+            if(MoveInDiagonal(step,previousStep))
                 gridMovementStepTime = new TimeSpan(0, 0, (int)(Settings.gridCellDiagonalSize / normalSpeed / Settings.secondThrehold));
 
             else
@@ -335,23 +335,23 @@ public class NPCMovement : MonoBehaviour
     /// <param name="currentStep"></param>
     /// <param name="previousStep"></param>
     /// <returns></returns>
-    private bool moveInDiagonal(MovementStep currentStep,MovementStep previousStep)
+    private bool MoveInDiagonal(MovementStep currentStep,MovementStep previousStep)
     {
         return (currentStep.gridCoordinate.x != previousStep.gridCoordinate.x) && (currentStep.gridCoordinate.y != previousStep.gridCoordinate.y);
     }
 
-    private Vector3 getWorldPosition(Vector3Int gridPos)
+    private Vector3 GetWorldPosition(Vector3Int gridPos)
     {
         Vector3 worldPos = grid.CellToWorld(gridPos);
         return new Vector3(worldPos.x + Settings.gridCellSize / 2f, worldPos.y + Settings.gridCellSize / 2);
     }
 
 
-    private void switchAnimation()
+    private void SwitchAnimation()
     {
-        isMoving = transform.position != getWorldPosition(targetGridPosition);
-        anim.SetBool("isMoving", isMoving);
-        if (isMoving)
+        isNPCMoving = (transform.position != GetWorldPosition(targetGridPosition));
+        anim.SetBool("isNPCMoving", isNPCMoving);
+        if (isNPCMoving)
         {
             anim.SetBool("Exit", true);
             anim.SetFloat("DirX", dir.x);
@@ -365,7 +365,7 @@ public class NPCMovement : MonoBehaviour
     }
 
 
-    private IEnumerator setStopAnimation()
+    private IEnumerator SetStopAnimation()
     {
         //Face camera
         anim.SetFloat("DirX", 0);
@@ -388,14 +388,14 @@ public class NPCMovement : MonoBehaviour
     }
 
     #region 设置NPC的显示
-    private void setActiveInScene()
+    private void SetActiveInScene()
     {
         spriteRenderer.enabled = true;
         coll.enabled = true;
         transform.GetChild(0).gameObject.SetActive(true);
     }
 
-    private void setInactiveInScene()
+    private void SetInactiveInScene()
     {
         spriteRenderer.enabled = false;
         coll.enabled = false;

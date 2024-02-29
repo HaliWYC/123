@@ -25,30 +25,30 @@ public class TimeUI : MonoBehaviour
     }
     private void OnEnable()
     {
-        EventHandler.gameMinuteEvent += onGameMinuteEvent;
-        EventHandler.gameDateEvent += onGameDateEvent;
+        EventHandler.GameMinuteEvent += OnGameMinuteEvent;
+        EventHandler.GameDateEvent += OnGameDateEvent;
     }
 
-    private void onGameDateEvent(int hour, int day, int month, int year, Seasons season)
+    private void OnGameDateEvent(int hour, int day, int month, int year, Seasons season)
     {
         dateText.text = year + "年" + month.ToString("00") + "月" + day.ToString("00") + "日";
         seasonImage.sprite = seasonSprites[(int)season];
-        switchHourImage(hour);
-        dayNightRotate(hour);
+        SwitchHourImage(hour);
+        DayNightRotate(hour);
     }
 
-    private void onGameMinuteEvent(int minute, int hour, int day, Seasons seasons)
+    private void OnGameMinuteEvent(int minute, int hour, int day, Seasons seasons)
     {
         timeText.text = hour.ToString("00") + ":" + minute.ToString("00");
     }
 
     private void OnDisable()
     {
-        EventHandler.gameMinuteEvent -= onGameMinuteEvent;
-        EventHandler.gameDateEvent -= onGameDateEvent;
+        EventHandler.GameMinuteEvent -= OnGameMinuteEvent;
+        EventHandler.GameDateEvent -= OnGameDateEvent;
     }
 
-    private void switchHourImage(int hour)
+    private void SwitchHourImage(int hour)
     {
         int index = hour / 4;
 
@@ -72,7 +72,7 @@ public class TimeUI : MonoBehaviour
         
     }
 
-    private void dayNightRotate(int hour)
+    private void DayNightRotate(int hour)
     {
         var target = new Vector3(0, 0, hour * 15 - 90);
         dayNightImage.DORotate(target, 1f, RotateMode.Fast);

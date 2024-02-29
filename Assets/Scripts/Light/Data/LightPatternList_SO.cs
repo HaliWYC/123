@@ -14,7 +14,7 @@ public class LightPatternList_SO : ScriptableObject
     /// <param name="season">Season</param>
     /// <param name="lightShift">TimePeriod</param>
     /// <returns></returns>
-    public LightDetails getLightDetails(Seasons season,LightShift lightShift)
+    public LightDetails GetLightDetails(Seasons season,LightShift lightShift)
     {
         return lightPatternList.Find(l => l.seasons == season && l.lightShift == lightShift);
     }

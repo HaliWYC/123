@@ -17,25 +17,25 @@ namespace ShanHai_IsolatedCity.Transition
 
         private void OnEnable()
         {
-            EventHandler.transitionEvent += onTransitionEvent;
+            EventHandler.TransitionEvent += OnTransitionEvent;
         }
 
         private void OnDisable()
         {
-            EventHandler.transitionEvent -= onTransitionEvent;
+            EventHandler.TransitionEvent -= OnTransitionEvent;
         }
 
-        private void onTransitionEvent(string sceneToGo, Vector3 pos)
+        private void OnTransitionEvent(string sceneToGo, Vector3 pos)
         {
             if(!isFade)
-                StartCoroutine(transtion(sceneToGo, pos));
+                StartCoroutine(Transtion(sceneToGo, pos));
         }
 
         private IEnumerator Start()
         {
             fadeCanvasGroup = FindObjectOfType<CanvasGroup>();
-            yield return StartCoroutine(loadSceneSetActive(startSceneName));
-            EventHandler.callAfterSceneLoadedEvent();
+            yield return StartCoroutine(LoadSceneSetActive(startSceneName));
+            EventHandler.CallAfterSceneLoadedEvent();
         }
 
         /// <summary>
@@ -44,19 +44,19 @@ namespace ShanHai_IsolatedCity.Transition
         /// <param name="sceneName">Target scene name</param>
         /// <param name="targetPosition">Target position</param>
         /// <returns></returns>
-        private IEnumerator transtion(string sceneName, Vector3 targetPosition)
+        private IEnumerator Transtion(string sceneName, Vector3 targetPosition)
         {
-            EventHandler.callBeforeSceneUnloadEvent();
-            yield return fade(1);
+            EventHandler.CallBeforeSceneUnloadEvent();
+            yield return Fade(1);
             yield return SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
             
-            yield return loadSceneSetActive(sceneName);
+            yield return LoadSceneSetActive(sceneName);
 
             //Move Player Position
-            EventHandler.callMoveToPosition(targetPosition);
-            EventHandler.callAfterSceneLoadedEvent();
-            yield return fade(0);
-            EventHandler.callAllowPlayerInputEvent(true);
+            EventHandler.CallMoveToPosition(targetPosition);
+            EventHandler.CallAfterSceneLoadedEvent();
+            yield return Fade(0);
+            EventHandler.CallAllowPlayerInputEvent(true);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace ShanHai_IsolatedCity.Transition
         /// </summary>
         /// <param name="sceneName">Scene name</param>
         /// <returns></returns>
-        private IEnumerator loadSceneSetActive(string sceneName)
+        private IEnumerator LoadSceneSetActive(string sceneName)
         {
             yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
@@ -73,10 +73,10 @@ namespace ShanHai_IsolatedCity.Transition
             SceneManager.SetActiveScene(newScene);
         }
 
-        private IEnumerator fade(float targetAlpha)
+        private IEnumerator Fade(float targetAlpha)
         {
             isFade = true;
-            EventHandler.callAllowPlayerInputEvent(false);
+            EventHandler.CallAllowPlayerInputEvent(false);
             fadeCanvasGroup.blocksRaycasts = true;
 
             float speed = Mathf.Abs(fadeCanvasGroup.alpha - targetAlpha) / Settings.fadeDuration;

@@ -29,7 +29,7 @@ namespace ShanHai_IsolatedCity.Inventory
             submit.onClick.AddListener(tradeItem);
         }
 
-        public void setUPTradeUI(ItemDetails item, bool isSell, ItemType itemType)
+        public void SetUPTradeUI(ItemDetails item, bool isSell, ItemType itemType)
         {
             this.itemDetails = item;
             itemIcon.sprite = item.itemIcon;
@@ -61,7 +61,7 @@ namespace ShanHai_IsolatedCity.Inventory
         public void tradeItem()
         {
             var amount = Convert.ToInt32(tradeAmount.text);
-            InventoryManager.Instance.tradeItem(itemDetails, amount, isSellTrade);
+            InventoryManager.Instance.TradeItem(itemDetails, amount, isSellTrade);
             cancleTradeUI(); 
         }
 

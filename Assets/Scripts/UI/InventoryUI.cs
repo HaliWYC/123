@@ -42,22 +42,22 @@ namespace ShanHai_IsolatedCity.Inventory
 
         private void OnEnable()
         {
-            EventHandler.updateInventoryUI += onUpdateInventoryUI;
-            EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
-            EventHandler.baseBagOpenEvent += onBaseBagOpenEvent;
-            EventHandler.baseBagCloseEvent += onBaseBagCloseEvent;
-            EventHandler.showTradeUI += onShowTradeUI;
+            EventHandler.UpdateInventoryUI += OnUpdateInventoryUI;
+            EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
+            EventHandler.BaseBagOpenEvent += OnBaseBagOpenEvent;
+            EventHandler.BaseBagCloseEvent += OnBaseBagCloseEvent;
+            EventHandler.ShowTradeUI += OnShowTradeUI;
         }
 
         
 
         private void OnDisable()
         {
-            EventHandler.updateInventoryUI -= onUpdateInventoryUI;
-            EventHandler.beforeSceneUnloadEvent -= onBeforeSceneUnloadEvent;
-            EventHandler.baseBagOpenEvent -= onBaseBagOpenEvent;
-            EventHandler.baseBagCloseEvent -= onBaseBagCloseEvent;
-            EventHandler.showTradeUI -= onShowTradeUI;
+            EventHandler.UpdateInventoryUI -= OnUpdateInventoryUI;
+            EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
+            EventHandler.BaseBagOpenEvent -= OnBaseBagOpenEvent;
+            EventHandler.BaseBagCloseEvent -= OnBaseBagCloseEvent;
+            EventHandler.ShowTradeUI -= OnShowTradeUI;
         }
 
         private void Start()
@@ -77,18 +77,18 @@ namespace ShanHai_IsolatedCity.Inventory
         {
             if (Input.GetKeyDown(KeyCode.B))
             {
-                openBagUI();
+                OpenBagUI();
             }
         }
 
-        private void onShowTradeUI(ItemDetails item, bool isSell, ItemType itemType)
+        private void OnShowTradeUI(ItemDetails item, bool isSell, ItemType itemType)
         {
             tradeUI.gameObject.SetActive(true);
 
-            tradeUI.setUPTradeUI(item, isSell, itemType);
+            tradeUI.SetUPTradeUI(item, isSell, itemType);
         }
 
-        private void onUpdateInventoryUI(InventoryLocation location, List<InventoryItem> list)
+        private void OnUpdateInventoryUI(InventoryLocation location, List<InventoryItem> list)
         {
             NPCName = InventoryManager.Instance.returnNPCName();
             switch (location)
@@ -99,13 +99,13 @@ namespace ShanHai_IsolatedCity.Inventory
                         if (list[i].itemAmount > 0)
                         {
                             
-                            var Item = InventoryManager.Instance.getItemDetails(list[i].itemID);
-                            playerSlots[i].upDateSlot(Item, list[i].itemAmount);
+                            var Item = InventoryManager.Instance.GetItemDetails(list[i].itemID);
+                            playerSlots[i].UpDateSlot(Item, list[i].itemAmount);
                         }
                         else
                         {
                             
-                            playerSlots[i].upDateEmptySlot();
+                            playerSlots[i].UpDateEmptySlot();
                         }
                     }
 
@@ -120,12 +120,12 @@ namespace ShanHai_IsolatedCity.Inventory
 
                         if (list[i].itemAmount > 0)
                         {
-                            var Item = InventoryManager.Instance.getItemDetails(list[i].itemID);
-                            bagSlots[i].upDateSlot(Item, list[i].itemAmount);
+                            var Item = InventoryManager.Instance.GetItemDetails(list[i].itemID);
+                            bagSlots[i].UpDateSlot(Item, list[i].itemAmount);
                         }
                         else
                         {
-                            bagSlots[i].upDateEmptySlot();
+                            bagSlots[i].UpDateEmptySlot();
                         }
                     }
 
@@ -135,17 +135,17 @@ namespace ShanHai_IsolatedCity.Inventory
             }
             playerMoneyText.text = InventoryManager.Instance.playerMoney.ToString();
             if(!isFirstTime)
-            NPCMoneyText.text = NPCManager.Instance.getNPCDetail(NPCName).NPCMoney.ToString();
+            NPCMoneyText.text = NPCManager.Instance.GetNPCDetail(NPCName).NPCMoney.ToString();
         }
 
         
 
-        private void onBeforeSceneUnloadEvent()
+        private void OnBeforeSceneUnloadEvent()
         {
-            upDateSlotHighLight(-1);
+            UpDateSlotHighLight(-1);
         }
 
-        private void onBaseBagOpenEvent(SlotType slotType, InventoryBag_SO bagData)
+        private void OnBaseBagOpenEvent(SlotType slotType, InventoryBag_SO bagData)
         {
             isFirstTime = false;
             GameObject prefab = slotType switch
@@ -178,15 +178,15 @@ namespace ShanHai_IsolatedCity.Inventory
                 bagOpened = true;
             }
 
-            onUpdateInventoryUI(InventoryLocation.箱子, bagData.itemList);
+            OnUpdateInventoryUI(InventoryLocation.箱子, bagData.itemList);
         }
 
-        private void onBaseBagCloseEvent(SlotType slotType, InventoryBag_SO bagData)
+        private void OnBaseBagCloseEvent(SlotType slotType, InventoryBag_SO bagData)
         {
             baseBag.SetActive(false);
             baseBag.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
             itemToolTip.gameObject.SetActive(false);
-            upDateSlotHighLight(-1);
+            UpDateSlotHighLight(-1);
 
             foreach(var slot in bagSlots)
             {
@@ -219,7 +219,7 @@ namespace ShanHai_IsolatedCity.Inventory
         /// <summary>
         /// Open/Close BagUI 
         /// </summary>
-        public void openBagUI()
+        public void OpenBagUI()
         {
             bagOpened = !bagOpened;
             bagUI.SetActive(bagOpened);
@@ -230,7 +230,7 @@ namespace ShanHai_IsolatedCity.Inventory
         /// </summary>
         /// <param name="index">Index</param>
 
-        public void upDateSlotHighLight(int index)
+        public void UpDateSlotHighLight(int index)
         {
             foreach(var slot in playerSlots)
             {

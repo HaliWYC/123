@@ -32,7 +32,7 @@ public class CharacterInformation : MonoBehaviour
 
     private void Update()
     {
-        woundRecovery();
+        WoundRecoveryProcess();
     }
     #region basicInfor
     public int PrestigeLevel
@@ -293,12 +293,12 @@ public class CharacterInformation : MonoBehaviour
     [HideInInspector]
     public int attackCount;
 
-    public bool checkIsFatal(int currentWound, int maxWound)
+    public bool CheckIsFatal(int currentWound, int maxWound)
     {
         return currentWound >= maxWound;
     }
 
-    public void setUndefeated(bool undefeated)
+    public void SetUndefeated(bool undefeated)
     {
         isUndefeated = undefeated;
     }
@@ -306,11 +306,11 @@ public class CharacterInformation : MonoBehaviour
     #endregion
 
     #region Combat
-    public void finalDamage(CharacterInformation attacker, CharacterInformation defender)
+    public void FinalDamage(CharacterInformation attacker, CharacterInformation defender)
     {
-        if (dodged(attacker, defender))
+        if (Dodged(attacker, defender))
         {
-            EventHandler.callDamageTextPopEvent(defender.transform, 0, AttackEffectType.Dodged);
+            EventHandler.CallDamageTextPopEvent(defender.transform, 0, AttackEffectType.Dodged);
             return;
         }
         int attack = attacker.Attack;
@@ -321,27 +321,27 @@ public class CharacterInformation : MonoBehaviour
 
         float damage = Mathf.Max((attack * (1 + Random.Range(-0.05f, 0.05f))) - defense * (1 - penetrateRate),0);
 
-        if (criticalDamage(attacker, defender, damage))
+        if (CriticalDamage(attacker, defender, damage))
         {
-            EventHandler.callDamageTextPopEvent(defender.transform, (int)damage, AttackEffectType.Critical);
+            EventHandler.CallDamageTextPopEvent(defender.transform, (int)damage, AttackEffectType.Critical);
         }
         else
         {
-            EventHandler.callDamageTextPopEvent(defender.transform, (int)damage, AttackEffectType.Normal);
+            EventHandler.CallDamageTextPopEvent(defender.transform, (int)damage, AttackEffectType.Normal);
         }
         CurrentHealth = Mathf.Max(CurrentHealth - (int)damage, 0);
-        continuousDamage(attacker, defender, damage);
+        ContinuousDamage(attacker, defender, damage);
         
         //GameManager.Instance.initDamageText(defender.transform, (int)damage);
         
         //Debug.Log(CurrentHealth);
         defender.CurrentWound += attacker.CreateWound;
         defender.woundChange?.Invoke(defender);
-        if(checkIsFatal(CurrentWound, MaxWound))
-        StartCoroutine(calculateFatal(attacker.Fatal_Enhancement,defender.FatalDefense,defender));
+        if(CheckIsFatal(CurrentWound, MaxWound))
+        StartCoroutine(CalculateFatal(attacker.Fatal_Enhancement,defender.FatalDefense,defender));
         //Instantiate the damage each time
     }
-    private void continuousDamage(CharacterInformation attacker, CharacterInformation defender, float damage)
+    private void ContinuousDamage(CharacterInformation attacker, CharacterInformation defender, float damage)
     {
         
         if (attacker.isConDamage)
@@ -350,12 +350,12 @@ public class CharacterInformation : MonoBehaviour
             defender.CurrentHealth = Mathf.Max(defender.CurrentHealth - (int)finalConDamage, 0);
             //Instantiate Damage;
             //GameManager.Instance.initDamageText(defender.transform, (int)damage);
-            EventHandler.callDamageTextPopEvent(defender.transform, (int)damage, AttackEffectType.continuousDamage);
+            EventHandler.CallDamageTextPopEvent(defender.transform, (int)damage, AttackEffectType.continuousDamage);
         }
         return;
     }
     
-    private bool criticalDamage(CharacterInformation attacker, CharacterInformation defender, float damage)
+    private bool CriticalDamage(CharacterInformation attacker, CharacterInformation defender, float damage)
     {
         if (attacker.isCritical)
         {
@@ -368,7 +368,7 @@ public class CharacterInformation : MonoBehaviour
         return false;
     }
 
-    private bool dodged(CharacterInformation attacker, CharacterInformation defender)
+    private bool Dodged(CharacterInformation attacker, CharacterInformation defender)
     {
         if ((defender.Argility - attacker.AttackAccuracy) / Settings.dodgeConstant >= Random.Range(0, 1))
         {
@@ -377,11 +377,11 @@ public class CharacterInformation : MonoBehaviour
         return false;
     }
 
-    private IEnumerator calculateFatal(float fatalEnhance, float fatalDefense,CharacterInformation defender)
+    private IEnumerator CalculateFatal(float fatalEnhance, float fatalDefense,CharacterInformation defender)
     {
-        while(checkIsFatal(CurrentWound, MaxWound))
+        while(CheckIsFatal(CurrentWound, MaxWound))
         {
-            updateFatal(fatalEnhance, fatalDefense);
+            UpdateFatal(fatalEnhance, fatalDefense);
             yield return null;
             CurrentWound -= MaxWound;
             defender.healthChange?.Invoke(defender);
@@ -392,7 +392,7 @@ public class CharacterInformation : MonoBehaviour
         }
     }
 
-    private void updateFatal(float fatalEnhance, float fatalDefense)
+    private void UpdateFatal(float fatalEnhance, float fatalDefense)
     {
         float finalFatal = Mathf.Max((fatalEnhance-fatalDefense + 0.2f), 0.2f);
         MaxHealth = Mathf.Max(MaxHealth - (int)(templateFightingData.maxHealth * finalFatal), 0);
@@ -416,10 +416,10 @@ public class CharacterInformation : MonoBehaviour
         PenetrateDefense = Mathf.Max(PenetrateDefense - (int)(templateFightingData.penetrateDefense * finalFatal), 0);
         CriticalDefense = Mathf.Max(CriticalDefense - templateFightingData.criticalDefense * finalFatal, 0);
         FatalDefense = Mathf.Max(FatalDefense - templateFightingData.fatalDefense * finalFatal, 0);
-        checkExceedLimit();
+        CheckExceedLimit();
     }
 
-    public void checkExceedLimit()
+    public void CheckExceedLimit()
     {
         if (CurrentHealth > MaxHealth)
             CurrentHealth = MaxHealth;
@@ -433,7 +433,7 @@ public class CharacterInformation : MonoBehaviour
 
     #endregion
     #region Recovery
-    private void woundRecovery()
+    private void WoundRecoveryProcess()
     {
         lastWoundRecoverTime -= Time.deltaTime * WoundRecovery;
         if (lastWoundRecoverTime < 0)
@@ -442,7 +442,7 @@ public class CharacterInformation : MonoBehaviour
             CurrentWound--;
         }
     }
-    public void recoverFatal(float recover)
+    public void RecoverFatal(float recover)
     {
         MaxHealth = (int)(templateFightingData.maxHealth * recover);
         MaxVigor = (int)(templateFightingData.maxVigor * recover);

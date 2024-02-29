@@ -31,19 +31,19 @@ public class CursorManager : Singleton<CursorManager>
     private void OnEnable()
     {
         
-        EventHandler.itemSelectedEvent += onItemSelectedEvent;
-        EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
-        EventHandler.afterSceneLoadedEvent += onAfterSceneLoadedEvent;
+        EventHandler.ItemSelectedEvent += OnItemSelectedEvent;
+        EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
+        EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
 
 
     }
 
-    private void onBeforeSceneUnloadEvent()
+    private void OnBeforeSceneUnloadEvent()
     {
         cursorEnable = false;
     }
 
-    private void onAfterSceneLoadedEvent()
+    private void OnAfterSceneLoadedEvent()
     {
         currentGrid = FindObjectOfType<Grid>();
         
@@ -51,12 +51,12 @@ public class CursorManager : Singleton<CursorManager>
 
     private void OnDisable()
     {
-        EventHandler.itemSelectedEvent -= onItemSelectedEvent;
-        EventHandler.beforeSceneUnloadEvent -= onBeforeSceneUnloadEvent;
-        EventHandler.afterSceneLoadedEvent -= onAfterSceneLoadedEvent;
+        EventHandler.ItemSelectedEvent -= OnItemSelectedEvent;
+        EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
+        EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
     }
 
-    private void onItemSelectedEvent(ItemDetails itemDetails, bool isSelected)
+    private void OnItemSelectedEvent(ItemDetails itemDetails, bool isSelected)
     {
         
         if (!isSelected)
@@ -89,7 +89,7 @@ public class CursorManager : Singleton<CursorManager>
         currenSprite = normal;
         mainCamera = Camera.main;
 
-        setCursorImage(normal);
+        SetCursorImage(normal);
     }
 
 
@@ -100,30 +100,30 @@ public class CursorManager : Singleton<CursorManager>
         //Debug.Log();
         cursorImage.transform.position = Input.mousePosition;
         
-        if (!interactWithUI() && cursorEnable)
+        if (!InteractWithUI() && cursorEnable)
         {
-            setCursorImage(currenSprite);
-            checkCursorValid();
-            checkPlayerInput();
+            SetCursorImage(currenSprite);
+            CheckCursorValid();
+            CheckPlayerInput();
         }
         else
         {
-            setCursorImage(normal);
+            SetCursorImage(normal);
         }
 
     }
 
-    private void checkPlayerInput()
+    private void CheckPlayerInput()
     {
         if(Input.GetMouseButtonDown(0) && cursorPositionValid)
         {
             //Execute the method
-            EventHandler.callMouseClickEvent(mouseWorldPos, currentItem);
+            EventHandler.CallMouseClickEvent(mouseWorldPos, currentItem);
         }
     }
 
     #region SetCursorStyle
-    private void setCursorImage(Sprite sprite)
+    private void SetCursorImage(Sprite sprite)
     {
         cursorImage.sprite = sprite;
         cursorImage.color = new Color(1, 1, 1, 1);
@@ -131,7 +131,7 @@ public class CursorManager : Singleton<CursorManager>
     /// <summary>
     /// Set cursor valid
     /// </summary>
-    private void setCursorValid()
+    private void SetCursorValid()
     {
         cursorPositionValid = true;
         cursorImage.color = new Color(1, 1, 1, 1);
@@ -139,14 +139,14 @@ public class CursorManager : Singleton<CursorManager>
     /// <summary>
     /// Set cursor invalid
     /// </summary>
-    private void setCursorInvalid()
+    private void SetCursorInvalid()
     {
         cursorPositionValid = false;
         cursorImage.color = new Color(1, 0, 0, 0.5f);
     }
 
     #endregion
-    private void checkCursorValid()
+    private void CheckCursorValid()
     {
         
         mouseWorldPos = mainCamera.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -mainCamera.transform.position.z));
@@ -158,30 +158,30 @@ public class CursorManager : Singleton<CursorManager>
         if (Mathf.Abs(mouseGridPos.x - playerGridPos.x) > currentItem.useRadius || Mathf.Abs(mouseGridPos.y - playerGridPos.y) > currentItem.useRadius)
         {
             
-            setCursorInvalid();
+            SetCursorInvalid();
             return;
         }
         //Debug.Log(Mathf.Abs(mouseGridPos.x - playerGridPos.x) > currentItem.useRadius);
         //Debug.Log(Mathf.Abs(mouseGridPos.y - playerGridPos.y) > currentItem.useRadius);
         //Debug.Log(cursorPositionValid);
-        TileDetails currentTile = GridMapManager.Instance.getTileDetailsOnMousePosition(mouseGridPos);
-        TileDetails playerTile = GridMapManager.Instance.getTileDetailsOnMousePosition(playerGridPos);
+        TileDetails currentTile = GridMapManager.Instance.GetTileDetailsOnMousePosition(mouseGridPos);
+        TileDetails playerTile = GridMapManager.Instance.GetTileDetailsOnMousePosition(playerGridPos);
 
         if (currentTile != null)
         {
             switch (currentItem.itemType)
             {
                 case ItemType.商品:
-                    if (currentTile.canDropItem&&currentItem.canDrop) setCursorValid(); else setCursorInvalid();
+                    if (currentTile.canDropItem&&currentItem.canDrop) SetCursorValid(); else SetCursorInvalid();
                     break;
                 case ItemType.武器:
-                    if (playerTile!=null && playerTile.meleeOnly) setCursorValid(); else setCursorInvalid();
+                    if (playerTile!=null && playerTile.meleeOnly) SetCursorValid(); else SetCursorInvalid();
                     break;
             }
         }
         else
         {
-            setCursorInvalid();
+            SetCursorInvalid();
             
         }
     }
@@ -190,7 +190,7 @@ public class CursorManager : Singleton<CursorManager>
     /// Whether interact with UI or not
     /// </summary>
     /// <returns></returns>
-    private bool interactWithUI()
+    private bool InteractWithUI()
     {
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
         {

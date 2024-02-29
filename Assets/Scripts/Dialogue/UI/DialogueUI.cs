@@ -22,20 +22,20 @@ public class DialogueUI : MonoBehaviour
 
     private void OnEnable()
     {
-        EventHandler.showDialogueEvent += onShowDialogueEvent;
+        EventHandler.ShowDialogueEvent += OnShowDialogueEvent;
     }
 
     private void OnDisable()
     {
-        EventHandler.showDialogueEvent -= onShowDialogueEvent;
+        EventHandler.ShowDialogueEvent -= OnShowDialogueEvent;
     }
 
-    private void onShowDialogueEvent(DialoguePiece dialoguePiece)
+    private void OnShowDialogueEvent(DialoguePiece dialoguePiece)
     {
-        StartCoroutine(showDialogue(dialoguePiece));
+        StartCoroutine(ShowDialogue(dialoguePiece));
     }
 
-    private IEnumerator showDialogue(DialoguePiece dialoguePiece)
+    private IEnumerator ShowDialogue(DialoguePiece dialoguePiece)
     {
         if (dialoguePiece != null)
         {

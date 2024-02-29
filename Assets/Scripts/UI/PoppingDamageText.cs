@@ -9,15 +9,15 @@ public class PoppingDamageText : MonoBehaviour
 
     private void OnEnable()
     {
-        EventHandler.damageTextPopEvent += onDamageTextPopEvent;
+        EventHandler.DamageTextPopEvent += OnDamageTextPopEvent;
     }
 
     private void OnDisable()
     {
-        EventHandler.damageTextPopEvent -= onDamageTextPopEvent;
+        EventHandler.DamageTextPopEvent -= OnDamageTextPopEvent;
     }
 
-    private void onDamageTextPopEvent(Transform targetPos, int damage, AttackEffectType attackEffect)
+    private void OnDamageTextPopEvent(Transform targetPos, int damage, AttackEffectType attackEffect)
     {
         
         PoppingUpDamageText Text =Instantiate(damageText, targetPos.position, Quaternion.identity);

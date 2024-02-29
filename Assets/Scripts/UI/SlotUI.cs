@@ -40,7 +40,7 @@ namespace ShanHai_IsolatedCity.Inventory
 
             if (itemDetails == null)
             {
-                upDateEmptySlot();
+                UpDateEmptySlot();
             }
         }
 
@@ -51,7 +51,7 @@ namespace ShanHai_IsolatedCity.Inventory
         /// </summary>
         /// <param name="item">ItemDetails</param>
         /// <param name="amount">HoldingNumber </param>
-        public void upDateSlot(ItemDetails item, int amount)
+        public void UpDateSlot(ItemDetails item, int amount)
         {
             //Debug.Log(amount);
             itemDetails = item;
@@ -66,13 +66,13 @@ namespace ShanHai_IsolatedCity.Inventory
         /// <summary>
         /// Make the Slot to become empty
         /// </summary>
-        public void upDateEmptySlot()
+        public void UpDateEmptySlot()
         {
             if (isSelected)
             {
                 isSelected = false;
-                inventoryUI.upDateSlotHighLight(-1);
-                EventHandler.callItemSelectedEvent(itemDetails, isSelected);
+                inventoryUI.UpDateSlotHighLight(-1);
+                EventHandler.CallItemSelectedEvent(itemDetails, isSelected);
             }
             itemDetails = null;
             itemAmount = 0;
@@ -91,11 +91,11 @@ namespace ShanHai_IsolatedCity.Inventory
 
             slotHighLight.gameObject.SetActive(isSelected);
 
-            inventoryUI.upDateSlotHighLight(slotIndex);
+            inventoryUI.UpDateSlotHighLight(slotIndex);
 
             if (slotType == SlotType.人物背包)
             {
-                EventHandler.callItemSelectedEvent(itemDetails, isSelected);
+                EventHandler.CallItemSelectedEvent(itemDetails, isSelected);
             }
 
         }
@@ -109,7 +109,7 @@ namespace ShanHai_IsolatedCity.Inventory
                 inventoryUI.dragItem.sprite = slotImage.sprite;
                 inventoryUI.dragItem.SetNativeSize();
                 isSelected = true;
-                inventoryUI.upDateSlotHighLight(slotIndex);
+                inventoryUI.UpDateSlotHighLight(slotIndex);
             }
         }
 
@@ -136,19 +136,19 @@ namespace ShanHai_IsolatedCity.Inventory
                 //Swap item in player's bag
                 if(slotType==SlotType.人物背包 && targetSlotUI.slotType == SlotType.人物背包)
                 {
-                    InventoryManager.Instance.swapItem(slotIndex, targetIndex);
+                    InventoryManager.Instance.SwapItem(slotIndex, targetIndex);
                 }
                 else if(slotType == SlotType.NPC背包 && targetSlotUI.slotType == SlotType.人物背包)//Buy
                 {
-                    EventHandler.callShowTradeUI(itemDetails, false, itemDetails.itemType);
+                    EventHandler.CallShowTradeUI(itemDetails, false, itemDetails.itemType);
                 }
                 else if(slotType == SlotType.人物背包 && targetSlotUI.slotType == SlotType.NPC背包)//Sell
                 {
-                    EventHandler.callShowTradeUI(itemDetails, true, itemDetails.itemType);
+                    EventHandler.CallShowTradeUI(itemDetails, true, itemDetails.itemType);
                 }
 
                 //Clean all the highlight
-                inventoryUI.upDateSlotHighLight(-1);
+                inventoryUI.UpDateSlotHighLight(-1);
             }
             /*else//Test for drop in the world
             {

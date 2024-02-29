@@ -24,27 +24,27 @@ public class TimeManager : Singleton<TimeManager>
     protected override void Awake()
     {
         base.Awake();
-        newGameTime();
+        NewGameTime();
     }
 
     private void OnEnable()
     {
-        EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
-        EventHandler.afterSceneLoadedEvent += onAfterSceneLoadedEvent;
+        EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
+        EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
     }
 
     private void OnDisable()
     {
-        EventHandler.beforeSceneUnloadEvent -= onBeforeSceneUnloadEvent;
-        EventHandler.afterSceneLoadedEvent -= onAfterSceneLoadedEvent;
+        EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
+        EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
     }
 
-    private void onBeforeSceneUnloadEvent()
+    private void OnBeforeSceneUnloadEvent()
     {
         gameClockPause = true;
     }
 
-    private void onAfterSceneLoadedEvent()
+    private void OnAfterSceneLoadedEvent()
     {
         gameClockPause = false;
     }
@@ -53,9 +53,9 @@ public class TimeManager : Singleton<TimeManager>
 
     private void Start()
     {
-        EventHandler.callGameMinuteEvent(gameMinute, gameHour, gameDay, gameSeason);
-        EventHandler.callGameDateEvent(gameHour, gameDay, gameMonth, gameYear, gameSeason);
-        EventHandler.callLightShiftEvent(gameSeason, getCurrentLightShift(), timeDifference);
+        EventHandler.CallGameMinuteEvent(gameMinute, gameHour, gameDay, gameSeason);
+        EventHandler.CallGameDateEvent(gameHour, gameDay, gameMonth, gameYear, gameSeason);
+        EventHandler.CallLightShiftEvent(gameSeason, GetCurrentLightShift(), timeDifference);
     }
     private void Update()
     {
@@ -65,19 +65,19 @@ public class TimeManager : Singleton<TimeManager>
             if (tikTime >= Settings.secondThrehold)
             {
                 tikTime -= Settings.secondThrehold;
-                updateGameTime();
+                UpdateGameTime();
             }
         }
         if (Input.GetKey(KeyCode.T))
         {
             for(int i = 0; i < 60; i++)
             {
-                updateGameTime();
+                UpdateGameTime();
             }
         }
     }
     
-    private void newGameTime()
+    private void NewGameTime()
     {
         gameSecond = 0;
         gameMinute = 0;
@@ -88,7 +88,7 @@ public class TimeManager : Singleton<TimeManager>
         gameSeason = Seasons.春;
     }
 
-    public void updateGameTime()
+    public void UpdateGameTime()
     {
         gameSecond++;
         if (gameSecond > Settings.secondHold)
@@ -127,12 +127,12 @@ public class TimeManager : Singleton<TimeManager>
                     }
 
                 }
-                EventHandler.callGameDateEvent(gameHour, gameDay, gameMonth, gameYear, gameSeason);
+                EventHandler.CallGameDateEvent(gameHour, gameDay, gameMonth, gameYear, gameSeason);
                 
             }
-            EventHandler.callGameMinuteEvent(gameMinute, gameHour, gameDay, gameSeason);
+            EventHandler.CallGameMinuteEvent(gameMinute, gameHour, gameDay, gameSeason);
             //Switch Light
-            EventHandler.callLightShiftEvent(gameSeason, getCurrentLightShift(), timeDifference);
+            EventHandler.CallLightShiftEvent(gameSeason, GetCurrentLightShift(), timeDifference);
         }
     }
 
@@ -140,7 +140,7 @@ public class TimeManager : Singleton<TimeManager>
     /// Return Lightshift and calculate timediffence
     /// </summary>
     /// <returns></returns>
-    private LightShift getCurrentLightShift()
+    private LightShift GetCurrentLightShift()
     {
         if (gameTime > Settings.dawnTime && gameTime < Settings.morningTime)//Dawn to Morning
         {

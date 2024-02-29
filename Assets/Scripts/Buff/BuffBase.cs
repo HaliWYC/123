@@ -4,7 +4,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static UnityEngine.Rendering.DebugUI;
 
-public class BuffBase : MonoBehaviour
+public class BuffBase : Singleton<BuffBase>
 {
     public delegate void finishedState();
     public event finishedState stateFinished;
@@ -17,7 +17,7 @@ public class BuffBase : MonoBehaviour
     public CharacterInformation buffTarget { get; set; }
 
 
-    public BuffStateType buffState;
+    public BuffDurationType buffState;
     public BuffStackType buffStack;
 
     public bool isPermanent;
@@ -33,7 +33,7 @@ public class BuffBase : MonoBehaviour
     /// <param name="state">buffStateType</param>
     /// <param name="value">buffValue</param>
     /// <returns></returns>
-    public BuffBase SetUp(CharacterInformation target, float time, int turn,BuffStateType state, float value, bool Pro, bool stackable)
+    public BuffBase SetUp(CharacterInformation target, float time, int turn, BuffDurationType state, float value, bool Pro, bool stackable)
     {
         buffTarget = target;
         durationTime = time;
@@ -42,7 +42,7 @@ public class BuffBase : MonoBehaviour
         buffValue = value;
         isPro = Pro;
         isStackable = stackable;
-        initializeData();
+        //initializeData();
         return this;
     }
     /// <summary>
@@ -53,7 +53,7 @@ public class BuffBase : MonoBehaviour
     /// <param name="state">buffStateType</param>
     /// <param name="value">buffValue</param>
     /// <returns></returns>
-    public BuffBase SetUp(CharacterInformation target, int turn, BuffStateType state, float value, bool Pro, bool stackable)
+    public BuffBase SetUp(CharacterInformation target, int turn, BuffDurationType state, float value, bool Pro, bool stackable)
     {
         buffTarget = target;
         durationTurn = turn;
@@ -61,7 +61,7 @@ public class BuffBase : MonoBehaviour
         buffValue = value;
         isPro = Pro;
         isStackable = stackable;
-        initializeData();
+        //initializeData();
         return this;
     }
 
@@ -73,7 +73,7 @@ public class BuffBase : MonoBehaviour
     /// <param name="state">buffStateType</param>
     /// <param name="value">buffValue</param>
     /// <returns></returns>
-    public BuffBase SetUp(CharacterInformation target, float time,BuffStateType state, float value, bool Pro, bool stackable)
+    public BuffBase SetUp(CharacterInformation target, float time, BuffDurationType state, float value, bool Pro, bool stackable)
     {
         buffTarget = target;
         durationTime = time;
@@ -81,7 +81,7 @@ public class BuffBase : MonoBehaviour
         buffValue = value;
         isPro = Pro;
         isStackable = stackable;
-        initializeData();
+        //initializeData();
         return this;
     }
     /// <summary>
@@ -91,36 +91,36 @@ public class BuffBase : MonoBehaviour
     /// <param name="state">buffStateType</param>
     /// <param name="value">buffValue</param>
     /// <returns></returns>
-    public BuffBase SetUp(CharacterInformation target, BuffStateType state, float value, bool Pro, bool stackable)
+    public BuffBase SetUp(CharacterInformation target, BuffDurationType state, float value, bool Pro, bool stackable)
     {
         buffTarget = target;
         buffState = state;
         buffValue = value;
         isPro = Pro;
         isStackable = stackable;
-        initializeData();
+        //initializeData();
         return this;
     }
 
-    private void initializeData()
-    {
-        currentBuffValue = buffValue;
-    }
+    //private void initializeData()
+    //{
+    //    currentBuffValue = buffValue;
+    //}
 
     private void Update()
     {
-        switchType();
+        SwitchType();
     }
 
-    protected void switchType()
+    protected void SwitchType()
     {
         switch (buffState)
         {
-            case BuffStateType.Once:
-                launch();
+            case BuffDurationType.Once:
+                Launch();
                 stateFinished.Invoke();
                 break;
-            case BuffStateType.Sustainable:
+            case BuffDurationType.Sustainable:
                 currentDurationTime += Time.deltaTime;
                 if (currentDurationTime >= durationTime)
                 {
@@ -137,22 +137,30 @@ public class BuffBase : MonoBehaviour
                                 break;
                         }
                     }
-                    launch();
+                    Launch();
                     currentDurationTurn++;
                     if (currentDurationTurn >= durationTurn)
                         stateFinished.Invoke();
                 }
                 break;
-            case BuffStateType.Permanent:
+            case BuffDurationType.Permanent:
                 isPermanent = true;
                 break;
         }
     }
 
-    public virtual void launch()
+    public virtual void Launch()
     {
-        
+
     }
 
-    
+
+    public void BuffLaunch(SkillDetails_SO  launchSkill, float ExpIncrement)
+    {
+        launchSkill.buffList.Sort((x, y) => x.buffPriority.CompareTo(y.buffPriority));
+        foreach(Buff_SO buff in launchSkill.buffList)
+        {
+            Debug.Log(buff.buffPriority);
+        }
+    }
 }

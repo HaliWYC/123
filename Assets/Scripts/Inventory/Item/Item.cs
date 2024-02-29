@@ -41,7 +41,7 @@ namespace ShanHai_IsolatedCity.Inventory
 
             //Get data from inventory manager
 
-            itemDetails = InventoryManager.Instance.getItemDetails(itemID);
+            itemDetails = InventoryManager.Instance.GetItemDetails(itemID);
             
             if (itemDetails != null)
             {

@@ -23,75 +23,75 @@ public class PlayerStateUI : MonoBehaviour
 
     private void OnEnable()
     {
-        healthEvent.onEventIsCalled += healthChange;
-        qiEvent.onEventIsCalled += qiChange;
-        woundEvent.onEventIsCalled += woundChange;
-        moraleEvent.onEventIsCalled += moraleChange;
+        healthEvent.OnEventIsCalled += HealthChange;
+        qiEvent.OnEventIsCalled += QiChange;
+        woundEvent.OnEventIsCalled += WoundChange;
+        moraleEvent.OnEventIsCalled += MoraleChange;
     }
 
     private void OnDisable()
     {
-        healthEvent.onEventIsCalled -= healthChange;
-        qiEvent.onEventIsCalled -= qiChange;
-        woundEvent.onEventIsCalled -= woundChange;
-        moraleEvent.onEventIsCalled -= moraleChange;
+        healthEvent.OnEventIsCalled -= HealthChange;
+        qiEvent.OnEventIsCalled -= QiChange;
+        woundEvent.OnEventIsCalled -= WoundChange;
+        moraleEvent.OnEventIsCalled -= MoraleChange;
     }
 
-    private void healthChange(CharacterInformation characterInformation)
+    private void HealthChange(CharacterInformation characterInformation)
     {
         if (characterInformation.MaxHealth <= 0)
         {
-            characterInformation.checkExceedLimit();
-            onHealthChange(0);
+            characterInformation.CheckExceedLimit();
+            OnHealthChange(0);
         }
             
         else
         {
             float healthPercent = (float)characterInformation.CurrentHealth / characterInformation.MaxHealth;
-            onHealthChange(healthPercent);
+            OnHealthChange(healthPercent);
         }
         
     }
-    private void qiChange(CharacterInformation characterInformation)
+    private void QiChange(CharacterInformation characterInformation)
     {
         if (characterInformation.MaxQi <= 0)
         {
-            characterInformation.checkExceedLimit();
-            onQiChange(0);
+            characterInformation.CheckExceedLimit();
+            OnQiChange(0);
         }
 
         else
         {
             float qiPercent = (float)characterInformation.CurrentQi / characterInformation.MaxQi;
-            onQiChange(qiPercent);
+            OnQiChange(qiPercent);
         }
         
     }
-    private void woundChange(CharacterInformation characterInformation)
+    private void WoundChange(CharacterInformation characterInformation)
     {
         if (characterInformation.MaxWound <= 0)
         {
-            characterInformation.checkExceedLimit();
-            onWoundChange(0);
+            characterInformation.CheckExceedLimit();
+            OnWoundChange(0);
         }
         else
         {
             float woundPercent = (float)characterInformation.CurrentWound / characterInformation.MaxWound;
-            onWoundChange(woundPercent);
+            OnWoundChange(woundPercent);
         }
 
     }
-    private void moraleChange(CharacterInformation characterInformation)
+    private void MoraleChange(CharacterInformation characterInformation)
     {
         if (characterInformation.MaxMorale <= 0)
         {
-            characterInformation.checkExceedLimit();
-            onMoraleChange(0);
+            characterInformation.CheckExceedLimit();
+            OnMoraleChange(0);
         }
         else
         {
             float moralePercent = (float)characterInformation.CurrentMorale / characterInformation.MaxMorale;
-            onMoraleChange(moralePercent);
+            OnMoraleChange(moralePercent);
         }
 
     }
@@ -101,22 +101,22 @@ public class PlayerStateUI : MonoBehaviour
     /// Receive the change on the health percentage
     /// </summary>
     /// <param name="percentage">Percentage:CurrentHealth/MaxHealth</param>
-    public void onHealthChange(float percentage)
+    public void OnHealthChange(float percentage)
     {
         healthImage.fillAmount = percentage;
         healthText.text = GameManager.Instance.playerInformation.CurrentHealth.ToString() + " / " + GameManager.Instance.playerInformation.MaxHealth.ToString();
     }
-    public void onQiChange(float percentage)
+    public void OnQiChange(float percentage)
     {
         qiImage.fillAmount = percentage;
         qiText.text = GameManager.Instance.playerInformation.CurrentQi.ToString() + " / " + GameManager.Instance.playerInformation.MaxQi.ToString();
     }
-    public void onWoundChange(float percentage)
+    public void OnWoundChange(float percentage)
     {
         woundImage.fillAmount = percentage;
         woundText.text = GameManager.Instance.playerInformation.CurrentWound.ToString() + " / " + GameManager.Instance.playerInformation.MaxWound.ToString();
     }
-    public void onMoraleChange(float percentage)
+    public void OnMoraleChange(float percentage)
     {
         moraleImage.fillAmount = percentage;
         moraleText.text = GameManager.Instance.playerInformation.CurrentMorale.ToString() + " / " + GameManager.Instance.playerInformation.MaxMorale.ToString();

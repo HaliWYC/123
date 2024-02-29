@@ -20,27 +20,27 @@ namespace ShanHai_IsolatedCity.Astar
         private HashSet<Node> closeNodeList; //All the selected nodes
         private bool pathFound;
 
-        public void buildPath(string sceneName, Vector2Int startPos, Vector2Int endPos,Stack<MovementStep> npcMovementStack)
+        public void BuildPath(string sceneName, Vector2Int startPos, Vector2Int endPos,Stack<MovementStep> npcMovementStack)
         {
             pathFound = false;
-            if (generateGridNodes(sceneName, startPos, endPos))
+            if (GenerateGridNodes(sceneName, startPos, endPos))
             {
                 
                 //Find the shortest path
-                if (findShortestPath())
+                if (FindShortestPath())
                 {
 
                     //Generate NPC paths
                     
-                    updatePathOnMovementStepStack(sceneName, npcMovementStack);
+                    UpdatePathOnMovementStepStack(sceneName, npcMovementStack);
 
                 }
             }
         }
 
-        private bool generateGridNodes(string sceneName,Vector2Int startPos,Vector2Int endPos)
+        private bool GenerateGridNodes(string sceneName,Vector2Int startPos,Vector2Int endPos)
         {
-            if(GridMapManager.Instance.getGridDimensions(sceneName,out Vector2Int gridDimension,out Vector2Int gridOrigin))
+            if(GridMapManager.Instance.GetGridDimensions(sceneName,out Vector2Int gridDimension,out Vector2Int gridOrigin))
             {
                 gridNodes = new GridNodes(gridDimension.x, gridDimension.y);
                 gridWidth = gridDimension.x;
@@ -56,8 +56,8 @@ namespace ShanHai_IsolatedCity.Astar
             return false;
 
             //The range of gridnodes starts from 0,0, so it should minues
-            startNode = gridNodes.getGridNode(startPos.x - originX, startPos.y - originY);
-            targetNode = gridNodes.getGridNode(endPos.x - originX, endPos.y - originY);
+            startNode = gridNodes.GetGridNode(startPos.x - originX, startPos.y - originY);
+            targetNode = gridNodes.GetGridNode(endPos.x - originX, endPos.y - originY);
 
             for(int x = 0; x < gridWidth; x++)
             {
@@ -67,11 +67,11 @@ namespace ShanHai_IsolatedCity.Astar
                     Vector3Int tilePos = new Vector3Int(x + originX, y + originY, 0);
                     var key = tilePos.x + "x" + tilePos.y + "y" + sceneName;
 
-                    TileDetails tile = GridMapManager.Instance.getTileDetails(key);
+                    TileDetails tile = GridMapManager.Instance.GetTileDetails(key);
 
                     if (tile != null)
                     {
-                        Node node = gridNodes.getGridNode(x, y);
+                        Node node = gridNodes.GetGridNode(x, y);
 
                         if (tile.isNPCObstacle)
                             node.isObstacle = true;
@@ -86,7 +86,7 @@ namespace ShanHai_IsolatedCity.Astar
         /// Find all the node in the shortest path and add them into closetNodeList
         /// </summary>
         /// <returns></returns>
-        private bool findShortestPath()
+        private bool FindShortestPath()
         {
             //Add start point
 
@@ -107,7 +107,7 @@ namespace ShanHai_IsolatedCity.Astar
                     break;
                 }
 
-                evaluateNeighbourNodes(closeNode);
+                EvaluateNeighbourNodes(closeNode);
             }
             return pathFound;
             
@@ -117,7 +117,7 @@ namespace ShanHai_IsolatedCity.Astar
         /// Evaluate eight near node and generate matching costs
         /// </summary>
         /// <param name="currentNode"></param>
-        private void evaluateNeighbourNodes(Node currentNode)
+        private void EvaluateNeighbourNodes(Node currentNode)
         {
             Vector2Int currentNodePos = currentNode.gridPosition;
             Node validNeighbourNode;
@@ -129,14 +129,14 @@ namespace ShanHai_IsolatedCity.Astar
                     if (x == 0 && y == 0)
                         continue;
 
-                    validNeighbourNode = getValidNeighbourNodes(currentNodePos.x+ x, currentNodePos.y+ y);
+                    validNeighbourNode = GetValidNeighbourNodes(currentNodePos.x+ x, currentNodePos.y+ y);
 
                     if (validNeighbourNode != null)
                     {
                         if (!openNodeList.Contains(validNeighbourNode))
                         {
-                            validNeighbourNode.gCost = currentNode.gCost + getDistance(currentNode, validNeighbourNode);
-                            validNeighbourNode.hCost = getDistance(validNeighbourNode, targetNode);
+                            validNeighbourNode.gCost = currentNode.gCost + GetDistance(currentNode, validNeighbourNode);
+                            validNeighbourNode.hCost = GetDistance(validNeighbourNode, targetNode);
                             //Link to parent node
                             validNeighbourNode.parentNode = currentNode;
                             openNodeList.Add(validNeighbourNode);
@@ -146,12 +146,12 @@ namespace ShanHai_IsolatedCity.Astar
             }
         }
 
-        private Node getValidNeighbourNodes(int x, int y)
+        private Node GetValidNeighbourNodes(int x, int y)
         {
             if (x >= gridWidth || y >= gridHeight || x < 0 || y < 0)
                 return null;
 
-            Node neighbourNode = gridNodes.getGridNode(x, y);
+            Node neighbourNode = gridNodes.GetGridNode(x, y);
 
             if (neighbourNode.isObstacle || closeNodeList.Contains(neighbourNode))
                 return null;
@@ -160,7 +160,7 @@ namespace ShanHai_IsolatedCity.Astar
         }
 
 
-        private int getDistance(Node nodeA, Node nodeB)
+        private int GetDistance(Node nodeA, Node nodeB)
         {
             int xDistance = Mathf.Abs(nodeA.gridPosition.x - nodeB.gridPosition.x);
             int yDistance = Mathf.Abs(nodeA.gridPosition.y - nodeB.gridPosition.y);
@@ -172,7 +172,7 @@ namespace ShanHai_IsolatedCity.Astar
             return 14 * yDistance + 10 * (yDistance - xDistance);
         }
 
-        private void updatePathOnMovementStepStack(string sceneName, Stack<MovementStep> npcMovementStep)
+        private void UpdatePathOnMovementStepStack(string sceneName, Stack<MovementStep> npcMovementStep)
         {
             Node nextNode = targetNode;
 

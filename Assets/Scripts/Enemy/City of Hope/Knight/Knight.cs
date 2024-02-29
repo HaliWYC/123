@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Knight : EnemyController
 {
-    protected override void hit()
+    protected override void Hit()
     {
-        base.hit();
+        base.Hit();
         if (attackTarget != null)
             if (Random.value < enemyInformation.Continuous_AttackRate)
             {
                 conAttackTime = enemyInformation.AttackCooling;
-                Attack = true;
+                canAttack = true;
             }
     }
 }

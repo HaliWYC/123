@@ -536,7 +536,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10.8
+  orthographic size: 9.2
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1222,6 +1222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1160566793}
   - component: {fileID: 1160566792}
+  - component: {fileID: 1160566794}
   m_Layer: 0
   m_Name: NPCManager
   m_TagString: Untagged
@@ -1269,6 +1270,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1160566794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1160566791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08aeda463ddb91045a90cd5419df9ce6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1195807440
 GameObject:
   m_ObjectHideFlags: 0
@@ -1536,7 +1549,7 @@ MonoBehaviour:
   scheduleData: {fileID: 11400000, guid: 96a38a136f714014f9e17558e21a3e1e, type: 2}
   currentScene: City of Hope
   normalSpeed: 2
-  isMoving: 0
+  isNPCMoving: 0
   interactable: 0
   blankAnimationClip: {fileID: 7400000, guid: 500fefed8113b4f7e8f2dc728631a63d, type: 2}
 --- !u!95 &1208964160
@@ -1641,10 +1654,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: "\u5B59\u7A0B"
+  initialScene: 
   attackTarget: {fileID: 0}
+  skills: {fileID: 0}
   isPeace: 0
-  Attack: 0
-  isAttackEnd: 0
+  isChase: 0
+  canAttack: 0
   conAttackTime: 0
   attackPos: {x: 0, y: 0, z: 0}
   PatrolRange: 0
@@ -1699,8 +1714,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillList: []
-  templateSkillList: []
-  attackTarget: {fileID: 0}
+  templateSkillList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   skiller: {fileID: 0}
 --- !u!1 &1224522315
 GameObject:
@@ -1822,7 +1846,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.06452584, y: 0.6604005}
@@ -1896,7 +1920,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: afa530375caf524428b9682b337f9ad1, type: 2}
         m_TargetAssemblyTypeName: CharacterEvent_SO, Assembly-CSharp
-        m_MethodName: callEvent
+        m_MethodName: CallEvent
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1911,7 +1935,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: e0ccd666b43569142bd27626562014b9, type: 2}
         m_TargetAssemblyTypeName: CharacterEvent_SO, Assembly-CSharp
-        m_MethodName: callEvent
+        m_MethodName: CallEvent
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1926,7 +1950,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: 4c3a0ad1b4b8ade4ba72e0368b7e097b, type: 2}
         m_TargetAssemblyTypeName: CharacterEvent_SO, Assembly-CSharp
-        m_MethodName: callEvent
+        m_MethodName: CallEvent
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1941,7 +1965,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: ce1c800e19b871c4683243f67ec8a7b4, type: 2}
         m_TargetAssemblyTypeName: CharacterEvent_SO, Assembly-CSharp
-        m_MethodName: callEvent
+        m_MethodName: CallEvent
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1956,7 +1980,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: b150dc04cf7b17143860c53615f27eab, type: 2}
         m_TargetAssemblyTypeName: VoidEvent_SO, Assembly-CSharp
-        m_MethodName: callEvent
+        m_MethodName: CallEvent
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2057,8 +2081,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillList: []
-  templateSkillList: []
-  attackTarget: {fileID: 0}
+  templateSkillList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   skiller: {fileID: 0}
 --- !u!1 &1246208185
 GameObject:
@@ -2175,6 +2208,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1312119771 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2639723700802354532, guid: f4af3003656ede74ab288fef33cf0fc2, type: 3}
+  m_PrefabInstance: {fileID: 8592651888858966254}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deb4a42eb36221c47b55ff45423ba2b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1442497211
 GameObject:
   m_ObjectHideFlags: 0
@@ -2766,9 +2810,41 @@ PrefabInstance:
       propertyPath: criticalShakeEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 4211913309840529818, guid: f6969f20b636d544eb44ee81e8719207, type: 3}
+      propertyPath: PatrolRange
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4211913309840529818, guid: f6969f20b636d544eb44ee81e8719207, type: 3}
+      propertyPath: initialScene
+      value: City of Hope
+      objectReference: {fileID: 0}
     - target: {fileID: 5034710910212452345, guid: f6969f20b636d544eb44ee81e8719207, type: 3}
       propertyPath: skillList.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034710910212452345, guid: f6969f20b636d544eb44ee81e8719207, type: 3}
+      propertyPath: skillList.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034710910212452345, guid: f6969f20b636d544eb44ee81e8719207, type: 3}
+      propertyPath: skillList.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: af8fe350ea402f44489edc1c1b379926, type: 2}
+    - target: {fileID: 5034710910212452345, guid: f6969f20b636d544eb44ee81e8719207, type: 3}
+      propertyPath: templateSkillList.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034710910212452345, guid: f6969f20b636d544eb44ee81e8719207, type: 3}
+      propertyPath: templateSkillList.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5034710910212452345, guid: f6969f20b636d544eb44ee81e8719207, type: 3}
+      propertyPath: templateSkillList.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: af8fe350ea402f44489edc1c1b379926, type: 2}
+    - target: {fileID: 5034710910212452345, guid: f6969f20b636d544eb44ee81e8719207, type: 3}
+      propertyPath: templateSkillList.Array.data[3]
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5093752643386605069, guid: f6969f20b636d544eb44ee81e8719207, type: 3}
       propertyPath: m_Name
@@ -2827,9 +2903,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2639723700802354532, guid: f4af3003656ede74ab288fef33cf0fc2, type: 3}
+      propertyPath: skillList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2639723700802354532, guid: f4af3003656ede74ab288fef33cf0fc2, type: 3}
+      propertyPath: skillList.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: af8fe350ea402f44489edc1c1b379926, type: 2}
+    - target: {fileID: 2639723700802354532, guid: f4af3003656ede74ab288fef33cf0fc2, type: 3}
+      propertyPath: templateSkillList.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2639723700802354532, guid: f4af3003656ede74ab288fef33cf0fc2, type: 3}
+      propertyPath: templateSkillList.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3686902367925818058, guid: f4af3003656ede74ab288fef33cf0fc2, type: 3}
+      propertyPath: skills
+      value: 
+      objectReference: {fileID: 1312119771}
+    - target: {fileID: 3686902367925818058, guid: f4af3003656ede74ab288fef33cf0fc2, type: 3}
+      propertyPath: initialScene
+      value: City of Hope
+      objectReference: {fileID: 0}
     - target: {fileID: 5223107398189734544, guid: f4af3003656ede74ab288fef33cf0fc2, type: 3}
       propertyPath: m_Name
       value: Knight
+      objectReference: {fileID: 0}
+    - target: {fileID: 5223107398189734544, guid: f4af3003656ede74ab288fef33cf0fc2, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6315517468687007217, guid: f4af3003656ede74ab288fef33cf0fc2, type: 3}
       propertyPath: criticalShakeEvent.m_PersistentCalls.m_Calls.Array.size

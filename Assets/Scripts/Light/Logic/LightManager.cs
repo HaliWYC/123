@@ -10,17 +10,17 @@ public class LightManager : Singleton<LightManager>
     private float timeDifference=Settings.lightChangeDuration;
     private void OnEnable()
     {
-        EventHandler.afterSceneLoadedEvent += onAfterSceneLoadedEvent;
-        EventHandler.lightShiftEvent += onLightShiftEvent;
+        EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
+        EventHandler.LightShiftEvent += OnLightShiftEvent;
     }
 
     private void OnDisable()
     {
-        EventHandler.afterSceneLoadedEvent -= onAfterSceneLoadedEvent;
-        EventHandler.lightShiftEvent -= onLightShiftEvent;
+        EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
+        EventHandler.LightShiftEvent -= OnLightShiftEvent;
     }
 
-    private void onLightShiftEvent(Seasons seasons, LightShift lightShift, float timeDifference)
+    private void OnLightShiftEvent(Seasons seasons, LightShift lightShift, float timeDifference)
     {
         currentSeason = seasons;
         
@@ -31,19 +31,19 @@ public class LightManager : Singleton<LightManager>
             
             foreach (LightControl light in sceneLights)
             {
-                light.changeLightShift(currentSeason, currentLightShift, timeDifference);
+                light.ChangeLightShift(currentSeason, currentLightShift, timeDifference);
             }
         }
 
     }
 
-    private void onAfterSceneLoadedEvent()
+    private void OnAfterSceneLoadedEvent()
     {
         sceneLights = FindObjectsOfType<LightControl>();
         
         foreach(LightControl light in sceneLights)
         {
-            light.changeLightShift(currentSeason, currentLightShift, timeDifference);
+            light.ChangeLightShift(currentSeason, currentLightShift, timeDifference);
         }
     }
 }

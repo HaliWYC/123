@@ -10,23 +10,23 @@ public class NPCFunction : MonoBehaviour
     {
         if(isOpen&&Input.GetKeyDown(KeyCode.Escape))
         {
-            closeShop();
+            CloseShop();
         }
     }
 
-    public void openShop()
+    public void OpenShop()
     {
         isOpen = true;
-        EventHandler.callFindNPCEvent(Name);
-        EventHandler.callBaseBagOpenEvent(SlotType.NPC背包, NPCManager.Instance.getNPCDetail(Name).NPCBag);
-        EventHandler.callUpdateGameStateEvent(GameState.Pause);
+        EventHandler.CallFindNPCEvent(Name);
+        EventHandler.CallBaseBagOpenEvent(SlotType.NPC背包, NPCManager.Instance.GetNPCDetail(Name).NPCBag);
+        EventHandler.CallUpdateGameStateEvent(GameState.Pause);
     }
 
-    public void closeShop()
+    public void CloseShop()
     {
         isOpen = false;
-        EventHandler.callBaseBagCloseEvent(SlotType.NPC背包, NPCManager.Instance.getNPCDetail(Name).NPCBag);
-        EventHandler.callUpdateGameStateEvent(GameState.GamePlay);
+        EventHandler.CallBaseBagCloseEvent(SlotType.NPC背包, NPCManager.Instance.GetNPCDetail(Name).NPCBag);
+        EventHandler.CallUpdateGameStateEvent(GameState.GamePlay);
     }
 
 

@@ -17,9 +17,9 @@ public class LightControl : MonoBehaviour
         
     }
 
-    public void changeLightShift(Seasons seasons, LightShift lightShift, float timeDifference)
+    public void ChangeLightShift(Seasons seasons, LightShift lightShift, float timeDifference)
     {
-        currenLightDetails = lightPattern.getLightDetails(seasons, lightShift);
+        currenLightDetails = lightPattern.GetLightDetails(seasons, lightShift);
 
         if (timeDifference / Settings.lightChangeDurationModification < Settings.lightChangeDuration)
         {

@@ -11,17 +11,17 @@ public class S_Speed : BuffBase
     {
         originalSpeed = buffTarget.Speed;
     }
-    public override void launch()
+    public override void Launch()
     {
         originalSpeed = buffTarget.Speed;
         if(isPro)
             buffTarget.Speed = (int)(buffTarget.Speed * currentBuffValue);
         else
             buffTarget.Speed =(int)(buffTarget.Speed/currentBuffValue);
-        stateFinished += onStateFinished;
+        stateFinished += OnStateFinished;
     }
 
-    private void onStateFinished()
+    private void OnStateFinished()
     {
         buffTarget.Speed = originalSpeed;
         Destroy(this);
@@ -29,6 +29,6 @@ public class S_Speed : BuffBase
 
     private void OnDisable()
     {
-        stateFinished -= onStateFinished;
+        stateFinished -= OnStateFinished;
     }
 }

@@ -15,7 +15,7 @@ namespace ShanHai_IsolatedCity.Inventory
                 {
                     //PickUp Item to Bag
 
-                   InventoryManager.Instance.addItem(item, true);
+                   InventoryManager.Instance.AddItem(item, true);
                 }
             }
         }

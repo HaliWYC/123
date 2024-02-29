@@ -17,15 +17,15 @@ namespace ShanHai_IsolatedCity.Inventory
 
         private void OnEnable()
         {
-            EventHandler.updateGameStateEvent += onUpdateGameStateEvent;
+            EventHandler.UpdateGameStateEvent += OnUpdateGameStateEvent;
         }
 
         private void OnDisable()
         {
-            EventHandler.updateGameStateEvent -= onUpdateGameStateEvent;
+            EventHandler.UpdateGameStateEvent -= OnUpdateGameStateEvent;
         }
 
-        private void onUpdateGameStateEvent(GameState gameState)
+        private void OnUpdateGameStateEvent(GameState gameState)
         {
             canUse = gameState == GameState.GamePlay;
         }
@@ -38,11 +38,11 @@ namespace ShanHai_IsolatedCity.Inventory
                 {
                     slotUI.isSelected = !slotUI.isSelected;
                     if (slotUI.isSelected)
-                        slotUI.inventoryUI.upDateSlotHighLight(slotUI.slotIndex);
+                        slotUI.inventoryUI.UpDateSlotHighLight(slotUI.slotIndex);
                     else
-                        slotUI.inventoryUI.upDateSlotHighLight(-1);
+                        slotUI.inventoryUI.UpDateSlotHighLight(-1);
 
-                    EventHandler.callItemSelectedEvent(slotUI.itemDetails, slotUI.isSelected);
+                    EventHandler.CallItemSelectedEvent(slotUI.itemDetails, slotUI.isSelected);
                 }
             }
         }

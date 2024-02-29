@@ -6,10 +6,10 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName ="NEW CharacterEvent",menuName ="Events/CharacterEventSO")]
 public class CharacterEvent_SO : ScriptableObject
 {
-    public UnityAction<CharacterInformation> onEventIsCalled;
+    public UnityAction<CharacterInformation> OnEventIsCalled;
 
-    public void callEvent(CharacterInformation characterInformation)
+    public void CallEvent(CharacterInformation characterInformation)
     {
-        onEventIsCalled?.Invoke(characterInformation);
+        OnEventIsCalled?.Invoke(characterInformation);
     }
 }

@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         //FIXME Use in load the scene
-        GameManager.Instance.registerPlayer(playerInformation);
+        GameManager.Instance.RegisterPlayer(playerInformation);
         playerInformation.healthChange?.Invoke(playerInformation);
         playerInformation.qiChange?.Invoke(playerInformation);
         playerInformation.woundChange?.Invoke(playerInformation);
@@ -60,8 +60,8 @@ public class Player : MonoBehaviour
         isDead = playerInformation.CurrentHealth == 0;
         if (isDead)
         {
-            stopPLayerInput();
-            GameManager.Instance.notifyObservers();
+            StopPLayerInput();
+            GameManager.Instance.NotifyObservers();
         }
 
         //PlayerInput();
@@ -75,17 +75,17 @@ public class Player : MonoBehaviour
 
         lastAttackTime -= Time.deltaTime;
         lastParryTime -= Time.deltaTime;
-        playerAttack();
-        playerParry();
+        PlayerAttack();
+        PlayerParry();
         movementInput = inputControl.Gameplay.Move.ReadValue<Vector2>();
         
-        switchAnimation();
+        SwitchAnimation();
         Running();
         if (playerInformation.isUndefeated)
         {
             currentParryDuration -= Time.deltaTime;
             if (currentParryDuration <= 0)
-                playerInformation.setUndefeated(false);
+                playerInformation.SetUndefeated(false);
         }
 
     }
@@ -99,31 +99,31 @@ public class Player : MonoBehaviour
     private void OnEnable()
     {
         inputControl.Enable();
-        EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
-        EventHandler.afterSceneLoadedEvent += onAfterSceneLoadEvent;
-        EventHandler.mouseClickEvent += onMouseClickEvent;
-        EventHandler.moveToPosition += onMoveToPosition;
-        EventHandler.updateGameStateEvent += onUpdateGameStateEvent;
-        EventHandler.allowPlayerInputEvent += onAllowPlayerInputEvent;
+        EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
+        EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadEvent;
+        EventHandler.MouseClickEvent += OnMouseClickEvent;
+        EventHandler.MoveToPosition += OnMoveToPosition;
+        EventHandler.UpdateGameStateEvent += OnUpdateGameStateEvent;
+        EventHandler.AllowPlayerInputEvent += OnAllowPlayerInputEvent;
     }
 
     private void OnDisable()
     {
         inputControl.Disable();
-        EventHandler.beforeSceneUnloadEvent -= onBeforeSceneUnloadEvent;
-        EventHandler.afterSceneLoadedEvent -= onAfterSceneLoadEvent;
-        EventHandler.moveToPosition -= onMoveToPosition;
-        EventHandler.mouseClickEvent -= onMouseClickEvent;
-        EventHandler.updateGameStateEvent -= onUpdateGameStateEvent;
-        EventHandler.allowPlayerInputEvent -= onAllowPlayerInputEvent;
+        EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
+        EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadEvent;
+        EventHandler.MoveToPosition -= OnMoveToPosition;
+        EventHandler.MouseClickEvent -= OnMouseClickEvent;
+        EventHandler.UpdateGameStateEvent -= OnUpdateGameStateEvent;
+        EventHandler.AllowPlayerInputEvent -= OnAllowPlayerInputEvent;
     }
 
-    private void onAllowPlayerInputEvent(bool input)
+    private void OnAllowPlayerInputEvent(bool input)
     {
         inputDisable = !input;
     }
 
-    private void onUpdateGameStateEvent(GameState gameState)
+    private void OnUpdateGameStateEvent(GameState gameState)
     {
         switch (gameState)
         {
@@ -136,24 +136,24 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void onMouseClickEvent(Vector3 pos, ItemDetails itemDetails)
+    private void OnMouseClickEvent(Vector3 pos, ItemDetails itemDetails)
     {
         //TODO: Execute animation
 
-        EventHandler.callExecuteActionAfterAnimation(pos, itemDetails);
+        EventHandler.CallExecuteActionAfterAnimation(pos, itemDetails);
     }
 
-    private void onMoveToPosition(Vector3 targetPosition)
+    private void OnMoveToPosition(Vector3 targetPosition)
     {
         transform.position = targetPosition;
     }
 
-    private void onAfterSceneLoadEvent()
+    private void OnAfterSceneLoadEvent()
     {
         inputDisable = false;
     }
 
-    private void onBeforeSceneUnloadEvent()
+    private void OnBeforeSceneUnloadEvent()
     {
         inputDisable = true;
     }
@@ -216,16 +216,16 @@ public class Player : MonoBehaviour
         
     }
 
-    public void stopPLayerInput()
+    public void StopPLayerInput()
     {
         inputDisable = true;
     }
 
-    public void allowPLayerInput()
+    public void AllowPLayerInput()
     {
         inputDisable = false;
     }
-    public void switchAnimation()
+    public void SwitchAnimation()
     {
         anim.SetBool("isMoving", isMoving);
         anim.SetBool("isCritical", playerInformation.isCritical);
@@ -236,11 +236,11 @@ public class Player : MonoBehaviour
             anim.SetFloat("velocityX", rb.velocity.x);
             anim.SetFloat("velocityY", rb.velocity.y);
         }
-        if (playerInformation.checkIsFatal(playerInformation.CurrentWound, playerInformation.MaxWound))
+        if (playerInformation.CheckIsFatal(playerInformation.CurrentWound, playerInformation.MaxWound))
             anim.SetTrigger("Fatal");
     }
 
-    public void playerAttack()
+    public void PlayerAttack()
     {
         if (isDead) return;
         if (lastAttackTime < 0 && CursorManager.Instance.cursorPositionValid && Input.GetMouseButtonUp(0))
@@ -260,7 +260,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void playerParry()
+    public void PlayerParry()
     {
         if (isDead) return;
         if(lastParryTime<0 && Input.GetMouseButtonDown(1))
@@ -271,11 +271,11 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void parryEffect()
+    public void ParryEffect()
     {
         if (!playerInformation.isUndefeated)
         {
-            playerInformation.setUndefeated(true);
+            playerInformation.SetUndefeated(true);
             currentParryDuration = parryDuration;
         }
 
@@ -293,18 +293,18 @@ public class Player : MonoBehaviour
         attackTarget = null;
     }
 
-    public void hit()
+    public void Hit()
     {
         if (attackTarget != null)
         {
             if (attackTarget.GetComponent<CharacterInformation>().isUndefeated)
             {
-                EventHandler.callDamageTextPopEvent(attackTarget.transform, 0, AttackEffectType.Undefeated);
+                EventHandler.CallDamageTextPopEvent(attackTarget.transform, 0, AttackEffectType.Undefeated);
                 return;
             }
             
             var targetInformation = attackTarget.GetComponent<CharacterInformation>();
-            targetInformation.finalDamage(playerInformation, targetInformation);
+            targetInformation.FinalDamage(playerInformation, targetInformation);
         }
         
     }

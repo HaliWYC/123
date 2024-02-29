@@ -24,7 +24,7 @@ namespace ShanHai_IsolatedCity.Dialogue
 
         private void Awake()
         {
-            fillDialogueStack();
+            FillDialogueStack();
             uiSign = transform.GetChild(1).gameObject;
         }
 
@@ -35,14 +35,14 @@ namespace ShanHai_IsolatedCity.Dialogue
 
             if(canInteract & Input.GetKeyDown(KeyCode.Space) && !isTalking)
             {
-                StartCoroutine(dialogueRoutine()); 
+                StartCoroutine(DialogueRoutine()); 
             }
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if(collision.CompareTag("Player"))
-            canInteract = !npc.isMoving && npc.interactable; 
+            canInteract = !npc.isNPCMoving && npc.interactable; 
             
         }
 
@@ -53,7 +53,7 @@ namespace ShanHai_IsolatedCity.Dialogue
         }
 
 
-        private void fillDialogueStack()
+        private void FillDialogueStack()
         {
             dialogueStack = new Stack<DialoguePiece>();
 
@@ -64,21 +64,21 @@ namespace ShanHai_IsolatedCity.Dialogue
             }
         }
 
-        private IEnumerator dialogueRoutine()
+        private IEnumerator DialogueRoutine()
         {
             isTalking = true;
             if(dialogueStack.TryPop(out DialoguePiece result))
             {
-                EventHandler.callShowDialogueEvent(result);
-                EventHandler.callUpdateGameStateEvent(GameState.Pause);
+                EventHandler.CallShowDialogueEvent(result);
+                EventHandler.CallUpdateGameStateEvent(GameState.Pause);
                 yield return new WaitUntil(() => result.isEnd);
                 isTalking = false;
             }
             else
             {
-                EventHandler.callUpdateGameStateEvent(GameState.GamePlay);
-                EventHandler.callShowDialogueEvent(null);
-                fillDialogueStack();
+                EventHandler.CallUpdateGameStateEvent(GameState.GamePlay);
+                EventHandler.CallShowDialogueEvent(null);
+                FillDialogueStack();
                 
                 isTalking = false;
 

@@ -72,12 +72,18 @@ public enum SkillRangeType
 {
     近战,远程
 }
-public enum EffectType
+
+public enum Proficiency
 {
-    单次造成伤害,持续造成伤害,单次恢复生命,持续恢复生命,单次造成伤口,持续造成伤口,单次治疗伤口,持续治疗伤口,造成眩晕,免疫
+    一窍不通,初窥门径,一知半解,半生不熟,融会贯通,游刃有余,炉火纯青,得心应手,登峰造极,出神入化
 }
 
-public enum BuffStateType
+public enum EffectType
+{
+    伤害,恢复生命,造成伤口,治疗伤口,造成眩晕,免疫
+}
+
+public enum BuffDurationType
 {
     Once,Sustainable,Permanent
 }
@@ -91,3 +97,4 @@ public enum BuffStackType
 {
     StackTurn,StackValue
 }
+

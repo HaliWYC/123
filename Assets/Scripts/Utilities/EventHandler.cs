@@ -6,134 +6,134 @@ using ShanHai_IsolatedCity.Dialogue;
 
 public static class EventHandler
 {
-    public static event Action<InventoryLocation, List<InventoryItem>> updateInventoryUI;
+    public static event Action<InventoryLocation, List<InventoryItem>> UpdateInventoryUI;
 
-    public static void callUpdateInventoryUI(InventoryLocation location, List<InventoryItem> list)
+    public static void CallUpdateInventoryUI(InventoryLocation location, List<InventoryItem> list)
     {
-        updateInventoryUI?.Invoke(location, list);
+        UpdateInventoryUI?.Invoke(location, list);
     }
 
-    public static event Action<int, Vector3> instantiateItemInScene;
-    public static void callInstantiateItemInScene(int ID,Vector3 pos)
+    public static event Action<int, Vector3> InstantiateItemInScene;
+    public static void CallInstantiateItemInScene(int ID,Vector3 pos)
     {
-        instantiateItemInScene?.Invoke(ID, pos);
+        InstantiateItemInScene?.Invoke(ID, pos);
     }
 
-    public static event Action<int, Vector3> dropItemEvent;
-    public static void callDropItemEvent(int ID, Vector3 pos)
+    public static event Action<int, Vector3> DropItemEvent;
+    public static void CallDropItemEvent(int ID, Vector3 pos)
     {
-        dropItemEvent?.Invoke(ID, pos);
+        DropItemEvent?.Invoke(ID, pos);
     }
 
-    public static event Action<int, int,int,Seasons> gameMinuteEvent;
+    public static event Action<int, int,int,Seasons> GameMinuteEvent;
 
-    public static void callGameMinuteEvent(int minute,int hour,int day,Seasons season)
+    public static void CallGameMinuteEvent(int minute,int hour,int day,Seasons season)
     {
-        gameMinuteEvent?.Invoke(minute, hour,day,season);
+        GameMinuteEvent?.Invoke(minute, hour,day,season);
     }
 
-    public static event Action<int, int, int, int, Seasons> gameDateEvent;
+    public static event Action<int, int, int, int, Seasons> GameDateEvent;
 
-    public static void callGameDateEvent(int hour,int day,int month,int year,Seasons season)
+    public static void CallGameDateEvent(int hour,int day,int month,int year,Seasons season)
     {
-        gameDateEvent?.Invoke(hour, day, month, year, season);
+        GameDateEvent?.Invoke(hour, day, month, year, season);
     }
 
-    public static event Action<string, Vector3> transitionEvent;
+    public static event Action<string, Vector3> TransitionEvent;
 
-    public static void callTransitionEvent(string sceneName,Vector3 pos)
+    public static void CallTransitionEvent(string sceneName,Vector3 pos)
     {
-        transitionEvent?.Invoke(sceneName, pos);
+        TransitionEvent?.Invoke(sceneName, pos);
     }
 
-    public static event Action beforeSceneUnloadEvent;
-    public static void callBeforeSceneUnloadEvent()
+    public static event Action BeforeSceneUnloadEvent;
+    public static void CallBeforeSceneUnloadEvent()
     {
-        beforeSceneUnloadEvent?.Invoke();
+        BeforeSceneUnloadEvent?.Invoke();
     }
 
-    public static event Action afterSceneLoadedEvent;
-    public static void callAfterSceneLoadedEvent()
+    public static event Action AfterSceneLoadedEvent;
+    public static void CallAfterSceneLoadedEvent()
     {
-        afterSceneLoadedEvent?.Invoke();
+        AfterSceneLoadedEvent?.Invoke();
     }
 
-    public static event Action<Vector3> moveToPosition;
-    public static void callMoveToPosition(Vector3 targetPosition)
+    public static event Action<Vector3> MoveToPosition;
+    public static void CallMoveToPosition(Vector3 targetPosition)
     {
-        moveToPosition?.Invoke(targetPosition);
+        MoveToPosition?.Invoke(targetPosition);
     }
 
-    public static event Action<ItemDetails, bool> itemSelectedEvent;
-    public static void callItemSelectedEvent(ItemDetails itemDetails,bool isSelected)
+    public static event Action<ItemDetails, bool> ItemSelectedEvent;
+    public static void CallItemSelectedEvent(ItemDetails itemDetails,bool isSelected)
     {
-        itemSelectedEvent?.Invoke(itemDetails, isSelected);
+        ItemSelectedEvent?.Invoke(itemDetails, isSelected);
     }
 
-    public static event Action<Vector3, ItemDetails> mouseClickEvent;
-    public static void callMouseClickEvent(Vector3 pos, ItemDetails itemDetails)
+    public static event Action<Vector3, ItemDetails> MouseClickEvent;
+    public static void CallMouseClickEvent(Vector3 pos, ItemDetails itemDetails)
     {
-        mouseClickEvent?.Invoke(pos, itemDetails);
+        MouseClickEvent?.Invoke(pos, itemDetails);
     }
 
-    public static event Action<Vector3, ItemDetails> executeActionAfterAnimation;
-    public static void callExecuteActionAfterAnimation(Vector3 pos, ItemDetails itemDetails)
+    public static event Action<Vector3, ItemDetails> ExecuteActionAfterAnimation;
+    public static void CallExecuteActionAfterAnimation(Vector3 pos, ItemDetails itemDetails)
     {
-        executeActionAfterAnimation?.Invoke(pos, itemDetails);
+        ExecuteActionAfterAnimation?.Invoke(pos, itemDetails);
     }
 
-    public static event Action<DialoguePiece> showDialogueEvent;
-    public static void callShowDialogueEvent(DialoguePiece dialoguePiece)
+    public static event Action<DialoguePiece> ShowDialogueEvent;
+    public static void CallShowDialogueEvent(DialoguePiece dialoguePiece)
     {
-        showDialogueEvent?.Invoke(dialoguePiece);
+        ShowDialogueEvent?.Invoke(dialoguePiece);
     }
 
     //Open the shop
-    public static event Action<SlotType, InventoryBag_SO> baseBagOpenEvent;
-    public static void callBaseBagOpenEvent(SlotType slotType,InventoryBag_SO bag_SO)
+    public static event Action<SlotType, InventoryBag_SO> BaseBagOpenEvent;
+    public static void CallBaseBagOpenEvent(SlotType slotType,InventoryBag_SO bag_SO)
     {
-        baseBagOpenEvent?.Invoke(slotType, bag_SO);
+        BaseBagOpenEvent?.Invoke(slotType, bag_SO);
     }
 
-    public static event Action<SlotType, InventoryBag_SO> baseBagCloseEvent;
-    public static void callBaseBagCloseEvent(SlotType slotType, InventoryBag_SO bag_SO)
+    public static event Action<SlotType, InventoryBag_SO> BaseBagCloseEvent;
+    public static void CallBaseBagCloseEvent(SlotType slotType, InventoryBag_SO bag_SO)
     {
-        baseBagCloseEvent?.Invoke(slotType, bag_SO);
+        BaseBagCloseEvent?.Invoke(slotType, bag_SO);
     }
 
-    public static event Action<GameState> updateGameStateEvent;
-    public static void callUpdateGameStateEvent(GameState gameState)
+    public static event Action<GameState> UpdateGameStateEvent;
+    public static void CallUpdateGameStateEvent(GameState gameState)
     {
-        updateGameStateEvent?.Invoke(gameState);
+        UpdateGameStateEvent?.Invoke(gameState);
     }
 
-    public static event Action<ItemDetails, bool, ItemType> showTradeUI;
-    public static void callShowTradeUI(ItemDetails item, bool isSell, ItemType itemType)
+    public static event Action<ItemDetails, bool, ItemType> ShowTradeUI;
+    public static void CallShowTradeUI(ItemDetails item, bool isSell, ItemType itemType)
     {
-        showTradeUI?.Invoke(item, isSell, itemType);
+        ShowTradeUI?.Invoke(item, isSell, itemType);
     }
 
     public static event Action<string> FindNPCEvent;
-    public static void callFindNPCEvent(string NPCName)
+    public static void CallFindNPCEvent(string NPCName)
     {
         FindNPCEvent?.Invoke(NPCName);
     }
 
-    public static event Action<Seasons, LightShift, float> lightShiftEvent;
-    public static void callLightShiftEvent(Seasons seasons,LightShift lightShift,float timeDifference)
+    public static event Action<Seasons, LightShift, float> LightShiftEvent;
+    public static void CallLightShiftEvent(Seasons seasons,LightShift lightShift,float timeDifference)
     {
-        lightShiftEvent?.Invoke(seasons, lightShift, timeDifference);
+        LightShiftEvent?.Invoke(seasons, lightShift, timeDifference);
     }
-    public static event Action<bool> allowPlayerInputEvent;
-    public static void callAllowPlayerInputEvent(bool input)
+    public static event Action<bool> AllowPlayerInputEvent;
+    public static void CallAllowPlayerInputEvent(bool input)
     {
-        allowPlayerInputEvent?.Invoke(input);
+        AllowPlayerInputEvent?.Invoke(input);
     }
 
-    public static event Action<Transform, int, AttackEffectType> damageTextPopEvent;
-    public static void callDamageTextPopEvent(Transform targetPos, int damage, AttackEffectType attackEffect)
+    public static event Action<Transform, int, AttackEffectType> DamageTextPopEvent;
+    public static void CallDamageTextPopEvent(Transform targetPos, int damage, AttackEffectType attackEffect)
     {
-        damageTextPopEvent?.Invoke(targetPos, damage, attackEffect);
+        DamageTextPopEvent?.Invoke(targetPos, damage, attackEffect);
     }
 
     //Buff

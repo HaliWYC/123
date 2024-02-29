@@ -6,10 +6,10 @@ using UnityEngine.Events;
 [CreateAssetMenu(fileName = "NEW VoidEvents", menuName = "Events/VoidEventSO")]
 public class VoidEvent_SO : ScriptableObject
 {
-    public UnityAction onEventIsCalled;
+    public UnityAction OnEventIsCalled;
 
-    public void callEvent()
+    public void CallEvent()
     {
-        onEventIsCalled?.Invoke();
+        OnEventIsCalled?.Invoke();
     }
 }

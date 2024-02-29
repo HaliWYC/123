@@ -17,7 +17,7 @@ public class NPCManager : Singleton<NPCManager>
     {
         base.Awake();
         //Debug.Log(sceneRouteDate.sceneRouteList.Count);
-        initSceneRouteDict();
+        InitSceneRouteDict();
         foreach(NPCPosition position in npcPositionList)
         {
             position.npc.position = position.position;
@@ -28,7 +28,7 @@ public class NPCManager : Singleton<NPCManager>
     /// <summary>
     /// Initialise the dictionary
     /// </summary>
-    private void initSceneRouteDict()
+    private void InitSceneRouteDict()
     {
         
         if (sceneRouteDate.sceneRouteList.Count > 0)
@@ -45,7 +45,7 @@ public class NPCManager : Singleton<NPCManager>
         }
     }
 
-    public NPCDetails getNPCDetail(string NPCName)
+    public NPCDetails GetNPCDetail(string NPCName)
     {
         foreach(NPCList_SO NPCList_SO in NPCList)
         {
@@ -60,7 +60,7 @@ public class NPCManager : Singleton<NPCManager>
     /// <param name="fromSceneName">Initial scene</param>
     /// <param name="goToSceneName">Target scene</param>
     /// <returns></returns>
-    public SceneRoute getSceneroute(string fromSceneName,string goToSceneName)
+    public SceneRoute GetSceneroute(string fromSceneName,string goToSceneName)
     {
         return sceneRouteDict[fromSceneName + goToSceneName];
     }

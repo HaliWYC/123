@@ -30,7 +30,7 @@ namespace ShanHai_IsolatedCity.Astar
             }
         }
 
-        public Node getGridNode(int xPos,int yPos)
+        public Node GetGridNode(int xPos,int yPos)
         {
             if (xPos < width && yPos < height)
             {

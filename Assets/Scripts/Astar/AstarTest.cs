@@ -35,17 +35,17 @@ namespace ShanHai_IsolatedCity.Astar
 
         private void Update()
         {
-            showPathOnGridMap();
+            ShowPathOnGridMap();
 
             if (moveNPC)
             {
                 moveNPC = false;
                 var schedule = new ScheduleDetails(0, 0, 0, 0, Seasons.春, targetScene, targetPos, stopClip, true);
-                npcMovement.buildSchedulePath(schedule);
+                npcMovement.BuildSchedulePath(schedule);
             }
         }
 
-        private void showPathOnGridMap()
+        private void ShowPathOnGridMap()
         {
             if (displayMap != null && displayTile != null)
             {
@@ -64,7 +64,7 @@ namespace ShanHai_IsolatedCity.Astar
                 {
                     var sceneName = SceneManager.GetActiveScene().name;
 
-                    aStar.buildPath(sceneName, startPos, finishPos, npcMovmentStepStack);
+                    aStar.BuildPath(sceneName, startPos, finishPos, npcMovmentStepStack);
 
                     foreach (var step in npcMovmentStepStack)
                     {

@@ -4,91 +4,92 @@ using UnityEngine;
 
 public class Skills : MonoBehaviour
 {
-    public List<SkillData_SO> skillList;
-    [SerializeField]private List<SkillData_SO> templateSkillList;
-    public GameObject attackTarget;
+    public List<SkillDetails_SO > skillList;//SkillList on the character
+    [SerializeField]private List<SkillDetails_SO > templateSkillList;//SkillList on the character used to clone
     public GameObject skiller;
 
     protected virtual void Awake()
     {
-        /*if (CompareTag("NPC") || CompareTag("Enemy"))
-        {
-            skiller = GetComponent<EnemyController>().gameObject;
-            
-        }
-        else if (CompareTag("Player"))
-            skiller = GetComponent<Player>().gameObject;*/
         if (templateSkillList != null)
-            skillList = templateSkillList;
+        {
+            foreach(SkillDetails_SO  skillData in templateSkillList)
+            {
+                if(skillData!=null)
+                skillList.Add(Instantiate(skillData));
+            }
+        }
+        skiller = transform.gameObject;
     }
     protected virtual void Update()
     {
-        foreach(SkillData_SO skillData in skillList)
-        {
-            if (skillData.currentCoolDown > 0 && !skillData.canSpell)
-                skillData.currentCoolDown -= Time.deltaTime;
-            else
-            {
-                skillData.canSpell = true;
-            }
-        }
+        if(skillList!=null)
+        SkillCooling(skillList);
     }
     #region GetSkill
-    public SkillData_SO getSkillDataByName(string skillName)
+    public SkillDetails_SO  GetSkillDataByName(string skillName)
     {
-        foreach(SkillData_SO skillData in skillList)
+        foreach(SkillDetails_SO  skillData in skillList)
         {
             return skillList.Find(i => i.SkillName == skillName);
         }
         return null;
     }
 
-    public SkillData_SO getSkillDataByProbability(float probability)
+    public SkillDetails_SO  GetSkillDataByProbability(float probability)
     {
-        foreach (SkillData_SO skillData in skillList)
+        foreach (SkillDetails_SO  skillData in skillList)
         {
             return skillList.Find(i => i.skillProbability <= probability);
         }
         return null;
     }
 
-    public SkillData_SO getSkillDataBySkillRange(float range)
+    public SkillDetails_SO  GetSkillDataBySkillRange(float range)
     {
-        foreach (SkillData_SO skillData in skillList)
+        foreach (SkillDetails_SO  skillData in skillList)
         {
             return skillList.Find(i => i.skillRange >= range);
         }
         return null;
     }
+
+    public SkillDetails_SO GetSkillDataByID(int skillID)
+    {
+        foreach (SkillDetails_SO skillData in skillList)
+        {
+            return skillList.Find(i => i.skillID==skillID);
+        }
+        return null;
+    }
     #endregion
 
-    public void callSkill(string name)
-    {
-        SkillData_SO calledSkill = getSkillDataByName(name);
-        calledSkill.currentCoolDown = calledSkill.CoolDown;
-        calledSkill.canSpell = false;
-    }
 
-    public void skillEffects(SkillData_SO currentSkill, CharacterInformation skiller, CharacterInformation defender)
+    public void SkillEvaluation(SkillDetails_SO currentSkill, CharacterInformation skiller, CharacterInformation defender)
     {
-        if (checkDodged(skiller, defender, currentSkill.perfectAccurate))
+        SkillDetails_SO evaluateSkill =  GetSkillDataByID(currentSkill.skillID);
+        evaluateSkill.currentCoolDown = evaluateSkill.CoolDown;
+        skiller.CurrentQi -= evaluateSkill.QiComsume;
+
+        if (CheckDodged(skiller, defender, evaluateSkill.perfectAccurate))
         {
-            EventHandler.callDamageTextPopEvent(attackTarget.transform, 0, AttackEffectType.Dodged);
+            EventHandler.CallDamageTextPopEvent(defender.transform, 0, AttackEffectType.Dodged);
             return;
         }
 
-        switch (currentSkill.skillEffect)
-        {
-            case EffectType.单次造成伤害:
-                attackTarget.AddComponent<O_Health>().SetUp(defender, BuffStateType.Once, currentSkill.effectValue, false, currentSkill.effectStackable);
-                break;
-            case EffectType.持续造成伤害:
-                attackTarget.AddComponent<S_Health>().SetUp(defender, currentSkill.durationTime, currentSkill.effectTurn,BuffStateType.Sustainable,currentSkill.effectValue,false,currentSkill.effectStackable);
-                
-                break;
-        }
+        BuffBase.Instance.BuffLaunch(evaluateSkill,SkillExpIncrementCalculation(evaluateSkill));
+
+        //TODO:把技能的所有buff以顺序结算
+        
     }
-    public bool checkDodged(CharacterInformation attacker, CharacterInformation defender, bool perfectAccurate)
+
+    /// <summary>
+    /// Check whether target can dodge the skill or not
+    /// </summary>
+    /// <param name="attacker"></param>
+    /// <param name="defender"></param>
+    /// <param name="perfectAccurate"></param>
+    /// <returns></returns>
+    public bool CheckDodged(CharacterInformation attacker, CharacterInformation defender, bool perfectAccurate)
     {
         if (perfectAccurate)
             return false;
@@ -98,5 +99,35 @@ public class Skills : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public float SkillExpIncrementCalculation(SkillDetails_SO evaluateSkill)
+    {
+        float correctionValue = Random.Range(-0.1f, 0.1f);
+        int proficiencyValue =
+            evaluateSkill.skillProficiency switch
+            {
+                Proficiency.一窍不通 => 1,
+                Proficiency.初窥门径 => 2,
+                Proficiency.一知半解 => 3,
+                Proficiency.半生不熟 => 4,
+                Proficiency.融会贯通 => 5,
+                Proficiency.游刃有余 => 6,
+                Proficiency.炉火纯青 => 8,
+                Proficiency.得心应手 => 10,
+                Proficiency.登峰造极 => 12,
+                _ => 15
+            };
+
+        return (0.2f + correctionValue) * proficiencyValue;
+    }
+
+    public void SkillCooling(List<SkillDetails_SO> skillList)
+    {
+        foreach(SkillDetails_SO skillDetails in skillList)
+        {
+            if(skillDetails!=null)
+            skillDetails.currentCoolDown -= Time.deltaTime;
+        }
     }
 }

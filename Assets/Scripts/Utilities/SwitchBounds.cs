@@ -7,16 +7,16 @@ public class SwitchBounds : MonoBehaviour
     public VoidEvent_SO criticalShakeEvent;
     private void OnEnable()
     {
-        EventHandler.afterSceneLoadedEvent += SwitchConfinerShape;
-        criticalShakeEvent.onEventIsCalled += criticalImpulseEvent;
+        EventHandler.AfterSceneLoadedEvent += SwitchConfinerShape;
+        criticalShakeEvent.OnEventIsCalled += CriticalImpulseEvent;
     }
 
     private void OnDisable()
     {
-        EventHandler.afterSceneLoadedEvent -= SwitchConfinerShape;
-        criticalShakeEvent.onEventIsCalled -= criticalImpulseEvent;
+        EventHandler.AfterSceneLoadedEvent -= SwitchConfinerShape;
+        criticalShakeEvent.OnEventIsCalled -= CriticalImpulseEvent;
     }
-    private void criticalImpulseEvent()
+    private void CriticalImpulseEvent()
     {
         impulseSource.GenerateImpulse();
     }

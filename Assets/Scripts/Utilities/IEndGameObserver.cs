@@ -1,5 +1,5 @@
 
 public interface IEndGameObserver
 {
-    public void endNotify();
+    public void EndNotify();
 }

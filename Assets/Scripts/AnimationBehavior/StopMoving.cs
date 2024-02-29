@@ -11,7 +11,7 @@ public class StopMoving : StateMachineBehaviour
         if(animator.gameObject.CompareTag("NPC")|| animator.gameObject.CompareTag("Enemy"))
         {
             Vector3 currentPos = animator.GetComponent<EnemyController>().transform.position;
-            animator.GetComponent<EnemyController>().updateAttackPos(currentPos);
+            animator.GetComponent<EnemyController>().UpdateAttackPos(currentPos);
         }
         /*else if (animator.gameObject.CompareTag("Player"))
         {
@@ -28,7 +28,7 @@ public class StopMoving : StateMachineBehaviour
     {
         if (animator.gameObject.CompareTag("NPC") || animator.gameObject.CompareTag("Enemy"))
         {
-            animator.GetComponent<EnemyController>().stopAttackMoving();
+            animator.GetComponent<EnemyController>().StopAttackMoving();
         }
         /*else if (animator.gameObject.CompareTag("Player"))
         {

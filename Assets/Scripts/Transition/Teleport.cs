@@ -15,7 +15,7 @@ namespace ShanHai_IsolatedCity.Transition
         {
             if (collision.CompareTag("Player"))
             {
-                EventHandler.callTransitionEvent(sceneToGo, positionToGo);
+                EventHandler.CallTransitionEvent(sceneToGo, positionToGo);
             }
         }
     }

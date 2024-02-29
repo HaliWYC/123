@@ -43,9 +43,9 @@ namespace ShanHai_IsolatedCity.Map
                 //Key of dictionary
                 string key = tileDetails.gridX + "x" + tileDetails.gridY + "y" + mapData.sceneName;
 
-                if (getTileDetails(key) != null)
+                if (GetTileDetails(key) != null)
                 {
-                    tileDetails = getTileDetails(key);
+                    tileDetails = GetTileDetails(key);
                 }
 
                 switch (tileProperty.gridType)
@@ -64,7 +64,7 @@ namespace ShanHai_IsolatedCity.Map
                         break;
                 }
 
-                if (getTileDetails(key) != null)
+                if (GetTileDetails(key) != null)
                     tileDetailsDict[key] = tileDetails;
                 else
                     tileDetailsDict.Add(key, tileDetails);
@@ -73,32 +73,32 @@ namespace ShanHai_IsolatedCity.Map
 
         private void OnEnable()
         {
-            EventHandler.executeActionAfterAnimation += onExecuteActionAfterAnimation;
-            EventHandler.afterSceneLoadedEvent += onAfterSceneLoadedEvent;
+            EventHandler.ExecuteActionAfterAnimation += OnExecuteActionAfterAnimation;
+            EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
         }
 
         private void OnDisable()
         {
-            EventHandler.executeActionAfterAnimation -= onExecuteActionAfterAnimation;
-            EventHandler.afterSceneLoadedEvent += onAfterSceneLoadedEvent;
+            EventHandler.ExecuteActionAfterAnimation -= OnExecuteActionAfterAnimation;
+            EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
         }
 
-        private void onAfterSceneLoadedEvent()
+        private void OnAfterSceneLoadedEvent()
         {
             currentGrid = FindObjectOfType<Grid>();
         }
 
-        private void onExecuteActionAfterAnimation(Vector3 mouseWorldPos, ItemDetails itemDetails)
+        private void OnExecuteActionAfterAnimation(Vector3 mouseWorldPos, ItemDetails itemDetails)
         {
             var mouseGridPos = currentGrid.WorldToCell(mouseWorldPos);
-            var currentTile = getTileDetailsOnMousePosition(mouseGridPos);
+            var currentTile = GetTileDetailsOnMousePosition(mouseGridPos);
 
             if (currentTile != null)
             {
                 switch (itemDetails.itemType)
                 {
                     case ItemType.商品:
-                        EventHandler.callDropItemEvent(itemDetails.itemID, mouseWorldPos);
+                        EventHandler.CallDropItemEvent(itemDetails.itemID, mouseWorldPos);
                         break;
                 }
             }
@@ -110,7 +110,7 @@ namespace ShanHai_IsolatedCity.Map
         /// </summary>
         /// <param name="key">x+y+Name of Map</param>
         /// <returns></returns>
-        public TileDetails getTileDetails(string key)
+        public TileDetails GetTileDetails(string key)
         {
             if (tileDetailsDict.ContainsKey(key))
             {
@@ -124,10 +124,10 @@ namespace ShanHai_IsolatedCity.Map
         /// </summary>
         /// <param name="mouseGridPos">mouse postion</param>
         /// <returns></returns>
-        public TileDetails getTileDetailsOnMousePosition(Vector3Int mouseGridPos)
+        public TileDetails GetTileDetailsOnMousePosition(Vector3Int mouseGridPos)
         {
             string key = mouseGridPos.x + "x" + mouseGridPos.y + "y" + SceneManager.GetActiveScene().name;
-            return getTileDetails(key);
+            return GetTileDetails(key);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace ShanHai_IsolatedCity.Map
         /// <param name="gridDimension">Grid Dimension</param>
         /// <param name="gridOrigin">Grid Origin</param>
         /// <returns>Whether has current scene information or not </returns>
-        public bool getGridDimensions(string sceneName,out Vector2Int gridDimension,out Vector2Int gridOrigin)
+        public bool GetGridDimensions(string sceneName,out Vector2Int gridDimension,out Vector2Int gridOrigin)
         {
             gridDimension = Vector2Int.zero;
             gridOrigin = Vector2Int.zero;
@@ -157,11 +157,11 @@ namespace ShanHai_IsolatedCity.Map
             return false;
         }
 
-        public TileDetails getTileDetailsAtTargetPosition(Vector3 targetPos)
+        public TileDetails GetTileDetailsAtTargetPosition(Vector3 targetPos)
         {
             Vector3Int gridPos = new Vector3Int((int)targetPos.x, (int)targetPos.y, 0);
             string key = gridPos.x + "x" + gridPos.y + "y" + SceneManager.GetActiveScene().name;
-            return getTileDetails(key) != null ? getTileDetails(key) : null;
+            return GetTileDetails(key) != null ? GetTileDetails(key) : null;
         }
     }
 }

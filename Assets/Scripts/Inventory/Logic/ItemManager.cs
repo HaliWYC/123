@@ -16,33 +16,33 @@ namespace ShanHai_IsolatedCity.Inventory
 
         private void OnEnable()
         {
-            EventHandler.instantiateItemInScene += onInstantiateItemInScene;
-            EventHandler.dropItemEvent += onDropItemEvent;
-            EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
-            EventHandler.afterSceneLoadedEvent += onAfterSceneLoadEvent;
+            EventHandler.InstantiateItemInScene += OnInstantiateItemInScene;
+            EventHandler.DropItemEvent += OnDropItemEvent;
+            EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
+            EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadEvent;
         }
 
         private void OnDisable()
         {
-            EventHandler.instantiateItemInScene -= onInstantiateItemInScene;
-            EventHandler.dropItemEvent -= onDropItemEvent;
-            EventHandler.beforeSceneUnloadEvent += onBeforeSceneUnloadEvent;
-            EventHandler.afterSceneLoadedEvent += onAfterSceneLoadEvent;
+            EventHandler.InstantiateItemInScene -= OnInstantiateItemInScene;
+            EventHandler.DropItemEvent -= OnDropItemEvent;
+            EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
+            EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadEvent;
         }
 
-        private void onAfterSceneLoadEvent()
+        private void OnAfterSceneLoadEvent()
         {
             itemParent = GameObject.FindWithTag("ItemParent").transform;
-            recreateAllItems();
+            RecreateAllItems();
         }
 
-        private void onInstantiateItemInScene(int ID, Vector3 pos)
+        private void OnInstantiateItemInScene(int ID, Vector3 pos)
         {
             var item = Instantiate(itemPrefab, pos, Quaternion.identity, itemParent);
             item.itemID = ID;
         }
 
-        private void onDropItemEvent(int ID, Vector3 mousePos)
+        private void OnDropItemEvent(int ID, Vector3 mousePos)
         {
             var item = Instantiate(bounceItemPrefab, playerTransform.position, Quaternion.identity, itemParent);
             item.itemID = ID;
@@ -51,7 +51,7 @@ namespace ShanHai_IsolatedCity.Inventory
             item.GetComponent<ItemBounce>().initBounceItem(mousePos, dir);
         }
 
-        private void onBeforeSceneUnloadEvent()
+        private void OnBeforeSceneUnloadEvent()
         {
             getAllSceneItems();
         }
@@ -87,7 +87,7 @@ namespace ShanHai_IsolatedCity.Inventory
         /// <summary>
         /// Refrash the item and recreate item
         /// </summary>
-        private void recreateAllItems()
+        private void RecreateAllItems()
         {
             List<SceneItem> currentSceneItems = new List<SceneItem>();
 

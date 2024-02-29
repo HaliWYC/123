@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class SkillFinished : StateMachineBehaviour
 {
+    //TODO:后期给需要吟唱的技能加上这个后摇
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.GetComponent<Tentacle>().skiller.GetComponent<EnemyController>().isAttackEnd = false;
+        
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.GetComponent<Tentacle>().skiller.GetComponent<EnemyController>().isAttackEnd = false;
+        
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        EnemyController enemy = animator.GetComponent<Tentacle>().skiller.GetComponent<EnemyController>();
-        enemy.isAttackEnd = true;
+        
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
