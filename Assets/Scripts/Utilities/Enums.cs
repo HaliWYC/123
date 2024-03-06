@@ -1,6 +1,6 @@
 ﻿public enum ItemType
 {
-    武器,书籍,秘籍,丹药,商品
+    装备,消耗品,任务物品,其他物品
 }
 
 public enum SlotType
@@ -80,7 +80,7 @@ public enum Proficiency
 
 public enum EffectType
 {
-    伤害,恢复生命,造成伤口,治疗伤口,造成眩晕,免疫
+    生命值, 伤口, 速度, 攻击, 防御, 造成眩晕, 免疫, 霸体
 }
 
 public enum BuffDurationType

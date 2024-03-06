@@ -4,6 +4,8 @@ using UnityEngine;
 [System.Serializable]
 public class ItemDetails
 {
+    //ItemID:1:DataType;2:Quality;3:ItemType;4:ItemSubType1;5:ItemSubType2;6:Number1;7:Number2;8:Number3;9:Number4;10:Number5
+
     public int itemID;
 
     public string itemName;

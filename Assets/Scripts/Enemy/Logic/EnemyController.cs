@@ -1,7 +1,7 @@
 ﻿using ShanHai_IsolatedCity.Map;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterInformation))]
@@ -23,6 +23,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     public Skills skills;
 
     [Header("状态")]
+    private bool canAction;
     public bool isPeace;
     public bool isChase;
     private bool isMoving;
@@ -33,10 +34,9 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     [HideInInspector]
     public bool canAttack;//Can the enemy do the next attack action(Including the skill)
     [HideInInspector]
-    public float conAttackTime;
-    protected bool isConAttack;
     protected float attackCoolingTime;//Only for base attack Action exclude SkillSpellCooling
     protected float timeAfterSkillSpell;
+    public float dizzytime;
 
     [Header("位置")]
     private float direction;
@@ -60,12 +60,15 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         enemyInformation = GetComponent<CharacterInformation>();
         direction = transform.GetComponent<Transform>().localScale.x;
         canAttack = true;
+        dizzytime = 0;
+        canAction = true;
     }
 
     private void OnEnable()
     {
         //GameManager.Instance.AddObserver(this);
         EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
+        EventHandler.UpdateGameStateEvent += OnUpdateGameStateEvent;
     }
 
     
@@ -75,11 +78,25 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         if (!GameManager.isInitialized) return;
         GameManager.Instance.RemoveObserver(this);
         EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
+        EventHandler.UpdateGameStateEvent -= OnUpdateGameStateEvent;
     }
 
     private void OnAfterSceneLoadedEvent()
     {
         CheckVisible();
+    }
+
+    private void OnUpdateGameStateEvent(GameState gameState)
+    {
+        switch (gameState)
+        {
+            case GameState.GamePlay:
+                canAction = true;
+                break;
+            case GameState.Pause:
+                canAction = false;
+                break;
+        }
     }
 
     protected virtual void Start()
@@ -107,9 +124,11 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     protected virtual void Update()
     {
         isDead = enemyInformation.CurrentHealth == 0;
-        if (!playerDead)
+
+        if (!playerDead  && dizzytime<=0 && canAction)
         {
-            if(attackCoolingTime<=0 || timeAfterSkillSpell<=0)
+            anim.SetBool("isDizzy", false);
+            if (attackCoolingTime<=0 || timeAfterSkillSpell<=0)
                 SwitchStates();
             SwitchAnimation();
             
@@ -119,6 +138,20 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             timeAfterSkillSpell -= Time.deltaTime;
 
         }
+        else if (playerDead || !canAction)
+        {
+            anim.SetBool("isMoving", false);
+            anim.SetBool("isChase", false );
+            anim.SetBool("isCritical", false );
+        }
+
+        if (dizzytime > 0)
+        {
+            anim.SetBool("isDizzy", true);
+            anim.SetBool("isMoving", false);
+            anim.SetBool("isChase", false);
+            dizzytime -= Time.deltaTime;
+        }
     }
 
     private void SwitchAnimation()
@@ -127,8 +160,9 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         anim.SetBool("isChase", isChase);
         anim.SetBool("isCritical", enemyInformation.isCritical);
         anim.SetBool("Dead", isDead);
+
         if (enemyInformation.CheckIsFatal(enemyInformation.CurrentWound, enemyInformation.MaxWound))
-            anim.SetTrigger("Fatal");
+            anim.SetTrigger("isFatal");
     }
 
     /// <summary>
@@ -240,8 +274,18 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     private void EnemyAttackSelection()
     {
         if(timeAfterSkillSpell<=0 && canAttack)
-        StartCoroutine(EnemySkillSeletion());
-        else if(attackCoolingTime<=0 && canAttack)
+        {
+            foreach(SkillDetails_SO skill in GetComponent<Skills>().skillList)
+            {
+                if (skill.currentCoolDown <= 0)
+                {
+                    StartCoroutine(EnemySkillSeletion());
+                    return;
+                }
+            }
+        }
+
+        if(attackCoolingTime<=0 && canAttack)
         StartCoroutine(Attack());
         
     }
@@ -296,6 +340,10 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     }
     #endregion
 
+    #region Cheking Process
+    /// <summary>
+    /// Check whether this enemy should occur in this scene.If not, set it inactive
+    /// </summary>
     private void CheckVisible()
     {
         if (transform.CompareTag("Enemy"))
@@ -307,7 +355,12 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         }
     }
 
+    private float CheckStopDistance()
+    {
+        return Mathf.Min(enemyInformation.MeleeRange, enemyInformation.RangedRange);
+    }
 
+    #endregion
     /// <summary>
     /// Find all the colliders in the circular area and recongise the tag of each colliders
     /// </summary>
@@ -315,8 +368,6 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     private bool FindPlayer()
     {
         var colliders = Physics2D.OverlapCircleAll(transform.position, npcDetails.sightRadius);
-        /*if (foundTarget)
-            return true;*/
         foreach(var target in colliders)
         {
             if (target.CompareTag("Player"))
@@ -327,7 +378,6 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             }
         }
         attackTarget = null;
-        //foundTarget = false;
         return false;
 
     }
@@ -338,12 +388,11 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     /// <param name="target">Target</param>
     private void ChaseTheEnemy(Vector3 targetPos)
     {
-        if (!canAttack)
-            return;
+        if (!canAttack || !canAction) return;
 
         float distance = (transform.position - targetPos).sqrMagnitude;
         
-        if (distance >Settings.stopDistance)
+        if (distance > Settings.stopDistance)//CheckStopDistance())
         {
             int faceDir = (int)transform.localScale.x;
 
@@ -356,15 +405,14 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             transform.localScale = new Vector3(faceDir, npcDetails.SizeScale, 1);
             transform.position = Vector2.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);           
         }
+        else
+        {
+            isChase = false;
+        }
         
 
     }
     #region Events
-    private void StopAllAction()
-    {
-        isChase = false;
-        isMoving = false;
-    }
     public void RefreshAttackTime()
     {
         attackCoolingTime = enemyInformation.AttackCooling;
@@ -443,11 +491,14 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     { 
         if (attackTarget != null )
         {
-            if (attackTarget.GetComponent<CharacterInformation>().isUndefeated)
+            if (attackTarget.CompareTag("Player"))
             {
-                EventHandler.CallDamageTextPopEvent(attackTarget.transform, 0, AttackEffectType.Undefeated);
-                //attackCoolingTime = enemyInformation.AttackCooling + 5f;
-                return;
+                if (attackTarget.GetComponent<Player>().isParry)
+                {
+                    EventHandler.CallDamageTextPopEvent(attackTarget.transform, 0, AttackEffectType.Undefeated);
+                    dizzytime = Settings.parryDizzyTime;
+                    return;
+                }
             }
             var targetInformation = attackTarget.GetComponent<CharacterInformation>();
 

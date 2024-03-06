@@ -1,166 +1,91 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
-public class BuffBase : Singleton<BuffBase>
+public class BuffBase : MonoBehaviour
 {
-    public delegate void finishedState();
-    public event finishedState stateFinished;
-    public float durationTime { get; set; } = 0;
-    public float currentDurationTime { get; set; } = 0;
-    public float buffValue { get; set; } = 0;
-    public float currentBuffValue { get; set; } = 0;
-    public int durationTurn { get; set; } = 0;
-    public float currentDurationTurn { get; set; } = 0;
-    public CharacterInformation buffTarget { get; set; }
 
+    //Buff evalue order:
+    //1.Priority less first. If priority same, look following
+    //2.Negative > Positive
+    //3.Health > Wound > Other
+    //4.Percentage > Value
+    Buff_SO buff;
+    protected float valueForReverse;
+    protected bool canReverse;
+    protected bool isPro;
+    protected int buffValue;
+    protected bool isPercentage;
+    protected bool isCurrentValue;
+    protected int effectTurn;
+    protected float currentTime;
+    protected int durationTime;
+    protected bool canStack;
+    protected float ExpIncrement;
+    protected CharacterInformation targetInfor;
 
-    public BuffDurationType buffState;
-    public BuffStackType buffStack;
+    private bool OnceBuffFinished = false;
 
-    public bool isPermanent;
-    public bool isPro;
-    public bool isStackable;
-
-    /// <summary>
-    /// Initialize the buff with buff target, how long implements a effect, how many times effect will be implement, the buffstate type and the effect value for each time
-    /// </summary>
-    /// <param name="target">buffTarget</param>
-    /// <param name="time">durationTime</param>
-    /// <param name="turn">durationTurn</param>
-    /// <param name="state">buffStateType</param>
-    /// <param name="value">buffValue</param>
-    /// <returns></returns>
-    public BuffBase SetUp(CharacterInformation target, float time, int turn, BuffDurationType state, float value, bool Pro, bool stackable)
+    public void BuffSetUp(Buff_SO Buff, float buffExpIncrement, CharacterInformation targetInformation)
     {
-        buffTarget = target;
-        durationTime = time;
-        durationTurn = turn;
-        buffState = state;
-        buffValue = value;
-        isPro = Pro;
-        isStackable = stackable;
-        //initializeData();
-        return this;
+        buff = Buff;
+        canReverse = buff.canReverse;
+        isPro = buff.isPro;
+        buffValue = buff.buffValue;
+        isPercentage = buff.isPercentage;
+        isCurrentValue = buff.isCurrentValue;
+        effectTurn = buff.effectTurn;
+        durationTime = buff.durationTime;
+        canStack = buff.canStack;
+        ExpIncrement = buffExpIncrement;
+        targetInfor = targetInformation;
     }
-    /// <summary>
-    /// Initialize the buff with buff target, how many times effect will be implement, the buffstate type and the effect value for each time without durationTime
-    /// </summary>
-    /// <param name="target">buffTarget</param>
-    /// <param name="turn">durationTurn</param>
-    /// <param name="state">buffStateType</param>
-    /// <param name="value">buffValue</param>
-    /// <returns></returns>
-    public BuffBase SetUp(CharacterInformation target, int turn, BuffDurationType state, float value, bool Pro, bool stackable)
-    {
-        buffTarget = target;
-        durationTurn = turn;
-        buffState = state;
-        buffValue = value;
-        isPro = Pro;
-        isStackable = stackable;
-        //initializeData();
-        return this;
-    }
-
-    /// <summary>
-    /// Initialize the buff with buff target, how long implements a effect, the buffstate type and the effect value for each time without the times
-    /// </summary>
-    /// <param name="target">buffTarget</param>
-    /// <param name="time">durationTime</param>
-    /// <param name="state">buffStateType</param>
-    /// <param name="value">buffValue</param>
-    /// <returns></returns>
-    public BuffBase SetUp(CharacterInformation target, float time, BuffDurationType state, float value, bool Pro, bool stackable)
-    {
-        buffTarget = target;
-        durationTime = time;
-        buffState = state;
-        buffValue = value;
-        isPro = Pro;
-        isStackable = stackable;
-        //initializeData();
-        return this;
-    }
-    /// <summary>
-    /// Initialize the buff only with buff target, the buffstate type and the effect value for each time
-    /// </summary>
-    /// <param name="target">buffTarget</param>
-    /// <param name="state">buffStateType</param>
-    /// <param name="value">buffValue</param>
-    /// <returns></returns>
-    public BuffBase SetUp(CharacterInformation target, BuffDurationType state, float value, bool Pro, bool stackable)
-    {
-        buffTarget = target;
-        buffState = state;
-        buffValue = value;
-        isPro = Pro;
-        isStackable = stackable;
-        //initializeData();
-        return this;
-    }
-
-    //private void initializeData()
-    //{
-    //    currentBuffValue = buffValue;
-    //}
 
     private void Update()
     {
-        SwitchType();
-    }
-
-    protected void SwitchType()
-    {
-        switch (buffState)
+        switch (buff.buffState)
         {
             case BuffDurationType.Once:
-                Launch();
-                stateFinished.Invoke();
-                break;
-            case BuffDurationType.Sustainable:
-                currentDurationTime += Time.deltaTime;
-                if (currentDurationTime >= durationTime)
+                if (!OnceBuffFinished)
                 {
-                    currentDurationTime = 0;
-                    if (isStackable)
-                    {
-                        switch (buffStack)
-                        {
-                            case BuffStackType.StackTurn:
-                                currentDurationTurn += durationTurn;
-                                break;
-                            case BuffStackType.StackValue:
-                                currentBuffValue += buffValue;
-                                break;
-                        }
-                    }
-                    Launch();
-                    currentDurationTurn++;
-                    if (currentDurationTurn >= durationTurn)
-                        stateFinished.Invoke();
+                    BuffLaunch();
+                    OnceBuffFinished = true;
+                    currentTime = durationTime;
+                }
+                currentTime -= Time.deltaTime;
+                if (currentTime <= 0)
+                {
+                    if (canReverse)
+                        BuffReverse();
+                    Destroy(this);
                 }
                 break;
+            case BuffDurationType.Sustainable:
+                if (effectTurn >= 1)
+                {
+                    if (currentTime <= 0)
+                    {
+                        BuffLaunch();
+                        effectTurn -= 1;
+                        currentTime = durationTime;
+                    }
+                }
+                else if(currentTime<=0)
+                {
+                    Destroy(this);
+                }
+                currentTime -= Time.deltaTime;
+                break;
             case BuffDurationType.Permanent:
-                isPermanent = true;
                 break;
         }
     }
 
-    public virtual void Launch()
+    protected virtual void BuffLaunch()
     {
 
     }
 
-
-    public void BuffLaunch(SkillDetails_SO  launchSkill, float ExpIncrement)
+    protected virtual void BuffReverse()
     {
-        launchSkill.buffList.Sort((x, y) => x.buffPriority.CompareTo(y.buffPriority));
-        foreach(Buff_SO buff in launchSkill.buffList)
-        {
-            Debug.Log(buff.buffPriority);
-        }
+
     }
 }

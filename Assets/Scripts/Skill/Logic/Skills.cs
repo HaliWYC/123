@@ -75,11 +75,7 @@ public class Skills : MonoBehaviour
             EventHandler.CallDamageTextPopEvent(defender.transform, 0, AttackEffectType.Dodged);
             return;
         }
-
-        BuffBase.Instance.BuffLaunch(evaluateSkill,SkillExpIncrementCalculation(evaluateSkill));
-
-        //TODO:把技能的所有buff以顺序结算
-        
+        BuffEvaluation(evaluateSkill,SkillExpIncrementCalculation(evaluateSkill),skiller,defender);
     }
 
     /// <summary>
@@ -93,7 +89,7 @@ public class Skills : MonoBehaviour
     {
         if (perfectAccurate)
             return false;
-        if ((defender.Argility - attacker.AttackAccuracy) / Settings.skillDodgeConstant >= Random.Range(0, 1))
+        if ((defender.Argility - attacker.AttackAccuracy) / Settings.skillDodgeConstant >= Random.Range(0, 1) || defender.isDodged)
         {
             
             return true;
@@ -118,7 +114,6 @@ public class Skills : MonoBehaviour
                 Proficiency.登峰造极 => 12,
                 _ => 15
             };
-
         return (0.2f + correctionValue) * proficiencyValue;
     }
 
@@ -130,4 +125,70 @@ public class Skills : MonoBehaviour
             skillDetails.currentCoolDown -= Time.deltaTime;
         }
     }
+    #region PlayerSkill
+    public void PlayerSkilldetection()
+    {
+        if (skiller.CompareTag("Player"))
+        {
+            
+        }
+    }
+    #endregion
+
+    #region BuffEvaluation
+    /// <summary>
+    /// This method is used to sort the bufflist of the skill considering the priority
+    /// </summary>
+    /// <param name="spellSkill"></param>
+    /// <param name="BuffExpIncrement"></param>
+    /// <param name="skiller"></param>
+    /// <param name="defender"></param>
+    public void BuffEvaluation(SkillDetails_SO spellSkill,float BuffExpIncrement, CharacterInformation skiller, CharacterInformation defender)
+    {
+        //FIXME:后期加上如果Priority相同的情况
+        spellSkill.buffList.Sort((x, y) => x.buffPriority.CompareTo(y.buffPriority));
+        foreach(Buff_SO buff in spellSkill.buffList)
+        {
+            //Check the buff target
+            if (buff.isForSelf)
+                SwitchBuff(buff, BuffExpIncrement, skiller);
+            else
+                SwitchBuff(buff, BuffExpIncrement, defender);
+        }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="buff"></param>
+    /// <param name="BuffExpIncrement"></param>
+    /// <param name="buffTarget"></param>
+    public void SwitchBuff(Buff_SO buff, float BuffExpIncrement, CharacterInformation buffTarget)
+    {
+        switch (buff.buffType)
+        {
+            case EffectType.生命值:
+                buffTarget.gameObject.AddComponent<HealthBuff>().BuffSetUp(buff,BuffExpIncrement,buffTarget);
+                break;
+            case EffectType.伤口:
+                break;
+            case EffectType.速度 :
+                buffTarget.gameObject.AddComponent<SpeedBuff>().BuffSetUp(buff, BuffExpIncrement, buffTarget);
+                break;
+            case EffectType.攻击:
+                break;
+            case EffectType.防御:
+                break;
+            case EffectType.造成眩晕:
+                break;
+            case EffectType.免疫:
+                break;
+            case EffectType.霸体:
+                break;
+        }
+    }
+
+
+    #endregion
 }

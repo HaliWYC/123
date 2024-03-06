@@ -71,8 +71,8 @@ public class CursorManager : Singleton<CursorManager>
             //WorkFlow: Add all the image related to items
             currenSprite = itemDetails.itemType switch
             {
-                ItemType.商品 => item,
-                ItemType.武器 => attack,
+                ItemType.其他物品 => item,
+                ItemType.装备 => attack,
                 _ => normal
 
             };
@@ -171,10 +171,10 @@ public class CursorManager : Singleton<CursorManager>
         {
             switch (currentItem.itemType)
             {
-                case ItemType.商品:
+                case ItemType.其他物品:
                     if (currentTile.canDropItem&&currentItem.canDrop) SetCursorValid(); else SetCursorInvalid();
                     break;
-                case ItemType.武器:
+                case ItemType.装备:
                     if (playerTile!=null && playerTile.meleeOnly) SetCursorValid(); else SetCursorInvalid();
                     break;
             }

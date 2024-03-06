@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f39d7febebf86444596fc42f000c8893, type: 3}
+  m_Name: KissofDeath
+  m_EditorClassIdentifier: 
+  SkillName: Kiss of Death
+  skillID: 3200001
+  skillIcon: {fileID: 0}
+  skillQuality: 6
+  skillInformation: 
+  currentExp: 0
+  nextExp: 0
+  skillProficiency: 4
+  isWeaponSkill: 0
+  isCharacterFirst: 0
+  isCharacterSecond: 0
+  skillTargetType: 0
+  skillRangeType: 1
+  skillRange: 100
+  currentCoolDown: 0
+  CoolDown: 10
+  QiComsume: 0
+  skillProbability: 0.2
+  perfectAccurate: 1
+  timeAfterSpell: 4
+  skillPrefab: {fileID: 1973264469849436156, guid: 67ebe9824539c454e813d581b934ef8e, type: 3}
+  buffList:
+  - {fileID: 11400000, guid: b8c52de9995b84e3bb9179bce6e3fafc, type: 2}
+  - {fileID: 11400000, guid: f1e8bb528fa52477993375edf215afa9, type: 2}

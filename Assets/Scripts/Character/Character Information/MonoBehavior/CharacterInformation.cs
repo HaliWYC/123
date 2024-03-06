@@ -10,11 +10,14 @@ public class CharacterInformation : MonoBehaviour
     public CharacterFightingData_SO templateFightingData;
     public CharacterFightingData_SO fightingData;
 
-    private float lastWoundRecoverTime;
+    private float lastWoundRecoverTime=0;
+    private float lastVigorRocoverTime=0;
     public bool isUndefeated;
+    public bool isDodged;
 
     public UnityEvent<CharacterInformation> healthChange;
     public UnityEvent<CharacterInformation> qiChange;
+    public UnityEvent<CharacterInformation> vigorChange;
     public UnityEvent<CharacterInformation> woundChange;
     public UnityEvent<CharacterInformation> moraleChange;
     public UnityEvent criticalShakeEvent;
@@ -28,11 +31,13 @@ public class CharacterInformation : MonoBehaviour
     private void Start()
     {
         isUndefeated = false;
+        isDodged = false;
     }
 
     private void Update()
     {
         WoundRecoveryProcess();
+        VigorRecovery();
     }
     #region basicInfor
     public int PrestigeLevel
@@ -303,23 +308,26 @@ public class CharacterInformation : MonoBehaviour
         isUndefeated = undefeated;
     }
 
+    public void SetComfirmDodged(bool dodge)
+    {
+        isDodged = dodge;
+    }
+
     #endregion
 
     #region Combat
     public void FinalDamage(CharacterInformation attacker, CharacterInformation defender)
     {
-        if (Dodged(attacker, defender))
+        if (CheckDodged(attacker, defender))
         {
             EventHandler.CallDamageTextPopEvent(defender.transform, 0, AttackEffectType.Dodged);
             return;
         }
-        int attack = attacker.Attack;
-        //Debug.Log(attack);
-        int defense = defender.Defense;
+
         // Calculate the penetrate diffence;
         int penetrateRate = (int)(Mathf.Max((attacker.Penetrate - defender.PenetrateDefense), 0)/Settings.penetrateConstant);
 
-        float damage = Mathf.Max((attack * (1 + Random.Range(-0.05f, 0.05f))) - defense * (1 - penetrateRate),0);
+        float damage = Mathf.Max((attacker.Attack * (1 + Random.Range(-0.05f, 0.05f))) - defender.Defense * (1 - penetrateRate),0);
 
         if (CriticalDamage(attacker, defender, damage))
         {
@@ -368,16 +376,16 @@ public class CharacterInformation : MonoBehaviour
         return false;
     }
 
-    private bool Dodged(CharacterInformation attacker, CharacterInformation defender)
+    private bool CheckDodged(CharacterInformation attacker, CharacterInformation defender)
     {
-        if ((defender.Argility - attacker.AttackAccuracy) / Settings.dodgeConstant >= Random.Range(0, 1))
+        if ((defender.Argility - attacker.AttackAccuracy) / Settings.dodgeConstant >= Random.Range(0, 1) || defender.isDodged)
         {
             return true;
         }
         return false;
     }
 
-    private IEnumerator CalculateFatal(float fatalEnhance, float fatalDefense,CharacterInformation defender)
+    public IEnumerator CalculateFatal(float fatalEnhance, float fatalDefense,CharacterInformation defender)
     {
         while(CheckIsFatal(CurrentWound, MaxWound))
         {
@@ -439,7 +447,8 @@ public class CharacterInformation : MonoBehaviour
         if (lastWoundRecoverTime < 0)
         {
             lastWoundRecoverTime = Settings.WoundRecoveryTime;
-            CurrentWound--;
+            CurrentWound = Mathf.Max(CurrentWound - 1, 0);
+            woundChange.Invoke(this);
         }
     }
     public void RecoverFatal(float recover)
@@ -456,7 +465,6 @@ public class CharacterInformation : MonoBehaviour
         CreateWound = (int)(templateFightingData.createWound * recover);
         Penetrate = (int)(templateFightingData.Penetrate * recover);
         CriticalPoint = (int)(templateFightingData.criticalPoint * recover);
-        //AttackCooling = (int)(templateFightingData.AttackCooling * recover);
         Criticalmutiple = (int)(templateFightingData.criticalmutiple * recover);
         Fatal_Enhancement = (int)(templateFightingData.fatal_Enhancement * recover);
         Continuous_DamageRate = (int)(templateFightingData.continuous_DamageRate * recover);
@@ -465,6 +473,19 @@ public class CharacterInformation : MonoBehaviour
         PenetrateDefense = (int)(templateFightingData.penetrateDefense * recover);
         CriticalDefense = (int)(templateFightingData.criticalDefense * recover);
         FatalDefense = (int)(templateFightingData.fatalDefense * recover);
+    }
+
+    public void VigorRecovery()
+    {
+        lastVigorRocoverTime -= Time.deltaTime;
+        if (lastVigorRocoverTime <= 0)
+        {
+            lastVigorRocoverTime = Settings.VigorRecoverTime;
+            float correction = Random.Range(-0.05f,0.05f);
+            CurrentVigor = Mathf.Min(CurrentVigor + (int)(MaxVigor / 10 * (1 + correction)), MaxVigor);
+            vigorChange.Invoke(this);
+        }
+        
     }
     #endregion
 }

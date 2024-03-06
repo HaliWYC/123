@@ -1,8 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class Settings
 {
     public const float itemFadeDuration = 0.35f;
@@ -38,13 +34,22 @@ public class Settings
     public static TimeSpan eveningTime = new TimeSpan(18, 0, 0);
     public static TimeSpan nightTime = new TimeSpan(21, 0, 0);
 
+    #region Player Constant
+    //Player
+    public const float runningComsumeLevelLimit = 3f;
+    public const int rollingComsume = 300;
     //Combat;
     public const float WoundRecoveryTime = 20;
+    public const float VigorRecoverTime = 1;
     public const float penetrateConstant = 417;
     public const float criticalConstant = 213;
     public const float dodgeConstant = 171;
     public const float skillDodgeConstant = 213;
+    public const float maxSpeed = 2000;
+    public const float parryDizzyTime = 5f;
+    public const float eyeRangeBase = 3f;
     //DamageTextPop
+    #endregion
     public const float popDamageTextScaleSpeed = 1.0f;
     public const float popDamageTextDisappearTime = 1.5f;
     public const float popDamageTextAlphaSpeed = 4.0f;

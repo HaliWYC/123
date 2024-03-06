@@ -20,6 +20,7 @@ public class NPCFunction : MonoBehaviour
         EventHandler.CallFindNPCEvent(Name);
         EventHandler.CallBaseBagOpenEvent(SlotType.NPC背包, NPCManager.Instance.GetNPCDetail(Name).NPCBag);
         EventHandler.CallUpdateGameStateEvent(GameState.Pause);
+        Time.timeScale = 0;
     }
 
     public void CloseShop()
@@ -27,6 +28,7 @@ public class NPCFunction : MonoBehaviour
         isOpen = false;
         EventHandler.CallBaseBagCloseEvent(SlotType.NPC背包, NPCManager.Instance.GetNPCDetail(Name).NPCBag);
         EventHandler.CallUpdateGameStateEvent(GameState.GamePlay);
+        Time.timeScale = 1;
     }
 
 

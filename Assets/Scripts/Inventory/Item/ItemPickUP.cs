@@ -5,9 +5,9 @@ namespace ShanHai_IsolatedCity.Inventory
 
     public class ItemPickUp : MonoBehaviour
     {
-        private void OnTriggerEnter2D(Collider2D other)
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            Item item = other.GetComponent<Item>();
+            Item item = collision.GetComponent<Item>();
 
             if (item != null)
             {
@@ -15,7 +15,7 @@ namespace ShanHai_IsolatedCity.Inventory
                 {
                     //PickUp Item to Bag
 
-                   InventoryManager.Instance.AddItem(item, true);
+                    InventoryManager.Instance.AddItem(item, true);
                 }
             }
         }

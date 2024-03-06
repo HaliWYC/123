@@ -97,7 +97,7 @@ namespace ShanHai_IsolatedCity.Map
             {
                 switch (itemDetails.itemType)
                 {
-                    case ItemType.商品:
+                    case ItemType.其他物品:
                         EventHandler.CallDropItemEvent(itemDetails.itemID, mouseWorldPos);
                         break;
                 }

@@ -28,7 +28,7 @@ MonoBehaviour:
   currentQi: 200
   maxMorale: 20
   currentMorale: 20
-  Argility: 2
+  Argility: 0
   Resilience: 2
   speed: 5
   fatalLevel: 0
@@ -39,7 +39,7 @@ MonoBehaviour:
   createWound: 0
   Penetrate: 3
   criticalPoint: 103
-  AttackCooling: 0.2
+  AttackCooling: 2
   meleeRange: 1.5
   rangedRange: 1.8
   criticalmutiple: 1.5

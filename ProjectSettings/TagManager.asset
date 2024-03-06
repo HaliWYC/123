@@ -9,6 +9,7 @@ TagManager:
   - CursorCanvas
   - NPC
   - Enemy
+  - Execute
   layers:
   - Default
   - TransparentFX

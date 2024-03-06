@@ -38,13 +38,13 @@ namespace ShanHai_IsolatedCity.Inventory
             tradeAmount.text = string.Empty;
             switch (itemType)
             {
-                case ItemType.武器:
+                case ItemType.装备:
                     WeaponDetails weapon = (WeaponDetails)item;
                     weaponQuaity.text = weapon.weaponQuality.ToString();
                     weaponQuaity.gameObject.SetActive(true);
                     qualityType.gameObject.SetActive(false);
                     break;
-                case ItemType.商品:
+                case ItemType.其他物品:
                     qualityType.text = item.itemQuality.ToString();
                     qualityType.gameObject.SetActive(true);
                     weaponQuaity.gameObject.SetActive(false);

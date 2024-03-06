@@ -10,7 +10,6 @@ public class AttackFinished : StateMachineBehaviour
         if (animator.gameObject.CompareTag("NPC") || animator.gameObject.CompareTag("Enemy"))
         {
             animator.GetComponent<EnemyController>().canAttack = false;
-            animator.GetComponent<EnemyController>().conAttackTime = 0;
         }
         else if (animator.gameObject.CompareTag("Player"))
         {
@@ -41,7 +40,7 @@ public class AttackFinished : StateMachineBehaviour
             EnemyController enemy = animator.GetComponent<EnemyController>();
             enemy.canAttack = true;
             enemy.isChase = false;
-            //enemy.RefreshAttackTime();
+            enemy.RefreshAttackTime();
         }
         else if (animator.gameObject.CompareTag("Player"))
         {

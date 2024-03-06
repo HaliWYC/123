@@ -20,22 +20,22 @@ MonoBehaviour:
   Lunar_Solar: 0
   maxHealth: 20
   currentHealth: 20
-  maxVigor: 20
-  currentVigor: 20
+  maxVigor: 2000
+  currentVigor: 2000
   maxWound: 20
   currentWound: 0
   maxQi: 20
   currentQi: 20
   maxMorale: 50
   currentMorale: 50
-  Argility: 181
+  Argility: 0
   Resilience: 10
   speed: 500
   fatalLevel: 0
   woundRecovery: 0
   skillCooling: 0.5
-  Attack: 0
-  attackAccuracy: 0
+  Attack: 10
+  attackAccuracy: 100
   createWound: 10
   Penetrate: 3
   criticalPoint: 213
@@ -46,7 +46,7 @@ MonoBehaviour:
   fatal_Enhancement: 0
   continuous_DamageRate: 1
   continuous_AttackRate: 0.1
-  Defense: 10
+  Defense: 40
   penetrateDefense: 1
   criticalDefense: 0.1
   fatalDefense: 0.01

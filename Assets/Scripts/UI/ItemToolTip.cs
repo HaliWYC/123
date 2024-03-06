@@ -25,7 +25,7 @@ public class ItemToolTip : MonoBehaviour
 
         descriptionText.text = itemDetails.itemDescription;
 
-        if(itemDetails.itemType == ItemType.武器 || itemDetails.itemType == ItemType.商品 || itemDetails.itemType == ItemType.丹药)
+        if(itemDetails.itemType == ItemType.装备 || itemDetails.itemType == ItemType.其他物品 || itemDetails.itemType == ItemType.消耗品)
         {
             buttomPart.SetActive(true);
 

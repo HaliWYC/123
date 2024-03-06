@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: Mayor_Shop
   m_EditorClassIdentifier: 
   itemList:
-  - itemID: 1005
+  - itemID: 22000004
     itemAmount: 98
-  - itemID: 1003
+  - itemID: 22000003
     itemAmount: 5
-  - itemID: 1001
+  - itemID: 22000001
     itemAmount: 1
-  - itemID: 1002
+  - itemID: 22000002
     itemAmount: 1
-  - itemID: 1002
+  - itemID: 22000002
     itemAmount: 1
-  - itemID: 1002
+  - itemID: 22000002
     itemAmount: 1
-  - itemID: 1001
+  - itemID: 22000001
     itemAmount: 1
-  - itemID: 1004
+  - itemID: 22000004
     itemAmount: 1

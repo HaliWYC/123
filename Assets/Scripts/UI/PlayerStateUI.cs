@@ -8,31 +8,39 @@ public class PlayerStateUI : MonoBehaviour
 {
     public Image healthImage;
     public Image qiImage;
+    public Image vigorImage;
     public Image moraleImage;
     public Image woundImage;
 
     public Text healthText;
     public Text qiText;
+    public Text vigorText;
     public Text moraleText;
     public Text woundText;
 
     public CharacterEvent_SO healthEvent;
     public CharacterEvent_SO qiEvent;
+    public CharacterEvent_SO vigorEvent;
     public CharacterEvent_SO woundEvent;
     public CharacterEvent_SO moraleEvent;
+
 
     private void OnEnable()
     {
         healthEvent.OnEventIsCalled += HealthChange;
         qiEvent.OnEventIsCalled += QiChange;
+        vigorEvent.OnEventIsCalled += VigorChange;
         woundEvent.OnEventIsCalled += WoundChange;
         moraleEvent.OnEventIsCalled += MoraleChange;
     }
+
+    
 
     private void OnDisable()
     {
         healthEvent.OnEventIsCalled -= HealthChange;
         qiEvent.OnEventIsCalled -= QiChange;
+        vigorEvent.OnEventIsCalled -= VigorChange;
         woundEvent.OnEventIsCalled -= WoundChange;
         moraleEvent.OnEventIsCalled -= MoraleChange;
     }
@@ -66,6 +74,20 @@ public class PlayerStateUI : MonoBehaviour
             OnQiChange(qiPercent);
         }
         
+    }
+    private void VigorChange(CharacterInformation characterInformation)
+    {
+        if (characterInformation.MaxVigor <= 0)
+        {
+            characterInformation.CheckExceedLimit();
+            OnVigorChange(0);
+        }
+        else
+        {
+            float vigorPercent = (float)characterInformation.CurrentVigor / characterInformation.MaxVigor;
+            OnVigorChange(vigorPercent);
+        }
+
     }
     private void WoundChange(CharacterInformation characterInformation)
     {
@@ -110,6 +132,11 @@ public class PlayerStateUI : MonoBehaviour
     {
         qiImage.fillAmount = percentage;
         qiText.text = GameManager.Instance.playerInformation.CurrentQi.ToString() + " / " + GameManager.Instance.playerInformation.MaxQi.ToString();
+    }
+    private void OnVigorChange(float percentage)
+    {
+        vigorImage.fillAmount = percentage;
+        vigorText.text = GameManager.Instance.playerInformation.CurrentVigor.ToString() + " / " + GameManager.Instance.playerInformation.MaxVigor.ToString();
     }
     public void OnWoundChange(float percentage)
     {
