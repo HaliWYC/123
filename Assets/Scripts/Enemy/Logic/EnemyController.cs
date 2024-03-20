@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ShanHai_IsolatedCity.Skill;
 
 [RequireComponent(typeof(CharacterInformation))]
 [RequireComponent(typeof(Animator))]
@@ -44,6 +45,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     [HideInInspector]
     public Vector3 attackPos;
     private bool isObstacle;
+    public Transform playerTransform;
 
     [Header("巡逻范围")]
     public float PatrolRange;
@@ -145,6 +147,15 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             anim.SetBool("isCritical", false );
         }
 
+        if ((transform.position - playerTransform.position).sqrMagnitude <= playerTransform.GetComponent<Player>().eyeRange)
+        {
+            EventHandler.CallEnemyInAttackListEvent(this.gameObject, true);
+        }
+        else
+        {
+            EventHandler.CallEnemyInAttackListEvent(this.gameObject, false);
+        }
+
         if (dizzytime > 0)
         {
             anim.SetBool("isDizzy", true);
@@ -200,7 +211,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                 if (Vector3.SqrMagnitude(originalPos - transform.position) <= Settings.stopDistance)
                 {
                     isMoving = false;
-                    transform.localScale = new Vector3(direction, npcDetails.SizeScale, 1);
+                    transform.localScale = new Vector3(direction, 1, 1);
                 }
 
                 break;
@@ -271,8 +282,12 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
 
     #region EnemyAction
+    /// <summary>
+    /// Use the possibility of the skill to determine the next attack action
+    /// </summary>
     private void EnemyAttackSelection()
     {
+        //FIXME:后期加上如果总概率超过100%要怎么办
         if(timeAfterSkillSpell<=0 && canAttack)
         {
             foreach(SkillDetails_SO skill in GetComponent<Skills>().skillList)
@@ -397,12 +412,12 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             int faceDir = (int)transform.localScale.x;
 
             if (transform.position.x - targetPos.x > 0)
-                    faceDir = npcDetails.SizeScale;
+                    faceDir = 1;
             if (transform.position.x - targetPos.x < 0)
-                    faceDir = -npcDetails.SizeScale;
+                    faceDir = -1;
 
 
-            transform.localScale = new Vector3(faceDir, npcDetails.SizeScale, 1);
+            transform.localScale = new Vector3(faceDir, 1, 1);
             transform.position = Vector2.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);           
         }
         else
@@ -432,7 +447,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     }
     #endregion
     /// <summary>
-    /// Generate a way point after check it is available
+    /// Generate a next position after check it is available
     /// </summary>
     private void GenerateWayPoint()
     {

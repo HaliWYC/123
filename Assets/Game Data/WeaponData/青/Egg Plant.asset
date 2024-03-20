@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8157d48f1a6f1e548856042cd586f8a8, type: 3}
+  m_Name: Egg Plant
+  m_EditorClassIdentifier: 
+  Metal: 3
+  Wood: 2
+  Water: 5
+  Fire: 4
+  Ground: 6
+  Lunar_Solar: 9
+  maxHealth: 21
+  currentHealth: 5
+  maxVigor: -9
+  currentVigor: 0
+  maxWound: 4
+  currentWound: 0
+  maxQi: 6
+  currentQi: 0
+  maxMorale: 8
+  currentMorale: 0
+  Argility: -1
+  Resilience: -4
+  speed: 7
+  fatalLevel: 0
+  woundRecovery: 21
+  skillCooling: 0
+  Attack: 29
+  attackAccuracy: 8
+  createWound: 1
+  Penetrate: 9
+  criticalRate: 219
+  AttackCooling: 0
+  meleeRange: 0.2
+  rangedRange: 0.6
+  criticalMutiple: 0.8
+  fatal_Enhancement: 0.05
+  continuous_DamageRate: 0.3
+  continuous_AttackRate: 0.9
+  Defense: 6
+  penetrateDefense: -4
+  criticalDefense: -3
+  fatalDefense: -2.4
+  parryCoolDown: 0

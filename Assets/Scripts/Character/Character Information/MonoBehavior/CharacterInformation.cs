@@ -39,6 +39,22 @@ public class CharacterInformation : MonoBehaviour
         WoundRecoveryProcess();
         VigorRecovery();
     }
+
+    public void ExecuteBenefits()
+    {
+        //TODO:不断的修改效果找到一个数值平衡
+        this.CurrentHealth = Mathf.Min(this.CurrentHealth + (int)(MaxHealth * 0.05), this.MaxHealth);
+        this.CurrentQi = Mathf.Min(this.CurrentQi + (int)(MaxQi * 0.05), this.MaxQi);
+        this.CurrentVigor = Mathf.Min(this.CurrentVigor + (int)(MaxVigor * 0.5), this.MaxVigor);
+        this.CurrentWound = Mathf.Max(this.CurrentWound - 2, 0);
+        this.CurrentMorale = Mathf.Min(this.CurrentMorale + (int)(MaxMorale * 0.25), this.MaxMorale);
+        healthChange.Invoke(this);
+        qiChange.Invoke(this);
+        vigorChange.Invoke(this);
+        woundChange.Invoke(this);
+        moraleChange.Invoke(this);
+    }
+
     #region basicInfor
     public int PrestigeLevel
     {
@@ -178,11 +194,6 @@ public class CharacterInformation : MonoBehaviour
         get { if (fightingData != null) return fightingData.speed; else return 0; }
         set { fightingData.speed = value; }
     }
-    public int FatalLevel
-    {
-        get { if (fightingData != null) return fightingData.fatalLevel; else return 0; }
-        set { fightingData.fatalLevel = value; }
-    }
     public float WoundRecovery
     {
         get { if (fightingData != null) return fightingData.woundRecovery; else return 0; }
@@ -236,13 +247,13 @@ public class CharacterInformation : MonoBehaviour
     }
     public int CriticalPoint
     {
-        get { if (fightingData != null) return fightingData.criticalPoint; else return 0; }
-        set { fightingData.criticalPoint = value; }
+        get { if (fightingData != null) return fightingData.criticalRate; else return 0; }
+        set { fightingData.criticalRate = value; }
     }
     public float Criticalmutiple
     {
-        get { if (fightingData != null) return fightingData.criticalmutiple; else return 0; }
-        set { fightingData.criticalmutiple = value; }
+        get { if (fightingData != null) return fightingData.criticalMutiple; else return 0; }
+        set { fightingData.criticalMutiple = value; }
     }
     public float Fatal_Enhancement
     {
@@ -414,9 +425,9 @@ public class CharacterInformation : MonoBehaviour
         Attack = Mathf.Max(Attack - (int)(templateFightingData.Attack * finalFatal), 0);
         CreateWound = Mathf.Max(CreateWound - (int)(templateFightingData.createWound * finalFatal), 0);
         Penetrate = Mathf.Max(Penetrate - (int)(templateFightingData.Penetrate * finalFatal), 0);
-        CriticalPoint = Mathf.Max(CriticalPoint - (int)(templateFightingData.criticalPoint * finalFatal), 0);
+        CriticalPoint = Mathf.Max(CriticalPoint - (int)(templateFightingData.criticalRate * finalFatal), 0);
         //AttackCooling -= templateFightingData.AttackCooling * finalFatal;
-        Criticalmutiple = Mathf.Max(Criticalmutiple - templateFightingData.criticalmutiple * finalFatal, 0);
+        Criticalmutiple = Mathf.Max(Criticalmutiple - templateFightingData.criticalMutiple * finalFatal, 0);
         Fatal_Enhancement = Mathf.Max(Fatal_Enhancement - templateFightingData.fatal_Enhancement * finalFatal, 0);
         Continuous_DamageRate = Mathf.Max(Continuous_DamageRate - templateFightingData.continuous_DamageRate * finalFatal, 0);
         Continuous_AttackRate = Mathf.Max(Continuous_AttackRate - templateFightingData.continuous_AttackRate * finalFatal, 0);
@@ -464,8 +475,8 @@ public class CharacterInformation : MonoBehaviour
         Attack = (int)(templateFightingData.Attack * recover);
         CreateWound = (int)(templateFightingData.createWound * recover);
         Penetrate = (int)(templateFightingData.Penetrate * recover);
-        CriticalPoint = (int)(templateFightingData.criticalPoint * recover);
-        Criticalmutiple = (int)(templateFightingData.criticalmutiple * recover);
+        CriticalPoint = (int)(templateFightingData.criticalRate * recover);
+        Criticalmutiple = (int)(templateFightingData.criticalMutiple * recover);
         Fatal_Enhancement = (int)(templateFightingData.fatal_Enhancement * recover);
         Continuous_DamageRate = (int)(templateFightingData.continuous_DamageRate * recover);
         Continuous_AttackRate = (int)(templateFightingData.continuous_AttackRate * recover);

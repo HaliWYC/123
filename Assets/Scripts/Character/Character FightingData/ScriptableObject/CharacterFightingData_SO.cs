@@ -37,11 +37,11 @@ public class CharacterFightingData_SO : ScriptableObject
     public int attackAccuracy;
     public int createWound;
     public int Penetrate;
-    public int criticalPoint;
+    public int criticalRate;
     public float AttackCooling;
     public float meleeRange;
     public float rangedRange;
-    public float criticalmutiple;
+    public float criticalMutiple;
     public float fatal_Enhancement;
     public float continuous_DamageRate;
     public float continuous_AttackRate;

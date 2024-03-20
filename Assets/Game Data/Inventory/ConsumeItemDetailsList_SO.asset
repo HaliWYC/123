@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55e320c964086e541863668cc8041d6c, type: 3}
+  m_Name: ConsumeItemDetailsList_SO
+  m_EditorClassIdentifier: 
+  consumeItemDetailsList:
+  - itemID: 0
+    itemName: NEW ITEM
+    itemIcon: {fileID: 0}
+    iconOnWorldSprite: {fileID: 0}
+    itemType: 0
+    itemDescription: 
+    useRadius: 7
+    canPickUp: 0
+    canDrop: 0
+    Stackable: 0
+    itemPrice: 0
+    sellPercentage: 0
+    consumeItemType: 0
+    ConsumeItemQuality: 0
+    BuffList: []

@@ -10,7 +10,6 @@ namespace ShanHai_IsolatedCity.Inventory
     {
         public Image itemIcon;
         public Text itemName;
-        public Text weaponQuaity;
         public Text qualityType;
         public Text totalPrice;
         public InputField tradeAmount;
@@ -36,18 +35,16 @@ namespace ShanHai_IsolatedCity.Inventory
             itemName.text = item.itemName;
             isSellTrade = isSell;
             tradeAmount.text = string.Empty;
+            //FIXME 修改不同装备显示效果
+            //qualityType.text = item.qualityType.ToString();
+            qualityType.gameObject.SetActive(true);
+
             switch (itemType)
             {
                 case ItemType.装备:
-                    WeaponDetails weapon = (WeaponDetails)item;
-                    weaponQuaity.text = weapon.weaponQuality.ToString();
-                    weaponQuaity.gameObject.SetActive(true);
-                    qualityType.gameObject.SetActive(false);
+
                     break;
                 case ItemType.其他物品:
-                    qualityType.text = item.itemQuality.ToString();
-                    qualityType.gameObject.SetActive(true);
-                    weaponQuaity.gameObject.SetActive(false);
                     break;
             }
             

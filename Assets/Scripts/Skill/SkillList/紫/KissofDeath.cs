@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ShanHai_IsolatedCity.Skill;
 
 public class KissofDeath : SkillSpellManager
 {

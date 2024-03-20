@@ -5,13 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="NEW Skill",menuName ="Skill/SkillData")]
 public class SkillDetails_SO : ScriptableObject
 {
-    //Skill ID: 1:Type(Skill is 3); 2:Quality(1:Grey;2:Purple;3:Blue;4:Cyan;5:Green;6:Yellow;7:Orange;8:Red); 3:Number; 4:Number; 5:Number; 6:Number; 7:Number
-    //Example:3200001 -> Tentacle
     [Header("基础信息")]
     public string SkillName;
     public int skillID;
     public Sprite skillIcon;
-    public QualityType skillQuality;
+    public BasicQualityType skillQuality;
     [TextArea]
     public string skillInformation;//The area where the introduction of the skill is.
     public int currentExp;//Current experience

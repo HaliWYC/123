@@ -5,5 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="InventoryBag_SO",menuName ="Inventory/InventoryBag")]
 public class InventoryBag_SO : ScriptableObject
 {
+    public int Money;
     public List<InventoryItem> itemList;
 }

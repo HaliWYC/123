@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ee9ebbbaa2a4666a62c4622f6ffd10, type: 3}
+  m_Name: EquipItemDetailsList_SO
+  m_EditorClassIdentifier: 
+  equipItemDetailsList:
+  - itemID: 20007
+    itemName: "\u65E0\u654C\u8304\u5B50"
+    itemIcon: {fileID: 21300000, guid: 18dd810d9429d489cae29f0f11a4d177, type: 3}
+    iconOnWorldSprite: {fileID: 0}
+    itemType: 0
+    itemDescription: "\u65E0\u654C\u8304\u5B50"
+    useRadius: 0
+    canPickUp: 0
+    canDrop: 0
+    Stackable: 0
+    itemPrice: 0
+    sellPercentage: 0
+    equipItemType: 4
+    EquipItemQuality: 6
+    EquipData: {fileID: 11400000, guid: 4eb0bee3361d249699d3250eece2e53c, type: 2}

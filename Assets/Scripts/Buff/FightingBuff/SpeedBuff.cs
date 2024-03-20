@@ -27,7 +27,10 @@ public class SpeedBuff : BuffBase
                     targetInfor.Speed = Mathf.Max(targetInfor.Speed - (int)(targetInfor.Speed * (1 + buffValue) * ExpIncrement), 0);
             }
             else
+            {
+                //Debug.Log(targetInfor.Speed);
                 targetInfor.Speed = Mathf.Max(targetInfor.Speed - (int)(buffValue * ExpIncrement), 0);
+            }
         }
     }
 

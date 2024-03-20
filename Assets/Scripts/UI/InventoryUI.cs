@@ -70,7 +70,7 @@ namespace ShanHai_IsolatedCity.Inventory
             }
             bagOpened = bagUI.activeInHierarchy;
 
-            playerMoneyText.text = InventoryManager.Instance.playerMoney.ToString();
+            playerMoneyText.text = InventoryManager.Instance.playerBag.Money.ToString();
         }
 
         private void Update()
@@ -93,25 +93,23 @@ namespace ShanHai_IsolatedCity.Inventory
             NPCName = InventoryManager.Instance.returnNPCName();
             switch (location)
             {
-                case InventoryLocation.角色:
+                case InventoryLocation.Player:
                     for(int i =0; i < playerSlots.Length; i++)
                     {
                         if (list[i].itemAmount > 0)
                         {
-                            
-                            var Item = InventoryManager.Instance.GetItemDetails(list[i].itemID);
+                            var Item = InventoryManager.Instance.GetItemDetails(list[i].itemID, list[i].Type);
                             playerSlots[i].UpDateSlot(Item, list[i].itemAmount);
                         }
                         else
                         {
-                            
                             playerSlots[i].UpDateEmptySlot();
                         }
                     }
 
                     break;
 
-                case InventoryLocation.箱子:
+                case InventoryLocation.NPC:
            
                     for (int i = 0; i < bagSlots.Count; i++)
                     {
@@ -120,7 +118,7 @@ namespace ShanHai_IsolatedCity.Inventory
 
                         if (list[i].itemAmount > 0)
                         {
-                            var Item = InventoryManager.Instance.GetItemDetails(list[i].itemID);
+                            var Item = InventoryManager.Instance.GetItemDetails(list[i].itemID, list[i].Type);
                             bagSlots[i].UpDateSlot(Item, list[i].itemAmount);
                         }
                         else
@@ -133,9 +131,9 @@ namespace ShanHai_IsolatedCity.Inventory
                     break;
 
             }
-            playerMoneyText.text = InventoryManager.Instance.playerMoney.ToString();
+            playerMoneyText.text = InventoryManager.Instance.playerBag.Money.ToString();
             if(!isFirstTime)
-            NPCMoneyText.text = NPCManager.Instance.GetNPCDetail(NPCName).NPCMoney.ToString();
+            NPCMoneyText.text = NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.Money.ToString();
         }
 
         
@@ -178,7 +176,7 @@ namespace ShanHai_IsolatedCity.Inventory
                 bagOpened = true;
             }
 
-            OnUpdateInventoryUI(InventoryLocation.箱子, bagData.itemList);
+            OnUpdateInventoryUI(InventoryLocation.NPC, bagData.itemList);
         }
 
         private void OnBaseBagCloseEvent(SlotType slotType, InventoryBag_SO bagData)

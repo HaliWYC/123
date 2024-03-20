@@ -16,7 +16,7 @@ MonoBehaviour:
   skillID: 3200001
   skillIcon: {fileID: 0}
   skillQuality: 6
-  skillInformation: 
+  skillInformation: "\u6765\u81EA\u5730\u72F1\u7684\u89E6\u624B\uFF0C\u5C06\u5BF9\u654C\u4EBA\u9020\u6210\u591A\u6BB5\u95F4\u9694\u4F24\u5BB3\uFF0C\u540C\u65F6\u51CF\u901F\u654C\u4EBA\u3002"
   currentExp: 0
   nextExp: 0
   skillProficiency: 4

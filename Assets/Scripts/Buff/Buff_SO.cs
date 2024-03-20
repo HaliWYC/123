@@ -9,6 +9,8 @@ public class Buff_SO : ScriptableObject
     public string buffName;
     public int buffID;
     public Sprite buffIcon;
+    [TextArea]
+    public string buffDescription;
 
     [Header("Buff属性")]
     public BuffDurationType buffState;//Once/Sustain/Permanent

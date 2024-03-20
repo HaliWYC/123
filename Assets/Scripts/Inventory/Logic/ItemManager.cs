@@ -104,7 +104,7 @@ namespace ShanHai_IsolatedCity.Inventory
                     foreach (var item in currentSceneItems)
                     {
                         Item newItem = Instantiate(itemPrefab, item.position.ToVector3(), Quaternion.identity, itemParent);
-                        newItem.Init(item.itemID);
+                        newItem.Init(item.itemID,newItem.itemType);
                     }
                 }
             }

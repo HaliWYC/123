@@ -12,136 +12,203 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e114af62453f422ba369bed66903ec9, type: 3}
   m_Name: PlayerBag
   m_EditorClassIdentifier: 
+  Money: 2000
   itemList:
-  - itemID: 28000001
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 0
+    itemAmount: 0
+    Type: 0
+  - itemID: 20007
     itemAmount: 1
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
+    Type: 0
   - itemID: 0
     itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
-  - itemID: 0
-    itemAmount: 0
+    Type: 0

@@ -1,38 +1,38 @@
-﻿using UnityEditor;
+using System;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using System.Collections.Generic;
-using System;
 using System.Linq;
 using UnityEditor.UIElements;
 
-public class ItemEditor : EditorWindow
+public class ConsumeItemDetailsEditor : EditorWindow
 {
     [SerializeField]
     private VisualTreeAsset m_VisualTreeAsset = default;
 
     private VisualTreeAsset itemRowTemplate;
 
-    private ItemDataList_SO database;
+    private ConsumeItemDetailsList_SO database;
 
     //Get the Visual Element
     private ListView itemListView;
 
     private ScrollView itemDetailsSection;
 
-    private ItemDetails activeItem;
+    private ConsumeItemDetails activeItem;
 
     private VisualElement iconPreview;
 
     private Sprite defaultIcon;
 
-    private List<ItemDetails> itemList = new List<ItemDetails>();
+    private List<ConsumeItemDetails> itemList = new List<ConsumeItemDetails>();
 
-    [MenuItem("山海：绝命孤城/ItemEditor")]
+    [MenuItem("山海：绝命孤城/ConsumeItemDetailsEditor")]
     public static void ShowExample()
     {
-        ItemEditor wnd = GetWindow<ItemEditor>();
-        wnd.titleContent = new GUIContent("ItemEditor");
+        ConsumeItemDetailsEditor wnd = GetWindow<ConsumeItemDetailsEditor>();
+        wnd.titleContent = new GUIContent("ConsumeItemDetailsEditor");
     }
 
     public void CreateGUI()
@@ -41,20 +41,17 @@ public class ItemEditor : EditorWindow
         VisualElement root = rootVisualElement;
 
         // VisualElements objects can contain other VisualElement following a tree hierarchy.
-        /*VisualElement label = new Label("Hello World! From C#");
-        root.Add(label);*/
 
         // Instantiate UXML
         VisualElement labelFromUXML = m_VisualTreeAsset.Instantiate();
         root.Add(labelFromUXML);
-
         //Get defaultIcon
         defaultIcon = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/M Studio/Art/Items/Icons/icon_M.png");
         //Variable assignments
         itemListView = root.Q<VisualElement>("ItemList").Q<ListView>("ListView");
         itemDetailsSection = root.Q<ScrollView>("ItemDetails");
         iconPreview = itemDetailsSection.Q<VisualElement>("Icon");
- 
+
 
         //Get Buttons
 
@@ -71,7 +68,17 @@ public class ItemEditor : EditorWindow
         generateListView();
     }
 
-    #region ClickButton
+    private void onAddItemClicked()
+    {
+        ConsumeItemDetails newItem = new ConsumeItemDetails();
+
+        newItem.itemName = "NEW ITEM";
+        newItem.itemID = itemList.Count;
+        itemList.Add(newItem);
+
+        itemListView.Rebuild();
+    }
+
     private void onDeleteItemClicked()
     {
         itemList.Remove(activeItem);
@@ -79,32 +86,21 @@ public class ItemEditor : EditorWindow
         itemDetailsSection.visible = false;
     }
 
-    private void onAddItemClicked()
-    {
-        ItemDetails newItem = new ItemDetails();
-
-        newItem.itemName = "NEW ITEM";
-        newItem.itemID = 1000 + itemList.Count;
-        itemList.Add(newItem);
-
-        itemListView.Rebuild();
-    }
-    #endregion
     private void loadDataBase()
     {
-        var dataArray = AssetDatabase.FindAssets("ItemDataList_SO");
+        var dataArray = AssetDatabase.FindAssets("ConsumeItemDetailsList_SO");
 
-        if(dataArray.Length > 1)
+        if (dataArray.Length > 1)
         {
             var path = AssetDatabase.GUIDToAssetPath(dataArray[0]);
-            database = AssetDatabase.LoadAssetAtPath(path, typeof(ItemDataList_SO)) as ItemDataList_SO;
+            database = AssetDatabase.LoadAssetAtPath(path, typeof(ConsumeItemDetailsList_SO)) as ConsumeItemDetailsList_SO;
         }
 
-        itemList = database.itemDetailsList;
+        itemList = database.consumeItemDetailsList;
 
         //It will not store the data if it is not marked as dirty
         EditorUtility.SetDirty(database);
-    } 
+    }
 
     private void generateListView()
     {
@@ -132,7 +128,7 @@ public class ItemEditor : EditorWindow
 
     private void onListSelectionChange(IEnumerable<object> selectedItem)
     {
-        activeItem = (ItemDetails)selectedItem.First();
+        activeItem = (ConsumeItemDetails)selectedItem.First();
         getItemDetails();
         itemDetailsSection.visible = true;
     }
@@ -154,9 +150,6 @@ public class ItemEditor : EditorWindow
             itemListView.Rebuild();
         });
 
-        /*Debug.Log(defaultIcon);
-        Debug.Log(iconPreview);*/
-
         iconPreview.style.backgroundImage = activeItem.itemIcon == null ? defaultIcon.texture : activeItem.itemIcon.texture;
         itemDetailsSection.Q<ObjectField>("ItemIcon").value = activeItem.itemIcon;
         itemDetailsSection.Q<ObjectField>("ItemIcon").RegisterValueChangedCallback(evt =>
@@ -172,25 +165,36 @@ public class ItemEditor : EditorWindow
         itemDetailsSection.Q<ObjectField>("ItemSprite").RegisterValueChangedCallback(evt =>
         {
             activeItem.iconOnWorldSprite = (Sprite)evt.newValue;
+
+            itemListView.Rebuild();
         });
 
         itemDetailsSection.Q<EnumField>("ItemType").Init(activeItem.itemType);
         itemDetailsSection.Q<EnumField>("ItemType").value = activeItem.itemType;
         itemDetailsSection.Q<EnumField>("ItemType").RegisterValueChangedCallback(evt =>
         {
-            
+
             activeItem.itemType = (ItemType)evt.newValue;
             itemListView.Rebuild();
         });
 
-        /*itemDetailsSection.Q<EnumField>("WeaponType").Init(activeItem.weaponType);
-        itemDetailsSection.Q<EnumField>("WeaponType").value = activeItem.weaponType;
-        itemDetailsSection.Q<EnumField>("WeaponType").RegisterValueChangedCallback(evt =>
+        itemDetailsSection.Q<EnumField>("ItemQuality").Init(activeItem.ConsumeItemQuality);
+        itemDetailsSection.Q<EnumField>("ItemQuality").value = activeItem.ConsumeItemQuality;
+        itemDetailsSection.Q<EnumField>("ItemQuality").RegisterValueChangedCallback(evt =>
         {
 
-            activeItem.weaponType = (WeaponType)evt.newValue;
+            activeItem.ConsumeItemQuality = (BasicQualityType)evt.newValue;
             itemListView.Rebuild();
-        });*/
+        });
+
+        itemDetailsSection.Q<EnumField>("ConsumeType").Init(activeItem.consumeItemType);
+        itemDetailsSection.Q<EnumField>("ConsumeType").value = activeItem.consumeItemType;
+        itemDetailsSection.Q<EnumField>("ConsumeType").RegisterValueChangedCallback(evt =>
+        {
+
+            activeItem.consumeItemType = (ConsumeItemType)evt.newValue;
+            itemListView.Rebuild();
+        });
 
         itemDetailsSection.Q<TextField>("Description").value = activeItem.itemDescription;
         itemDetailsSection.Q<TextField>("Description").RegisterValueChangedCallback(evt =>
@@ -210,18 +214,17 @@ public class ItemEditor : EditorWindow
             activeItem.canPickUp = evt.newValue;
         });
 
-        itemDetailsSection.Q<Toggle>("CanDrop").value = activeItem.canDrop;
-        itemDetailsSection.Q<Toggle>("CanDrop").RegisterValueChangedCallback(evt =>
-        {
-            activeItem.canDrop = evt.newValue;
-        });
-
         itemDetailsSection.Q<Toggle>("Stackable").value = activeItem.Stackable;
         itemDetailsSection.Q<Toggle>("Stackable").RegisterValueChangedCallback(evt =>
         {
             activeItem.Stackable = evt.newValue;
         });
 
+        itemDetailsSection.Q<Toggle>("CanDrop").value = activeItem.canDrop;
+        itemDetailsSection.Q<Toggle>("CanDrop").RegisterValueChangedCallback(evt =>
+        {
+            activeItem.canDrop = evt.newValue;
+        });
         itemDetailsSection.Q<IntegerField>("Price").value = activeItem.itemPrice;
         itemDetailsSection.Q<IntegerField>("Price").RegisterValueChangedCallback(evt =>
         {

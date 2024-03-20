@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using ShanHai_IsolatedCity.Skill;
 
 [RequireComponent(typeof(Skills))]
 public class Player : MonoBehaviour
@@ -17,8 +18,6 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform playerTransform;
 
     public float speed;
-    //private float inputX;
-    //private float inputY;
 
     public Vector2 movementInput;
 
@@ -30,8 +29,6 @@ public class Player : MonoBehaviour
     private int runnerComsume = 5;
     public List<GameObject> attackTargetList;
     public GameObject attackTarget;
-    private bool isTargetNull; // Use in SelectEnemyFromList to check whether first time should zoom on certain target
-    private int indexOfCurrentTargetInList =0;
 
     public bool canExecute;
     private bool canAction;
@@ -69,6 +66,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         isDead = playerInformation.CurrentHealth <= 0;
+        eyeRange = CheckEyeRange();
         if (isDead)
         {
             inputDisable = true;
@@ -81,22 +79,19 @@ public class Player : MonoBehaviour
         lastAttackTime -= Time.deltaTime;
         lastParryTime -= Time.deltaTime;
 
-        isTargetNull = attackTarget == null;
         SelectEnemyFromList();
 
         PlayerExecute();
         PlayerParry();
         PlayerRolling();
         PlayerAttack();
-        Running();
-
-        AttackListTest();
+        PlayerRunning();
 
         movementInput = inputControl.Gameplay.Move.ReadValue<Vector2>();
         SwitchAnimation();
     }
 
-
+    
 
     private void FixedUpdate()
     {
@@ -113,6 +108,7 @@ public class Player : MonoBehaviour
         EventHandler.MoveToPosition += OnMoveToPosition;
         EventHandler.UpdateGameStateEvent += OnUpdateGameStateEvent;
         EventHandler.AllowPlayerInputEvent += OnAllowPlayerInputEvent;
+        EventHandler.EnemyInAttackListEvent += OnEnemyInAttackListEvent;
     }
 
     private void OnDisable()
@@ -124,12 +120,25 @@ public class Player : MonoBehaviour
         EventHandler.MouseClickEvent -= OnMouseClickEvent;
         EventHandler.UpdateGameStateEvent -= OnUpdateGameStateEvent;
         EventHandler.AllowPlayerInputEvent -= OnAllowPlayerInputEvent;
-        
+        EventHandler.EnemyInAttackListEvent -= OnEnemyInAttackListEvent;
     }
+
+    #region Events
 
     private void OnAllowPlayerInputEvent(bool input)
     {
         inputDisable = !input;
+    }
+
+    private void OnEnemyInAttackListEvent(GameObject enemy, bool shouldExist)
+    {
+        if (shouldExist)
+        {
+           if(!CheckEnemyExist(attackTargetList,enemy))
+            attackTargetList.Add(enemy);
+        }
+        else if(attackTargetList.Count>0 && CheckEnemyExist(attackTargetList, enemy))
+            attackTargetList.RemoveAt(attackTargetList.IndexOf(enemy));
     }
 
     private void OnUpdateGameStateEvent(GameState gameState)
@@ -150,7 +159,6 @@ public class Player : MonoBehaviour
     private void OnMouseClickEvent(Vector3 pos, ItemDetails itemDetails)
     {
         //TODO: Execute animation
-
         EventHandler.CallExecuteActionAfterAnimation(pos, itemDetails);
     }
 
@@ -168,6 +176,54 @@ public class Player : MonoBehaviour
     {
         inputDisable = true;
     }
+
+    #endregion
+
+    #region PlayerCheck
+    /// <summary>
+    /// Check whether the given target has already exist in the attackTarget List
+    /// </summary>
+    /// <param name="attackList"></param>
+    /// <param name="target"></param>
+    /// <returns></returns>
+    private bool CheckEnemyExist(List<GameObject> attackList, GameObject target)
+    {
+        foreach (GameObject enemy in attackList)
+        {
+            if (target == enemy)
+                return true;
+        }
+        return false;
+    }
+
+    private float CheckEyeRange()
+    {
+        return Mathf.Max(playerInformation.MeleeRange, playerInformation.RangedRange) + Settings.eyeRangeBase;
+    }
+
+    private void FaceAttackTarget()
+    {
+        if(attackTarget!=null)
+        if (attackTarget.transform.position.x >= transform.position.x)
+        {
+            if (playerTransform.localScale.x >= 0)
+                transform.position = new Vector3(attackTarget.transform.position.x - Settings.stopDistance, attackTarget.transform.position.y, attackTarget.transform.position.z);
+            else
+                transform.position = new Vector3(attackTarget.transform.position.x + Settings.stopDistance, attackTarget.transform.position.y, attackTarget.transform.position.z);
+        }
+        else
+        {
+            if (playerTransform.localScale.x >= 0)
+                transform.position = new Vector3(attackTarget.transform.position.x - Settings.stopDistance, attackTarget.transform.position.y, attackTarget.transform.position.z);
+            else
+                transform.position = new Vector3(attackTarget.transform.position.x + Settings.stopDistance, attackTarget.transform.position.y, attackTarget.transform.position.z);
+        }
+
+    }
+
+    #endregion
+
+
 
     private void Movement()
     {
@@ -228,7 +284,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void Running()
+    private void PlayerRunning()
     {
         if (isDead || !canAction || isExecute || isRolling) return;
         if (Input.GetKey(KeyCode.LeftShift) && playerInformation.CurrentVigor-runnerComsume > 0)
@@ -312,9 +368,10 @@ public class Player : MonoBehaviour
 
     public void StartExecute()
     {
-        //TODO:后面加上瞬移到目标前方
+        FaceAttackTarget();
         inputDisable = true;
         playerInformation.isUndefeated = true;
+        attackTarget.GetComponent<EnemyController>().dizzytime = 100;
         isExecute = true;
     }
 
@@ -324,6 +381,7 @@ public class Player : MonoBehaviour
         attackTarget.GetComponent<EnemyController>().dizzytime = 0;
         isExecute = false;
         playerInformation.isUndefeated = false;
+        playerInformation.ExecuteBenefits();
     }
 
     public void Hit()
@@ -340,6 +398,23 @@ public class Player : MonoBehaviour
             targetInformation.FinalDamage(playerInformation, targetInformation);
         }
     }
+
+    /// <summary>
+    /// Select a enemy from attackTargetList as the attackTarget
+    /// </summary>
+    private void SelectEnemyFromList()
+    {
+        if (Input.GetKeyDown(KeyCode.F) && attackTargetList.Count > 0)
+        {
+            int indexInList = UnityEngine.Random.Range(0, attackTargetList.Count);
+
+            if (attackTargetList[indexInList] != null)
+            {
+                attackTarget = attackTargetList[indexInList];
+                Debug.Log(attackTarget);
+            }
+        }
+    }
     #endregion
 
 
@@ -347,6 +422,7 @@ public class Player : MonoBehaviour
     {
         if (target.CompareTag("Enemy") || target.CompareTag("NPC"))
         {
+            if(attackTarget==null)
             attackTarget = target.gameObject;
         }
     }
@@ -357,41 +433,11 @@ public class Player : MonoBehaviour
         attackTarget = null;
     }
 
-    private void SelectEnemyFromList()
+    private void OnDrawGizmosSelected()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (isTargetNull)
-                Debug.Log(attackTarget);
-            else if (attackTargetList.Count > 0)
-            {
-                if (attackTargetList[indexOfCurrentTargetInList])
-                {
-                    attackTarget = attackTargetList[indexOfCurrentTargetInList];
-                }
-                else
-                {
-                    GetComponentInChildren<PlayerEyeRange>().checkEnemyNumber();
-                }
-
-                Debug.Log(attackTarget);
-                
-                indexOfCurrentTargetInList++;
-
-                if (indexOfCurrentTargetInList + 1 > attackTargetList.Count)
-                {
-                    indexOfCurrentTargetInList = 0;
-                }
-            }
-        }
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, eyeRange);
     }
 
-    private void AttackListTest()
-    {
-        if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            foreach (GameObject enemy in attackTargetList)
-                Debug.Log(enemy);
-        }
-    }
+    
 }

@@ -10,7 +10,11 @@ namespace ShanHai_IsolatedCity.Inventory
     public class InventoryManager : Singleton<InventoryManager>
     {
         [Header("物品数据")]
-        public ItemDataList_SO itemDataList_SO;
+        public EquipItemDetailsList_SO equipItemDetailsList_SO;
+        public ConsumeItemDetailsList_SO consumeItemDetailsList_SO;
+        public TaskItemDetailsList_SO taskItemDetailsList_SO;
+        public OtherItemDetailsList_SO otherItemDetailsList_SO;
+        
 
         [Header("背包数据")]
 
@@ -19,8 +23,6 @@ namespace ShanHai_IsolatedCity.Inventory
 
 
         [Header("交易数据")]
-
-        public int playerMoney;
         private string NPCName;
 
         //public bool isSell =false;
@@ -30,8 +32,7 @@ namespace ShanHai_IsolatedCity.Inventory
 
         private void Start()
         {
-            EventHandler.CallUpdateInventoryUI(InventoryLocation.角色, playerBag.itemList);
-            
+            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
         }
 
         private void OnEnable()
@@ -67,11 +68,43 @@ namespace ShanHai_IsolatedCity.Inventory
         /// </summary>
         /// <param name="ID">ItemID</param>
         /// <returns></returns>
-
-        public ItemDetails GetItemDetails(int ID)
+        public ItemDetails GetItemDetails(int ID,ItemType itemType)
         {
-            return itemDataList_SO.itemDetailsList.Find(i => i.itemID == ID);
+            switch (itemType)
+            {
+                case ItemType.装备:
+                    return equipItemDetailsList_SO.equipItemDetailsList.Find(i => i.itemID == ID);
+                case ItemType.消耗品:
+                    return consumeItemDetailsList_SO.consumeItemDetailsList.Find(i => i.itemID == ID);
+                case ItemType.任务物品:
+                    return taskItemDetailsList_SO.taskItemDetailsList.Find(i => i.itemID == ID);
+                case ItemType.其他物品:
+                    return otherItemDetailsList_SO.otherItemDetailsList.Find(i => i.itemID == ID);
+            }
+            return null;
         }
+
+
+        public EquipItemDetails GetEquipItemDetails(int ID)
+        {
+            return equipItemDetailsList_SO.equipItemDetailsList.Find(i => i.itemID == ID);
+        }
+
+        public ConsumeItemDetails GetConsumeItemDetails(int ID)
+        {
+            return consumeItemDetailsList_SO.consumeItemDetailsList.Find(i => i.itemID == ID);
+        }
+
+        public TaskItemDetails GetTaskItemDetails(int ID)
+        {
+            return taskItemDetailsList_SO.taskItemDetailsList.Find(i => i.itemID == ID);
+        }
+
+        public OtherItemDetails GetOtherItemDetails(int ID)
+        {
+            return otherItemDetailsList_SO.otherItemDetailsList.Find(i => i.itemID == ID);
+        }
+
 
         /// <summary>
         /// Add Item to Player's bag
@@ -84,14 +117,14 @@ namespace ShanHai_IsolatedCity.Inventory
 
           var index = GetItemIndexInBag(item.itemID,SlotType.人物背包);
 
-            AddItemAtIndex(item.itemID, index, 1,SlotType.人物背包);
+            AddItemAtIndex(item.itemID, index, item.itemType, 1,SlotType.人物背包);
             if (toDestory)
             {
                 Destroy(item.gameObject);
             }
 
             //Update UI
-            EventHandler.CallUpdateInventoryUI(InventoryLocation.角色, playerBag.itemList);
+            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
         }
 
         /// <summary>
@@ -144,14 +177,7 @@ namespace ShanHai_IsolatedCity.Inventory
             }
             return -1;
             
-        }
-
-        /// <summary>
-        /// Use ID to find the position of the object had in the NPCbag
-        /// </summary>
-        /// <param name="ID">Item ID</param>
-        /// <returns>-1 means not exist else return the index</returns>
-        
+        }        
 
         /// <summary>
         /// Add the item at the certain index
@@ -159,14 +185,14 @@ namespace ShanHai_IsolatedCity.Inventory
         /// <param name="ID"></param>
         /// <param name="index"></param>
         /// <param name="amount"></param>
-        private void AddItemAtIndex(int ID, int index, int amount,SlotType slotType)
+        private void AddItemAtIndex(int ID, int index, ItemType itemType, int amount,SlotType slotType)
         {
             switch (slotType)
             {
                 case SlotType.人物背包:
                     if (index == -1 && CheckBagCapacity())//Does not have this item 
                     {
-                        var Item = new InventoryItem { itemID = ID, itemAmount = amount };
+                        var Item = new InventoryItem { itemID = ID, itemAmount = amount, Type=itemType };
 
                         for (int i = 0; i < playerBag.itemList.Count; i++)
                         {
@@ -179,18 +205,18 @@ namespace ShanHai_IsolatedCity.Inventory
                     }
                     else//Does have this item
                     {
-                        if (GetItemDetails(ID).Stackable)
+                        if (GetItemDetails(ID, itemType).Stackable)
                         {
                             int currentAmount = playerBag.itemList[index].itemAmount + amount;
 
-                            var Item = new InventoryItem { itemID = ID, itemAmount = currentAmount };
+                            var Item = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type=itemType};
 
                             playerBag.itemList[index] = Item;
                         }
 
-                        else if (!GetItemDetails(ID).Stackable && CheckBagCapacity())//Not Stackable
+                        else if (!GetItemDetails(ID, itemType).Stackable && CheckBagCapacity())//Not Stackable
                         {
-                            var Item = new InventoryItem { itemID = ID, itemAmount = amount };
+                            var Item = new InventoryItem { itemID = ID, itemAmount = amount, Type=itemType };
 
                             for (int i = 0; i < playerBag.itemList.Count; i++)
                             {
@@ -212,32 +238,32 @@ namespace ShanHai_IsolatedCity.Inventory
                     if (index == -1 )//Does not have this item 
                     {
                         //isSell = true;
-                        var Item = new InventoryItem { itemID = ID, itemAmount = amount };
+                        var Item = new InventoryItem { itemID = ID, itemAmount = amount, Type = itemType };
                         NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList.Add(Item);
                         /*EventHandler.callBaseBagOpenEvent(SlotType.NPC背包, NPCManager.Instance.getNPCDetail(NPCName).NPCBag);
                         isSell = false;*/
-                        EventHandler.CallUpdateInventoryUI(InventoryLocation.箱子,NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList);
+                        EventHandler.CallUpdateInventoryUI(InventoryLocation.NPC,NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList);
                         
                     }
                     else//Does have this item
                     {
-                        if (GetItemDetails(ID).Stackable)
+                        if (GetItemDetails(ID, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList[index].Type).Stackable)
                         {
                             int currentAmount = NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList[index].itemAmount + amount;
 
-                            var Item = new InventoryItem { itemID = ID, itemAmount = currentAmount };
+                            var Item = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
 
                             NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList[index] = Item;
                         }
 
-                        else if (!GetItemDetails(ID).Stackable)//Not Stackable
+                        else if (!GetItemDetails(ID, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList[index].Type).Stackable)//Not Stackable
                         {
                             //isSell = true;
-                            var Item = new InventoryItem { itemID = ID, itemAmount = amount };
+                            var Item = new InventoryItem { itemID = ID, itemAmount = amount, Type = itemType };
                             NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList.Add(Item);
                             /*EventHandler.callBaseBagOpenEvent(SlotType.NPC背包, NPCManager.Instance.getNPCDetail(NPCName).NPCBag);
                             isSell = false;*/
-                            EventHandler.CallUpdateInventoryUI(InventoryLocation.箱子, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList);
+                            EventHandler.CallUpdateInventoryUI(InventoryLocation.NPC, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList);
                         }
                         else
                         {
@@ -272,7 +298,7 @@ namespace ShanHai_IsolatedCity.Inventory
                 playerBag.itemList[targetIndex] = currentItem;
                 playerBag.itemList[initialIndex] = new InventoryItem();
             }
-            EventHandler.CallUpdateInventoryUI(InventoryLocation.角色, playerBag.itemList);
+            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
         }
 
         /// <summary>
@@ -298,7 +324,7 @@ namespace ShanHai_IsolatedCity.Inventory
                         playerBag.itemList[index] = item;
                     }
 
-                    EventHandler.CallUpdateInventoryUI(InventoryLocation.角色, playerBag.itemList);
+                    EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
                     break;
                 case SlotType.NPC背包:
                     if (NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList[index].itemAmount > removeAmount)
@@ -314,7 +340,7 @@ namespace ShanHai_IsolatedCity.Inventory
                         NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList[index] = NPCItem;
                     }
 
-                    EventHandler.CallUpdateInventoryUI(InventoryLocation.箱子, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList);
+                    EventHandler.CallUpdateInventoryUI(InventoryLocation.NPC, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList);
                     break;
                     
             }
@@ -336,14 +362,14 @@ namespace ShanHai_IsolatedCity.Inventory
             if (isSellTrade) //Sell 
             {
                 
-                if (playerBag.itemList[index].itemAmount >= amount && NPCManager.Instance.GetNPCDetail(NPCName).NPCMoney > (int)(cost*itemDetails.sellPercentage))
+                if (playerBag.itemList[index].itemAmount >= amount && NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.Money > (int)(cost*itemDetails.sellPercentage))
                 {
                     RemoveItem(itemDetails.itemID, amount,SlotType.人物背包);
-                    AddItemAtIndex(itemDetails.itemID, NPCBagIndex, amount, SlotType.NPC背包);
+                    AddItemAtIndex(itemDetails.itemID, NPCBagIndex, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList[NPCBagIndex].Type, amount, SlotType.NPC背包);
                     //Total revenue
                     int presentCost = (int)(cost * itemDetails.sellPercentage);
-                    playerMoney += presentCost;
-                    NPCManager.Instance.GetNPCDetail(NPCName).NPCMoney -= presentCost;
+                    playerBag.Money += presentCost;
+                    NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.Money -= presentCost;
                 }
                 else if(playerBag.itemList[index].itemAmount < amount)
                 {
@@ -358,15 +384,15 @@ namespace ShanHai_IsolatedCity.Inventory
             else if (!isSellTrade)//Buy
             {
                 
-                if(playerMoney - cost >= 0 && amount <= NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList[NPCBagIndex].itemAmount)
+                if(playerBag.Money - cost >= 0 && amount <= NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList[NPCBagIndex].itemAmount)
                 {
                     if (CheckBagCapacity())
                     {
-                        AddItemAtIndex(itemDetails.itemID, index, amount, SlotType.人物背包);
+                        AddItemAtIndex(itemDetails.itemID, index, playerBag.itemList[index].Type, amount, SlotType.人物背包);
                         RemoveItem(itemDetails.itemID, amount, SlotType.NPC背包);
                     }
-                    playerMoney -= cost;
-                    NPCManager.Instance.GetNPCDetail(NPCName).NPCMoney += cost;
+                    playerBag.Money -= cost;
+                    NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.Money += cost;
                 }
                 else 
                 {
@@ -376,8 +402,8 @@ namespace ShanHai_IsolatedCity.Inventory
                 
             }
             //Refresh UI
-            EventHandler.CallUpdateInventoryUI(InventoryLocation.角色, playerBag.itemList);
-            EventHandler.CallUpdateInventoryUI(InventoryLocation.箱子, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList);
+            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, playerBag.itemList);
+            EventHandler.CallUpdateInventoryUI(InventoryLocation.NPC, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.itemList);
         }
 
         public string returnNPCName()

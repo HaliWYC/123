@@ -15,12 +15,24 @@ namespace ShanHai_IsolatedCity.Inventory
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            //Debug.Log(slotUI.itemAmount);
             if (slotUI.itemDetails!=null)
             {
                 inventoryUI.itemToolTip.gameObject.SetActive(true);
-                inventoryUI.itemToolTip.setUpToolTip(slotUI.itemDetails, slotUI.slotType);
-                
+                switch (slotUI.itemDetails.itemType)
+                {
+                    case ItemType.装备:
+                        inventoryUI.itemToolTip.SetUpToolTip(InventoryManager.Instance.GetEquipItemDetails(slotUI.itemDetails.itemID), slotUI.slotType);
+                        break;
+                    case ItemType.消耗品:
+                        inventoryUI.itemToolTip.SetUpToolTip(InventoryManager.Instance.GetConsumeItemDetails(slotUI.itemDetails.itemID), slotUI.slotType);
+                        break;
+                    case ItemType.任务物品:
+                        inventoryUI.itemToolTip.SetUpToolTip(InventoryManager.Instance.GetTaskItemDetails(slotUI.itemDetails.itemID), slotUI.slotType);
+                        break;
+                    case ItemType.其他物品:
+                        inventoryUI.itemToolTip.SetUpToolTip(InventoryManager.Instance.GetOtherItemDetails(slotUI.itemDetails.itemID), slotUI.slotType);
+                        break;
+                }
                 inventoryUI.itemToolTip.GetComponent<RectTransform>().pivot = new Vector2(-0.1f, 0.5f);
                 inventoryUI.itemToolTip.transform.position = transform.position + Vector3.up * 1;
             }
@@ -38,7 +50,6 @@ namespace ShanHai_IsolatedCity.Inventory
         private void Awake()
         {
             slotUI = GetComponent<SlotUI>();
-            
         }
     }
 }

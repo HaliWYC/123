@@ -31,9 +31,6 @@ namespace ShanHai_IsolatedCity.Inventory
         public InventoryUI inventoryUI => GetComponentInParent<InventoryUI>(); 
 
 
-
-
-
         private void Start()
         {
             isSelected = false;
@@ -45,7 +42,7 @@ namespace ShanHai_IsolatedCity.Inventory
         }
 
 
-
+        //FIXME:修改每一个typeofItem
         /// <summary>
         /// Update Slot UI and information
         /// </summary>
@@ -53,7 +50,6 @@ namespace ShanHai_IsolatedCity.Inventory
         /// <param name="amount">HoldingNumber </param>
         public void UpDateSlot(ItemDetails item, int amount)
         {
-            //Debug.Log(amount);
             itemDetails = item;
             slotImage.sprite = item.itemIcon;
             slotImage.enabled = true;
@@ -61,7 +57,6 @@ namespace ShanHai_IsolatedCity.Inventory
             amountText.text = itemAmount.ToString();
             button.interactable = true;
         }
-
 
         /// <summary>
         /// Make the Slot to become empty

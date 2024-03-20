@@ -136,5 +136,11 @@ public static class EventHandler
         DamageTextPopEvent?.Invoke(targetPos, damage, attackEffect);
     }
 
+    public static event Action<GameObject,bool> EnemyInAttackListEvent;
+    public static void CallEnemyInAttackListEvent(GameObject enemy, bool shouldExist)
+    {
+        EnemyInAttackListEvent?.Invoke(enemy,shouldExist);
+    }
+
     //Buff
 }

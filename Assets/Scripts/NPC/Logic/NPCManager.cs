@@ -45,6 +45,7 @@ public class NPCManager : Singleton<NPCManager>
         }
     }
 
+    //FIXME 后期加上使用ID寻找NPC
     public NPCDetails GetNPCDetail(string NPCName)
     {
         foreach(NPCList_SO NPCList_SO in NPCList)

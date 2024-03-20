@@ -26,12 +26,10 @@ public class Execute_Sign : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && canExecute)
-            other.GetComponent<Player>().canExecute = true;
-
-        else
-            other.GetComponent<Player>().canExecute = false;
-
+        if (other.CompareTag("Player"))
+        {
+            other.GetComponent<Player>().canExecute = canExecute;
+        }
     }
 
 

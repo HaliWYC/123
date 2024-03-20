@@ -9,6 +9,7 @@ namespace ShanHai_IsolatedCity.Inventory
     public class Item : MonoBehaviour
     {
         public int itemID;
+        public ItemType itemType;
 
         private SpriteRenderer spriteRenderer;
 
@@ -26,7 +27,7 @@ namespace ShanHai_IsolatedCity.Inventory
         {
             if (itemID != 0)
             {
-                Init(itemID);
+                Init(itemID,itemType);
             }
         }
 
@@ -34,14 +35,14 @@ namespace ShanHai_IsolatedCity.Inventory
         /// Initiate item on world
         /// </summary>
         /// <param name="ID"></param>
-        public void Init(int ID)
+        public void Init(int ID,ItemType itemType)
         {
             
             itemID = ID;
 
             //Get data from inventory manager
 
-            itemDetails = InventoryManager.Instance.GetItemDetails(itemID);
+            itemDetails = InventoryManager.Instance.GetItemDetails(itemID,itemType);
             
             if (itemDetails != null)
             {

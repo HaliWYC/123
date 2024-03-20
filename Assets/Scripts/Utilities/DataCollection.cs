@@ -4,8 +4,6 @@ using UnityEngine;
 [System.Serializable]
 public class ItemDetails
 {
-    //ItemID:1:DataType;2:Quality;3:ItemType;4:ItemSubType1;5:ItemSubType2;6:Number1;7:Number2;8:Number3;9:Number4;10:Number5
-
     public int itemID;
 
     public string itemName;
@@ -16,7 +14,7 @@ public class ItemDetails
 
     public ItemType itemType;
 
-    public QualityType itemQuality;
+
 
     [TextArea]
     public string itemDescription;
@@ -31,20 +29,41 @@ public class ItemDetails
 
     public int itemPrice;
 
-
-
     [Range(0, 1)]
     public float sellPercentage;
-
 }
-public class WeaponDetails : ItemDetails
+
+[System.Serializable]
+public class EquipItemDetails : ItemDetails
 {
-    public WeaponType weaponType;
-
-    public WeaponQualityType weaponQuality;
-
-    public CharacterFightingData_SO weaponData;
+    public EquipItemType equipItemType;
+    public ItemQualityType EquipItemQuality;
+    public CharacterFightingData_SO EquipData;
+    public List<SkillDetails_SO> equipSkills;
 }
+
+[System.Serializable]
+public class ConsumeItemDetails : ItemDetails
+{
+    public ConsumeItemType consumeItemType;
+    public BasicQualityType ConsumeItemQuality;
+    public List<Buff_SO> BuffList;
+}
+
+[System.Serializable]
+public class TaskItemDetails : ItemDetails
+{
+    public BasicQualityType TaskItemQuality;
+    public TaskItemType taskItemType;
+}
+
+[System.Serializable]
+public class OtherItemDetails : ItemDetails
+{
+    public BasicQualityType OtherItemQuality;
+    public OtherItemType otherItemType;
+}
+
 
 
 [System.Serializable]
@@ -52,6 +71,7 @@ public struct InventoryItem
 {
     public int itemID;
     public int itemAmount;
+    public ItemType Type;
 }
 
 [System.Serializable]
@@ -115,11 +135,12 @@ public class NPCPosition
 [System.Serializable]
 public class NPCDetails
 {
+    
     [Header("基本信息")]
     public string NPCName;
-    public EnemyType enemyType;
+    public int NPCID;
+    public EnemyLevelType enemyType;
     public EnemyState enemyState;
-    public int SizeScale;
 
     [Header("战斗信息")]
     //后期合并到Attack Data之中
@@ -127,7 +148,6 @@ public class NPCDetails
     //public float fightSpeed;
     
     [Header("背包信息")]
-    public int NPCMoney;
     public InventoryBag_SO NPCBag;
 }
 

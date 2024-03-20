@@ -10,7 +10,27 @@ public enum SlotType
 
 public enum InventoryLocation
 {
-    角色,箱子
+    Player,NPC
+}
+
+public enum EquipItemType
+{
+    Head,Neck,UpperBody,LowerBody,LeftHand,RightHand,Shoe,Accessory,Mount,Special
+}
+
+public enum ConsumeItemType
+{
+
+}
+
+public enum TaskItemType
+{
+
+}
+
+public enum OtherItemType
+{
+
 }
 
 public enum WeaponType
@@ -18,12 +38,12 @@ public enum WeaponType
     单手剑,双手剑,长刀,短刀,斧头,匕首,盾牌,琴,长枪,长矛,戟,笛,拳套,非武器
 }
 
-public enum WeaponQualityType
+public enum ItemQualityType
 {
     神器,传说,史诗,卓越,精良,优秀,普通,残品
 }
 
-public enum QualityType
+public enum BasicQualityType
 {
     赤,橙,黄,绿,青,蓝,紫,灰
 }
@@ -59,9 +79,9 @@ public enum EnemyState
     和平,警惕,攻击,巡逻,死亡
 }
 
-public enum EnemyType
+public enum EnemyLevelType
 {
-    普通,精英,史诗,神话,Boss,中立
+    入门,普通,精英,史诗,王者,神话,传说,上古,秩序,法则
 }
 
 public enum SkillTargetType
