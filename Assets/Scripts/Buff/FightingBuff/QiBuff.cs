@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
+using ShanHai_IsolatedCity.Buff;
 public class QiBuff : BuffBase
 {
     protected override void BuffLaunch()

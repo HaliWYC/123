@@ -15,9 +15,12 @@ MonoBehaviour:
   buffName: Damage
   buffID: 32000011
   buffIcon: {fileID: 0}
+  buffDescription: 
   buffState: 1
-  buffType: 0
-  isForSelf: 0
+  effectType: 0
+  buffQuality: 3
+  target: 1
+  canReverse: 0
   buffPriority: 1
   isPro: 0
   buffValue: 4
@@ -25,5 +28,5 @@ MonoBehaviour:
   isCurrentValue: 1
   effectTurn: 2
   durationTime: 5
-  canStack: 0
+  CanStack: 0
   stackType: 0

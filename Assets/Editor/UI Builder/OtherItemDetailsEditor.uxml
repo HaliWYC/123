@@ -45,7 +45,8 @@
                     </ui:VisualElement>
                     <ui:VisualElement name="Right" style="flex-grow: 1; width: 50%; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; margin-left: 5px; justify-content: flex-start; align-items: stretch; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-right: 2px;">
                         <ui:Label tabindex="-1" text="Vendor" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Header" style="border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); background-color: rgb(31, 31, 31); -unity-text-outline-color: rgba(0, 0, 0, 0); color: rgb(255, 255, 255); padding-top: 3px; padding-bottom: 3px; padding-left: 10px; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
-                        <ui:IntegerField label="Price" value="0" name="Price" />
+                        <ui:IntegerField label="Gold" value="0" name="Gold" readonly="false" />
+                        <ui:IntegerField label="ShanHaiGold" value="0" name="ShanHaiGold" />
                         <ui:Slider picking-mode="Ignore" label="SellPercentage" value="0" high-value="1" name="SellPercentage" direction="Horizontal" show-input-field="true" inverted="false" />
                     </ui:VisualElement>
                 </ui:VisualElement>

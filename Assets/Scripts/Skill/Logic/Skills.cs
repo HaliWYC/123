@@ -142,20 +142,20 @@ namespace ShanHai_IsolatedCity.Skill
         /// This method is used to sort the bufflist of the skill considering the priority
         /// </summary>
         /// <param name="spellSkill"></param>
-        /// <param name="BuffExpIncrement"></param>
+        /// <param name="SkillExpIncrement"></param>
         /// <param name="skiller"></param>
         /// <param name="defender"></param>
-        public void BuffEvaluation(SkillDetails_SO spellSkill, float BuffExpIncrement, CharacterInformation skiller, CharacterInformation defender)
+        public void BuffEvaluation(SkillDetails_SO spellSkill, float SkillExpIncrement, CharacterInformation skiller, CharacterInformation defender)
         {
-            //FIXME:后期加上如果Priority相同的情况
+            //TODO:后期加上如果Priority相同的情况
             spellSkill.buffList.Sort((x, y) => x.buffPriority.CompareTo(y.buffPriority));
             foreach (Buff_SO buff in spellSkill.buffList)
             {
-                //Check the buff target
-                if (buff.isForSelf)
-                    SwitchBuff(buff, BuffExpIncrement, skiller);
-                else
-                    SwitchBuff(buff, BuffExpIncrement, defender);
+                if (buff.target == BuffTarget.Self)
+                    ClassifyBuff(buff, SkillExpIncrement, skiller);
+                else if (buff.target == BuffTarget.Enemy)
+                    ClassifyBuff(buff, SkillExpIncrement, defender);
+                
             }
         }
 
@@ -164,31 +164,32 @@ namespace ShanHai_IsolatedCity.Skill
         /// 
         /// </summary>
         /// <param name="buff"></param>
-        /// <param name="BuffExpIncrement"></param>
+        /// <param name="SkillExpIncrement"></param>
         /// <param name="buffTarget"></param>
-        public void SwitchBuff(Buff_SO buff, float BuffExpIncrement, CharacterInformation buffTarget)
+        public void ClassifyBuff(Buff_SO buff, float SkillExpIncrement, CharacterInformation buffTarget)
         {
-            switch (buff.buffType)
+            switch (buff.effectType)
             {
-                case EffectType.生命值:
-                    buffTarget.gameObject.AddComponent<HealthBuff>().BuffSetUp(buff, BuffExpIncrement, buffTarget);
+                case EffectType.Health:
+                    buffTarget.gameObject.AddComponent<HealthBuff>().BuffSetUp(buff, SkillExpIncrement, buffTarget);
                     break;
-                case EffectType.伤口:
+                case EffectType.Wound:
                     break;
-                case EffectType.速度:
-                    buffTarget.gameObject.AddComponent<SpeedBuff>().BuffSetUp(buff, BuffExpIncrement, buffTarget);
+                case EffectType.Speed:
+                    buffTarget.gameObject.AddComponent<SpeedBuff>().BuffSetUp(buff, SkillExpIncrement, buffTarget);
                     break;
-                case EffectType.攻击:
+                case EffectType.Attack:
                     break;
-                case EffectType.防御:
+                case EffectType.Defense:
                     break;
-                case EffectType.造成眩晕:
+                case EffectType.Dizzy:
                     break;
-                case EffectType.免疫:
+                case EffectType.Undeated:
                     break;
-                case EffectType.霸体:
+                case EffectType.Dodged:
                     break;
             }
+            buffTarget.BuffList.Add(buff);
         }
 
 

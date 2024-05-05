@@ -198,7 +198,7 @@ public class Player : MonoBehaviour
 
     private float CheckEyeRange()
     {
-        return Mathf.Max(playerInformation.MeleeRange, playerInformation.RangedRange) + Settings.eyeRangeBase;
+        return Mathf.Max(playerInformation.MinimumRange, playerInformation.MaximumRange) + Settings.eyeRangeBase;
     }
 
     private void FaceAttackTarget()
@@ -268,7 +268,7 @@ public class Player : MonoBehaviour
     {
         if (isDead || !canAction || isExecute || isRolling || isParry) return;
 
-        if (lastAttackTime < 0 && CursorManager.Instance.cursorPositionValid && Input.GetMouseButtonUp(0))
+        if (lastAttackTime < 0 /*&& CursorManager.Instance.cursorPositionValid*/ && Input.GetMouseButtonUp(0))
         {
             if (attackTarget == null)
             {
@@ -439,5 +439,9 @@ public class Player : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, eyeRange);
     }
 
-    
+    public void PlayDeath()
+    {
+        Time.timeScale = 0;
+        //TODO:播放死亡界面和后续事件
+    }
 }

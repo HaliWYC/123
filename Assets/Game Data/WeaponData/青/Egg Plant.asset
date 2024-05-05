@@ -12,42 +12,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8157d48f1a6f1e548856042cd586f8a8, type: 3}
   m_Name: Egg Plant
   m_EditorClassIdentifier: 
-  Metal: 3
+  Metal: 1
   Wood: 2
-  Water: 5
-  Fire: 4
-  Ground: 6
-  Lunar_Solar: 9
-  maxHealth: 21
+  Water: 0
+  Fire: 0
+  Ground: 0
+  Lunar_Solar: 6
+  maxHealth: 0
   currentHealth: 5
-  maxVigor: -9
+  maxVigor: 0
   currentVigor: 0
-  maxWound: 4
+  maxWound: 0
   currentWound: 0
-  maxQi: 6
+  maxQi: 0
   currentQi: 0
-  maxMorale: 8
+  maxMorale: 0
   currentMorale: 0
   Argility: -1
   Resilience: -4
   speed: 7
   fatalLevel: 0
-  woundRecovery: 21
+  woundRecovery: 0
   skillCooling: 0
-  Attack: 29
-  attackAccuracy: 8
-  createWound: 1
-  Penetrate: 9
+  Attack: 40
+  attackAccuracy: 9
+  createWound: 0
+  Penetrate: 0
   criticalRate: 219
   AttackCooling: 0
-  meleeRange: 0.2
-  rangedRange: 0.6
+  meleeRange: 0
+  rangedRange: 0
   criticalMutiple: 0.8
   fatal_Enhancement: 0.05
   continuous_DamageRate: 0.3
   continuous_AttackRate: 0.9
-  Defense: 6
+  Defense: 0
   penetrateDefense: -4
   criticalDefense: -3
   fatalDefense: -2.4
   parryCoolDown: 0
+  buffList: []

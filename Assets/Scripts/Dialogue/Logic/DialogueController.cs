@@ -11,9 +11,9 @@ namespace ShanHai_IsolatedCity.Dialogue
     {
         private NPCMovement npc => GetComponent<NPCMovement>();
         
-        public List<DialoguePiece> dialogueList = new List<DialoguePiece>();
+        public List<DialoguePieceWithBox> dialogueList = new List<DialoguePieceWithBox>();
 
-        public Stack<DialoguePiece> dialogueStack;
+        public Stack<DialoguePieceWithBox> dialogueStack;
 
         public UnityEvent onFinishEvent;
 
@@ -55,7 +55,7 @@ namespace ShanHai_IsolatedCity.Dialogue
 
         private void FillDialogueStack()
         {
-            dialogueStack = new Stack<DialoguePiece>();
+            dialogueStack = new Stack<DialoguePieceWithBox>();
 
             for(int i = dialogueList.Count - 1; i > -1; i--)
             {
@@ -66,8 +66,9 @@ namespace ShanHai_IsolatedCity.Dialogue
 
         private IEnumerator DialogueRoutine()
         {
+            //TODO:Add only text dialoguepiece
             isTalking = true;
-            if(dialogueStack.TryPop(out DialoguePiece result))
+            if(dialogueStack.TryPop(out DialoguePieceWithBox result))
             {
                 EventHandler.CallShowDialogueEvent(result);
                 EventHandler.CallUpdateGameStateEvent(GameState.Pause);

@@ -27,7 +27,9 @@ public class ItemDetails
 
     public bool Stackable;
 
-    public int itemPrice;
+    public int gold;
+
+    public int shanHaiGold;
 
     [Range(0, 1)]
     public float sellPercentage;
@@ -37,7 +39,7 @@ public class ItemDetails
 public class EquipItemDetails : ItemDetails
 {
     public EquipItemType equipItemType;
-    public ItemQualityType EquipItemQuality;
+    public EquipQualityType EquipItemQuality;
     public CharacterFightingData_SO EquipData;
     public List<SkillDetails_SO> equipSkills;
 }
@@ -47,6 +49,7 @@ public class ConsumeItemDetails : ItemDetails
 {
     public ConsumeItemType consumeItemType;
     public BasicQualityType ConsumeItemQuality;
+    public ConsumeItem_SO consumeData;
     public List<Buff_SO> BuffList;
 }
 

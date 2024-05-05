@@ -13,18 +13,20 @@ MonoBehaviour:
   m_Name: ConsumeItemDetailsList_SO
   m_EditorClassIdentifier: 
   consumeItemDetailsList:
-  - itemID: 0
-    itemName: NEW ITEM
-    itemIcon: {fileID: 0}
+  - itemID: 60000
+    itemName: Gold Ore
+    itemIcon: {fileID: 21300000, guid: d2cee4bc77909834bb31ae713c92a121, type: 3}
     iconOnWorldSprite: {fileID: 0}
-    itemType: 0
-    itemDescription: 
+    itemType: 1
+    itemDescription: Use it for getting 100 gold
     useRadius: 7
     canPickUp: 0
     canDrop: 0
     Stackable: 0
-    itemPrice: 0
+    gold: 0
+    shanHaiGold: 0
     sellPercentage: 0
     consumeItemType: 0
-    ConsumeItemQuality: 0
+    ConsumeItemQuality: 2
+    consumeData: {fileID: 11400000, guid: b29a401cffd454a959415af862c016dc, type: 2}
     BuffList: []

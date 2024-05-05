@@ -1,11 +1,11 @@
 ﻿public enum ItemType
 {
-    装备,消耗品,任务物品,其他物品
+    Equip,Consume,Task,Other
 }
 
 public enum SlotType
 {
-    人物背包,箱子,NPC背包
+    PlayerBag,Player,WareHouse,NPCBag
 }
 
 public enum InventoryLocation
@@ -38,7 +38,7 @@ public enum WeaponType
     单手剑,双手剑,长刀,短刀,斧头,匕首,盾牌,琴,长枪,长矛,戟,笛,拳套,非武器
 }
 
-public enum ItemQualityType
+public enum EquipQualityType
 {
     神器,传说,史诗,卓越,精良,优秀,普通,残品
 }
@@ -88,19 +88,20 @@ public enum SkillTargetType
 {
     单体,范围,群体
 }
-public enum SkillRangeType
-{
-    近战,远程
-}
 
 public enum Proficiency
 {
     一窍不通,初窥门径,一知半解,半生不熟,融会贯通,游刃有余,炉火纯青,得心应手,登峰造极,出神入化
 }
 
+public enum Prestige
+{
+    遗臭万年,身败名裂,臭名昭著,声名狼藉,名誉扫地,默默无闻,小有名气,远近闻名,声名远扬,举世闻名,名扬四海,扬名天下,震烁古今
+}
+
 public enum EffectType
 {
-    生命值, 伤口, 速度, 攻击, 防御, 造成眩晕, 免疫, 霸体
+    Health, Wound, Speed, Attack, Defense, Dizzy, Undeated, Dodged
 }
 
 public enum BuffDurationType
@@ -113,8 +114,22 @@ public enum AttackEffectType
     Normal,Critical,continuousDamage,continuouseAttack,Skill,Undefeated,Dodged
 }
 
+public enum BuffTarget
+{
+    Self,Enemy
+}
+
 public enum BuffStackType
 {
     StackTurn,StackValue
 }
 
+public enum CharacterFightingDataType
+{
+    Character,Equip,Buff
+}
+
+public enum DialoguePieceType
+{
+    WithBox,OnlyText
+}

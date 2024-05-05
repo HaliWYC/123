@@ -1,16 +1,42 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ShanHai_IsolatedCity.Dialogue;
 
 public static class EventHandler
 {
-    public static event Action<InventoryLocation, List<InventoryItem>> UpdateInventoryUI;
-
-    public static void CallUpdateInventoryUI(InventoryLocation location, List<InventoryItem> list)
+    #region ConbatEvents
+    public static event Action<bool> AllowPlayerInputEvent;
+    public static void CallAllowPlayerInputEvent(bool input)
     {
-        UpdateInventoryUI?.Invoke(location, list);
+        AllowPlayerInputEvent?.Invoke(input);
+    }
+
+    public static event Action<Transform, int, AttackEffectType> DamageTextPopEvent;
+    public static void CallDamageTextPopEvent(Transform targetPos, int damage, AttackEffectType attackEffect)
+    {
+        DamageTextPopEvent?.Invoke(targetPos, damage, attackEffect);
+    }
+
+    public static event Action<GameObject, bool> EnemyInAttackListEvent;
+    public static void CallEnemyInAttackListEvent(GameObject enemy, bool shouldExist)
+    {
+        EnemyInAttackListEvent?.Invoke(enemy, shouldExist);
+    }
+
+    public static event Action<Vector3, ItemDetails> ExecuteActionAfterAnimation;
+    public static void CallExecuteActionAfterAnimation(Vector3 pos, ItemDetails itemDetails)
+    {
+        ExecuteActionAfterAnimation?.Invoke(pos, itemDetails);
+    }
+    #endregion
+
+    #region Inventory/ItemEvents
+    public static event Action<InventoryLocation, ItemType, List<InventoryItem>> UpdateInventoryUI;
+
+    public static void CallUpdateInventoryUI(InventoryLocation location, ItemType itemType, List<InventoryItem> list)
+    {
+        UpdateInventoryUI?.Invoke(location, itemType, list);
     }
 
     public static event Action<int, Vector3> InstantiateItemInScene;
@@ -25,20 +51,29 @@ public static class EventHandler
         DropItemEvent?.Invoke(ID, pos);
     }
 
-    public static event Action<int, int,int,Seasons> GameMinuteEvent;
-
-    public static void CallGameMinuteEvent(int minute,int hour,int day,Seasons season)
+    public static event Action<ItemDetails, bool> ItemSelectedEvent;
+    public static void CallItemSelectedEvent(ItemDetails itemDetails, bool isSelected)
     {
-        GameMinuteEvent?.Invoke(minute, hour,day,season);
+        ItemSelectedEvent?.Invoke(itemDetails, isSelected);
     }
 
-    public static event Action<int, int, int, int, Seasons> GameDateEvent;
-
-    public static void CallGameDateEvent(int hour,int day,int month,int year,Seasons season)
+    public static event Action<ConsumeItem_SO> UseConsumeItemEvent;
+    public static void CallUseConsumeItemEvent(ConsumeItem_SO consume)
     {
-        GameDateEvent?.Invoke(hour, day, month, year, season);
+        UseConsumeItemEvent?.Invoke(consume);
     }
 
+    #endregion
+
+    #region LightEvents
+    public static event Action<Seasons, LightShift, float> LightShiftEvent;
+    public static void CallLightShiftEvent(Seasons seasons, LightShift lightShift, float timeDifference)
+    {
+        LightShiftEvent?.Invoke(seasons, lightShift, timeDifference);
+    }
+    #endregion
+
+    #region Scene/GameEvents
     public static event Action<string, Vector3> TransitionEvent;
 
     public static void CallTransitionEvent(string sceneName,Vector3 pos)
@@ -64,10 +99,10 @@ public static class EventHandler
         MoveToPosition?.Invoke(targetPosition);
     }
 
-    public static event Action<ItemDetails, bool> ItemSelectedEvent;
-    public static void CallItemSelectedEvent(ItemDetails itemDetails,bool isSelected)
+    public static event Action<GameState> UpdateGameStateEvent;
+    public static void CallUpdateGameStateEvent(GameState gameState)
     {
-        ItemSelectedEvent?.Invoke(itemDetails, isSelected);
+        UpdateGameStateEvent?.Invoke(gameState);
     }
 
     public static event Action<Vector3, ItemDetails> MouseClickEvent;
@@ -76,21 +111,17 @@ public static class EventHandler
         MouseClickEvent?.Invoke(pos, itemDetails);
     }
 
-    public static event Action<Vector3, ItemDetails> ExecuteActionAfterAnimation;
-    public static void CallExecuteActionAfterAnimation(Vector3 pos, ItemDetails itemDetails)
+    public static event Action EndGameEvent;
+    public static void CallEndGameEvent()
     {
-        ExecuteActionAfterAnimation?.Invoke(pos, itemDetails);
+        EndGameEvent?.Invoke();
     }
 
-    public static event Action<DialoguePiece> ShowDialogueEvent;
-    public static void CallShowDialogueEvent(DialoguePiece dialoguePiece)
-    {
-        ShowDialogueEvent?.Invoke(dialoguePiece);
-    }
+    #endregion
 
-    //Open the shop
+    #region ShopEvents
     public static event Action<SlotType, InventoryBag_SO> BaseBagOpenEvent;
-    public static void CallBaseBagOpenEvent(SlotType slotType,InventoryBag_SO bag_SO)
+    public static void CallBaseBagOpenEvent(SlotType slotType, InventoryBag_SO bag_SO)
     {
         BaseBagOpenEvent?.Invoke(slotType, bag_SO);
     }
@@ -101,46 +132,66 @@ public static class EventHandler
         BaseBagCloseEvent?.Invoke(slotType, bag_SO);
     }
 
-    public static event Action<GameState> UpdateGameStateEvent;
-    public static void CallUpdateGameStateEvent(GameState gameState)
-    {
-        UpdateGameStateEvent?.Invoke(gameState);
-    }
-
     public static event Action<ItemDetails, bool, ItemType> ShowTradeUI;
     public static void CallShowTradeUI(ItemDetails item, bool isSell, ItemType itemType)
     {
         ShowTradeUI?.Invoke(item, isSell, itemType);
     }
+    #endregion
 
+    #region TaskEvents
+
+    public static event Action<DialoguePieceWithBox> ShowDialogueWithBoxEvent;
+    public static void CallShowDialogueEvent(DialoguePieceWithBox dialoguePiece)
+    {
+        ShowDialogueWithBoxEvent?.Invoke(dialoguePiece);
+    }
+
+    public static event Action<DialoguePiece> ShowDialoguePieceEvent;
+    public static void CallShowDialoguePieceEvent(DialoguePiece dialoguePiece)
+    {
+        ShowDialoguePieceEvent?.Invoke(dialoguePiece);
+    }
+
+    #endregion
+
+    #region TimeEvents
+    public static event Action<int, int, int, Seasons> GameMinuteEvent;
+
+    public static void CallGameMinuteEvent(int minute, int hour, int day, Seasons season)
+    {
+        GameMinuteEvent?.Invoke(minute, hour, day, season);
+    }
+
+    public static event Action<int, int, int, int, Seasons> GameDateEvent;
+
+    public static void CallGameDateEvent(int hour, int day, int month, int year, Seasons season)
+    {
+        GameDateEvent?.Invoke(hour, day, month, year, season);
+    }
+    #endregion
+    //FIXME: 后面改成用ID查找NPC
     public static event Action<string> FindNPCEvent;
     public static void CallFindNPCEvent(string NPCName)
     {
         FindNPCEvent?.Invoke(NPCName);
     }
-
-    public static event Action<Seasons, LightShift, float> LightShiftEvent;
-    public static void CallLightShiftEvent(Seasons seasons,LightShift lightShift,float timeDifference)
+    #region UIEvents
+    public static event Action UpdateCharacterInformationUIEvent;
+    public static void CallUpdateCharacterInformationUIEvent()
     {
-        LightShiftEvent?.Invoke(seasons, lightShift, timeDifference);
-    }
-    public static event Action<bool> AllowPlayerInputEvent;
-    public static void CallAllowPlayerInputEvent(bool input)
-    {
-        AllowPlayerInputEvent?.Invoke(input);
+        
+        UpdateCharacterInformationUIEvent?.Invoke();
     }
 
-    public static event Action<Transform, int, AttackEffectType> DamageTextPopEvent;
-    public static void CallDamageTextPopEvent(Transform targetPos, int damage, AttackEffectType attackEffect)
+    #endregion
+
+    #region BuffEvents
+    public static event Action UpdateBuffListEvent;
+    public static void CallUpdateBuffListEvent()
     {
-        DamageTextPopEvent?.Invoke(targetPos, damage, attackEffect);
+        UpdateBuffListEvent?.Invoke();
     }
 
-    public static event Action<GameObject,bool> EnemyInAttackListEvent;
-    public static void CallEnemyInAttackListEvent(GameObject enemy, bool shouldExist)
-    {
-        EnemyInAttackListEvent?.Invoke(enemy,shouldExist);
-    }
-
-    //Buff
+    #endregion
 }

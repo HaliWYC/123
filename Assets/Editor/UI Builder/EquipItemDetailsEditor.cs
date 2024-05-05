@@ -183,7 +183,7 @@ public class EquipItemDetailsEditor : EditorWindow
         itemDetailsSection.Q<EnumField>("ItemQuality").RegisterValueChangedCallback(evt =>
         {
 
-            activeItem.EquipItemQuality = (ItemQualityType)evt.newValue;
+            activeItem.EquipItemQuality = (EquipQualityType)evt.newValue;
             itemListView.Rebuild();
         });
 
@@ -225,10 +225,17 @@ public class EquipItemDetailsEditor : EditorWindow
         {
             activeItem.canDrop = evt.newValue;
         });
-        itemDetailsSection.Q<IntegerField>("Price").value = activeItem.itemPrice;
-        itemDetailsSection.Q<IntegerField>("Price").RegisterValueChangedCallback(evt =>
+
+        itemDetailsSection.Q<IntegerField>("Gold").value = activeItem.gold;
+        itemDetailsSection.Q<IntegerField>("Gold").RegisterValueChangedCallback(evt =>
         {
-            activeItem.itemPrice = evt.newValue;
+            activeItem.gold = evt.newValue;
+        });
+
+        itemDetailsSection.Q<IntegerField>("ShanHaiGold").value = activeItem.shanHaiGold;
+        itemDetailsSection.Q<IntegerField>("ShanHaiGold").RegisterValueChangedCallback(evt =>
+        {
+            activeItem.shanHaiGold = evt.newValue;
         });
 
         itemDetailsSection.Q<Slider>("SellPercentage").value = activeItem.sellPercentage;

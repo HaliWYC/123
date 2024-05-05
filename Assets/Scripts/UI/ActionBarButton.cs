@@ -29,23 +29,6 @@ namespace ShanHai_IsolatedCity.Inventory
         {
             canUse = gameState == GameState.GamePlay;
         }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(key) && canUse)
-            {
-                if (slotUI.itemDetails != null)
-                {
-                    slotUI.isSelected = !slotUI.isSelected;
-                    if (slotUI.isSelected)
-                        slotUI.inventoryUI.UpDateSlotHighLight(slotUI.slotIndex);
-                    else
-                        slotUI.inventoryUI.UpDateSlotHighLight(-1);
-
-                    EventHandler.CallItemSelectedEvent(slotUI.itemDetails, slotUI.isSelected);
-                }
-            }
-        }
     }
 }
 

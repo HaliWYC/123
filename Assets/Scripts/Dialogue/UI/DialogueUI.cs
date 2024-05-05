@@ -8,12 +8,15 @@ using DG.Tweening;
 
 public class DialogueUI : MonoBehaviour
 {
+    public GameObject dialoguePanel;
     public GameObject dialogueBox;
-    public Text dialogueText;
+    public GameObject dialoguePiecePrefab;
+
+    [Header("DialoguePieceWithBox")]
+    public Text dialogueWithBoxText;
     public Image faceLeft, faceRight;
     public TextMeshProUGUI nameLeft, appellationLeft, nameRight, appellaionRight;
     public GameObject continueBox;
-
 
     private void Awake()
     {
@@ -22,31 +25,48 @@ public class DialogueUI : MonoBehaviour
 
     private void OnEnable()
     {
-        EventHandler.ShowDialogueEvent += OnShowDialogueEvent;
+        EventHandler.ShowDialogueWithBoxEvent += OnShowDialogueWithBoxEvent;
+        EventHandler.ShowDialoguePieceEvent += OnShowDialoguePieceEvent;
     }
 
     private void OnDisable()
     {
-        EventHandler.ShowDialogueEvent -= OnShowDialogueEvent;
+        EventHandler.ShowDialogueWithBoxEvent -= OnShowDialogueWithBoxEvent;
+        EventHandler.ShowDialoguePieceEvent -= OnShowDialoguePieceEvent;
     }
 
-    private void OnShowDialogueEvent(DialoguePiece dialoguePiece)
+    private void OnShowDialoguePieceEvent(DialoguePiece dialoguePiece)
+    {
+        if (dialoguePiece != null)
+        {
+            dialogueBox.SetActive(true);
+            Text piece = Instantiate(dialoguePiecePrefab, dialogueBox.transform).GetComponent<Text>();
+            if (dialoguePiece.name != string.Empty)
+                piece.DOText((dialoguePiece.name + ": " + dialoguePiece.dialogueText), 2f);
+            else
+                piece.DOText(dialoguePiece.dialogueText, 2f);
+            Destroy(piece.gameObject, 5f);
+        }
+        else
+            dialogueBox.SetActive(false);
+        
+        
+    }
+
+    private void OnShowDialogueWithBoxEvent(DialoguePieceWithBox dialoguePiece)
     {
         StartCoroutine(ShowDialogue(dialoguePiece));
     }
 
-    private IEnumerator ShowDialogue(DialoguePiece dialoguePiece)
+    private IEnumerator ShowDialogue(DialoguePieceWithBox dialoguePiece)
     {
         if (dialoguePiece != null)
         {
             dialoguePiece.isEnd = false;
-
-            dialogueBox.SetActive(true);
+            dialoguePanel.SetActive(true);
             continueBox.SetActive(false);
-
-            dialogueText.text = string.Empty;
+            dialogueWithBoxText.text = string.Empty;
             //TODO:Remember to add the appellation for the character
-
             if (dialoguePiece.name != string.Empty)
             {
                 if (dialoguePiece.isLeft)
@@ -71,7 +91,7 @@ public class DialogueUI : MonoBehaviour
                 nameLeft.gameObject.SetActive(false);
                 nameRight.gameObject.SetActive(false);
             }
-            yield return dialogueText.DOText(dialoguePiece.dialogueText, 1f).WaitForCompletion();
+            yield return dialogueWithBoxText.DOText(dialoguePiece.dialogueText, 1f).WaitForCompletion();
 
             dialoguePiece.isEnd = true;
 
@@ -79,14 +99,13 @@ public class DialogueUI : MonoBehaviour
             {
                 continueBox.SetActive(true);
             }
-            
         }
         else
         {
-            dialogueBox.SetActive(false);
-            
+            dialoguePanel.SetActive(false);
             yield break;
         }
-        
     }
+
+    
 }

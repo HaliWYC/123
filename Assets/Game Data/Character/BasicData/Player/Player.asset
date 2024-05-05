@@ -12,15 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 289f5bb5b387d4441b2db52de37b48de, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  Name: 
-  Personality: 
-  commandStyle: 
-  Spirit: 
+  Name: "\u541B\u58EB\u5766\u4E01"
+  Appellation: "\u4F1F\u5927\u8005"
+  charIcon: {fileID: 1335354308, guid: 015070708239c4ed9815ff71bbeed580, type: 3}
+  Personality: "\u6DF1\u9083"
+  commandStyle: "\u970D\u53BB\u75C5"
+  Spirit: "\u5F81\u670D\u8005"
+  prestigeIndex: 0
   prestigeLevel: 0
   currentPrestige: 0
+  nextPrestige: 0
   Fitness: 0
   Eloquence: 0
   Wisedom: 0
   Luck: 0
   Strength: 0
-  Understanding: 0
+  Perception: 0

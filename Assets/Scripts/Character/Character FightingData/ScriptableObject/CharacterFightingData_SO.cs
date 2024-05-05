@@ -37,11 +37,11 @@ public class CharacterFightingData_SO : ScriptableObject
     public int attackAccuracy;
     public int createWound;
     public int Penetrate;
-    public int criticalRate;
-    public float AttackCooling;
-    public float meleeRange;
-    public float rangedRange;
-    public float criticalMutiple;
+    public int criticalPoint;
+    public float attackCooling;
+    public float minimumRange;
+    public float maximumRange;
+    public float criticalMultiple;
     public float fatal_Enhancement;
     public float continuous_DamageRate;
     public float continuous_AttackRate;
@@ -52,4 +52,7 @@ public class CharacterFightingData_SO : ScriptableObject
     public float criticalDefense;
     public float fatalDefense;
     public float parryCoolDown;
+
+    [Header("BuffList")]
+    public List<Buff_SO> buffList;
 }

@@ -15,9 +15,11 @@ MonoBehaviour:
   buffName: SpeedLower
   buffID: 32000012
   buffIcon: {fileID: 0}
+  buffDescription: 
   buffState: 0
-  buffType: 2
-  isForSelf: 0
+  effectType: 2
+  buffQuality: 3
+  target: 1
   canReverse: 1
   buffPriority: 2
   isPro: 0
@@ -26,5 +28,5 @@ MonoBehaviour:
   isCurrentValue: 0
   effectTurn: 0
   durationTime: 5
-  canStack: 0
+  CanStack: 0
   stackType: 0

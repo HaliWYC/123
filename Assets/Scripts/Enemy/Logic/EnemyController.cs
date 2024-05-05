@@ -1,7 +1,5 @@
 ﻿using ShanHai_IsolatedCity.Map;
-using System.Buffers;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using ShanHai_IsolatedCity.Skill;
 
@@ -343,7 +341,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                     {
                         isChase = false;
                         anim.SetTrigger("Skill");
-                        skill.skillPrefab.GetComponent<SkillSpellManager>().CallTheSkill(skill, attackTarget, transform.gameObject);
+                        skill.skillPrefab.GetComponent<SkillSpeller>().CallTheSkill(skill, attackTarget, transform.gameObject);
                         yield return null;
                         timeAfterSkillSpell = skill.timeAfterSpell;
                     }
@@ -372,7 +370,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     private float CheckStopDistance()
     {
-        return Mathf.Min(enemyInformation.MeleeRange, enemyInformation.RangedRange);
+        return Mathf.Min(enemyInformation.MinimumRange, enemyInformation.MaximumRange);
     }
 
     #endregion
@@ -476,7 +474,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     protected bool TargetInMeleeRange()
     {
         if (attackTarget != null)
-            return Vector3.Distance(attackTarget.transform.position, transform.position) <= enemyInformation.MeleeRange;
+            return Vector3.Distance(attackTarget.transform.position, transform.position) <= enemyInformation.MinimumRange;
         else
             return false;
     }
@@ -484,7 +482,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     protected bool TargetInRangedRange()
     {
         if (attackTarget != null)
-            return Vector3.Distance(attackTarget.transform.position, transform.position) <= enemyInformation.RangedRange;
+            return Vector3.Distance(attackTarget.transform.position, transform.position) <= enemyInformation.MaximumRange;
         else
             return false;
     }

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64cca7ddd6c6345119dca10790ce1631, type: 3}
+  m_Name: SceneSoundList
+  m_EditorClassIdentifier: 
+  sceneSoundDetailsList:
+  - SceneName: City of Hope
+    gameSound: "\u6555\u52D2\u6B4C\u4F34\u594F"
+    ambientSound: "\u9E1F\u9E23"
+  - SceneName: Nursery
+    gameSound: 
+    ambientSound: 
+  - SceneName: Stall
+    gameSound: 
+    ambientSound: 

@@ -443,12 +443,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a6bc35deae4e40a487d0c600c09aee2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotImage: {fileID: 6802020538523097757}
-  amountText: {fileID: 1997350895731498622}
-  slotHighLight: {fileID: 8977903984489148500}
-  button: {fileID: 7357283148607196025}
+  Quality: {fileID: 0}
+  itemIcon: {fileID: 0}
+  amountText: {fileID: 0}
+  Name: {fileID: 0}
+  QualityText: {fileID: 0}
+  itemType: {fileID: 0}
+  subType: {fileID: 0}
+  Action: {fileID: 0}
   slotType: 0
-  isSelected: 0
   slotIndex: 0
   itemDetails:
     itemID: 0
@@ -456,7 +459,6 @@ MonoBehaviour:
     itemIcon: {fileID: 0}
     iconOnWorldSprite: {fileID: 0}
     itemType: 0
-    weaponType: 0
     itemDescription: 
     useRadius: 0
     canPickUp: 0
@@ -478,5 +480,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotUI: {fileID: 933081824018472246}
-  itemToolTip: {fileID: 0}
-  Middle: {fileID: 0}

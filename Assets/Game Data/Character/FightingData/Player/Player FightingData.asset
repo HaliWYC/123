@@ -38,11 +38,11 @@ MonoBehaviour:
   attackAccuracy: 100
   createWound: 10
   Penetrate: 3
-  criticalPoint: 213
+  criticalRate: 0
   AttackCooling: 0.3
   meleeRange: 1.2
   rangedRange: 2.5
-  criticalmutiple: 2
+  criticalMutiple: 0
   fatal_Enhancement: 0
   continuous_DamageRate: 1
   continuous_AttackRate: 0.1
@@ -51,3 +51,6 @@ MonoBehaviour:
   criticalDefense: 0.1
   fatalDefense: 0.01
   parryCoolDown: 0.3
+  buffList:
+  - {fileID: 11400000, guid: b8c52de9995b84e3bb9179bce6e3fafc, type: 2}
+  - {fileID: 11400000, guid: f1e8bb528fa52477993375edf215afa9, type: 2}

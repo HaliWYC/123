@@ -225,10 +225,23 @@ public class ConsumeItemDetailsEditor : EditorWindow
         {
             activeItem.canDrop = evt.newValue;
         });
-        itemDetailsSection.Q<IntegerField>("Price").value = activeItem.itemPrice;
-        itemDetailsSection.Q<IntegerField>("Price").RegisterValueChangedCallback(evt =>
+
+        itemDetailsSection.Q<ObjectField>("ConsumeData").value = activeItem.consumeData;
+        itemDetailsSection.Q<ObjectField>("ConsumeData").RegisterValueChangedCallback(evt =>
         {
-            activeItem.itemPrice = evt.newValue;
+            activeItem.consumeData = (ConsumeItem_SO)evt.newValue;
+        });
+
+        itemDetailsSection.Q<IntegerField>("Gold").value = activeItem.gold;
+        itemDetailsSection.Q<IntegerField>("Gold").RegisterValueChangedCallback(evt =>
+        {
+            activeItem.gold = evt.newValue;
+        });
+
+        itemDetailsSection.Q<IntegerField>("ShanHaiGold").value = activeItem.shanHaiGold;
+        itemDetailsSection.Q<IntegerField>("ShanHaiGold").RegisterValueChangedCallback(evt =>
+        {
+            activeItem.shanHaiGold = evt.newValue;
         });
 
         itemDetailsSection.Q<Slider>("SellPercentage").value = activeItem.sellPercentage;

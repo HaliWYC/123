@@ -41,15 +41,15 @@ namespace ShanHai_IsolatedCity.Inventory
 
             switch (itemType)
             {
-                case ItemType.装备:
+                case ItemType.Equip:
 
                     break;
-                case ItemType.其他物品:
+                case ItemType.Other:
                     break;
             }
             
             if (tradeAmount.text != string.Empty)
-                totalPrice.text = (item.itemPrice * Convert.ToInt32(tradeAmount.text)).ToString();
+                totalPrice.text = (item.gold * Convert.ToInt32(tradeAmount.text)).ToString();
             else
                 totalPrice.gameObject.SetActive(false);
 
@@ -58,7 +58,7 @@ namespace ShanHai_IsolatedCity.Inventory
         public void tradeItem()
         {
             var amount = Convert.ToInt32(tradeAmount.text);
-            InventoryManager.Instance.TradeItem(itemDetails, amount, isSellTrade);
+            //InventoryManager.Instance.TradeItem(itemDetails, amount, isSellTrade);
             cancleTradeUI(); 
         }
 

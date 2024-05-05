@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+using ShanHai_IsolatedCity.Inventory;
 public class CharacterInformation : MonoBehaviour
 {
     public CharacterInformation_SO templateInformation;
     public CharacterInformation_SO characterInformation;
+
     public CharacterFightingData_SO templateFightingData;
     public CharacterFightingData_SO fightingData;
+    public CharacterFightingData_SO templateEquipFightingData;
+    public CharacterFightingData_SO equipFightingData;
+    public CharacterFightingData_SO templateBuffFightingData;
+    public CharacterFightingData_SO buffFightingData;
 
     private float lastWoundRecoverTime=0;
     private float lastVigorRocoverTime=0;
@@ -27,7 +32,67 @@ public class CharacterInformation : MonoBehaviour
             characterInformation = Instantiate(templateInformation);
         if (templateFightingData != null)
             fightingData = Instantiate(templateFightingData);
+        if (templateEquipFightingData != null)
+            equipFightingData = Instantiate(templateEquipFightingData);
+        if (templateBuffFightingData != null)
+            buffFightingData = Instantiate(templateBuffFightingData);
     }
+    private void OnEnable()
+    {
+        EventHandler.UseConsumeItemEvent += OnUseConsumeItemEvent;
+    }
+
+    
+
+    private void OnDisable()
+    {
+        EventHandler.UseConsumeItemEvent -= OnUseConsumeItemEvent;
+    }
+
+    private void OnUseConsumeItemEvent(ConsumeItem_SO Consume)
+    {
+        CurrentPrestige += Consume.currentPrestige;
+        Fitness += Consume.Fitness;
+        Eloquence += Consume.Eloquence;
+        Wisedom += Consume.Wisdom;
+        Luck += Consume.Luck;
+        Strength += Consume.Strength;
+        Perception += Consume.Perception;
+        Metal += Consume.Metal;
+        Wood += Consume.Wood;
+        Water += Consume.Water;
+        Fire += Consume.Fire;
+        Ground += Consume.Ground;
+        Lunar_Solar += Consume.Lunar_Solar;
+        MaxHealth += Consume.MaxHealth;
+        CurrentHealth += Consume.CurrentHealth;
+        MaxVigor += Consume.MaxVigor;
+        CurrentVigor += Consume.CurrentVigor;
+        MaxWound += Consume.MaxWound;
+        CurrentWound += Consume.CurrentWound;
+        MaxQi += Consume.MaxQi;
+        CurrentQi += Consume.CurrentQi;
+        MaxMorale += Consume.MaxMorale;
+        CurrentMorale += Consume.CurrentMorale;
+        Argility += Consume.Argility;
+        Resilience += Consume.Resilience;
+        Speed += Consume.Speed;
+        MinimumRange += Consume.MinimumRange;
+        MaximumRange += Consume.MaximumRange;
+        Attack += Consume.Attack;
+        AttackCooling += Consume.AttackCooling;
+        AttackAccuracy += Consume.AttackAccuracy;
+        Penetrate += Consume.Penetrate;
+        CreateWound += Consume.WoundCreate;
+        CriticalPoint += Consume.CriticalPoint;
+        Criticalmutiple += Consume.CriticalMultiple;
+        Fatal_Enhancement += Consume.Fatal_Enhancement;
+        Defense += Consume.Defense;
+        PenetrateDefense += Consume.PenetrateDefense;
+        CriticalDefense += Consume.CriticalDefense;
+        FatalDefense += Consume.FatalDefense;
+    }
+
     private void Start()
     {
         isUndefeated = false;
@@ -56,15 +121,20 @@ public class CharacterInformation : MonoBehaviour
     }
 
     #region basicInfor
-    public int PrestigeLevel
+    public int PrestigeIndex
     {
-        get { if (characterInformation != null) return characterInformation.prestigeLevel; else return 0; }
-        set { characterInformation.prestigeLevel = value; }
+        get { if (characterInformation != null) return characterInformation.prestigeIndex; else return 0; }
+        set { characterInformation.prestigeIndex = value; }
     }
     public int CurrentPrestige
     {
         get { if (characterInformation != null) return characterInformation.currentPrestige; else return 0; }
         set { characterInformation.currentPrestige = value; }
+    }
+    public int NextPrestige
+    {
+        get { if (characterInformation != null) return characterInformation.nextPrestige; else return 0; }
+        set { characterInformation.nextPrestige = value; }
     }
     public int Fitness
     {
@@ -86,10 +156,10 @@ public class CharacterInformation : MonoBehaviour
         get { if (characterInformation != null) return characterInformation.Luck; else return 0; }
         set { characterInformation.Luck = value; }
     }
-    public int Understanding
+    public int Perception
     {
-        get { if (characterInformation != null) return characterInformation.Understanding; else return 0; }
-        set { characterInformation.Understanding = value; }
+        get { if (characterInformation != null) return characterInformation.Perception; else return 0; }
+        set { characterInformation.Perception = value; }
     }
     public int Strength
     {
@@ -101,37 +171,37 @@ public class CharacterInformation : MonoBehaviour
     #region fightingData
     public int Metal
     {
-        get { if (fightingData != null) return fightingData.Metal; else return 0; }
+        get { if (fightingData != null) return Mathf.Max(fightingData.Metal + equipFightingData.Metal + buffFightingData.Metal, 0); else return 0; }
         set { fightingData.Metal = value; }
     }
     public int Wood
     {
-        get { if (fightingData != null) return fightingData.Wood; else return 0; }
+        get { if (fightingData != null) return Mathf.Max(fightingData.Wood + equipFightingData.Wood + buffFightingData.Wood, 0); else return 0; }
         set { fightingData.Wood = value; }
     }
     public int Water
     {
-        get { if (fightingData != null) return fightingData.Water; else return 0; }
+        get { if (fightingData != null) return Mathf.Max(fightingData.Water + equipFightingData.Water + buffFightingData.Water, 0); else return 0; }
         set { fightingData.Water = value; }
     }
     public int Fire
     {
-        get { if (fightingData != null) return fightingData.Fire; else return 0; }
+        get { if (fightingData != null) return Mathf.Max(fightingData.Fire + equipFightingData.Fire + buffFightingData.Fire, 0); else return 0; }
         set { fightingData.Fire = value; }
     }
     public int Ground
     {
-        get { if (fightingData != null) return fightingData.Ground; else return 0; }
+        get { if (fightingData != null) return Mathf.Max(fightingData.Ground + equipFightingData.Ground + buffFightingData.Ground, 0); else return 0; }
         set { fightingData.Ground = value; }
     }
     public int Lunar_Solar
     {
-        get { if (fightingData != null) return fightingData.Lunar_Solar; else return 0; }
+        get { if (fightingData != null) return Mathf.Max(fightingData.Lunar_Solar + equipFightingData.Lunar_Solar + buffFightingData.Lunar_Solar, 0); else return 0; }
         set { fightingData.Lunar_Solar = value; }
     }
     public int MaxHealth
     {
-        get { if (fightingData != null) return fightingData.maxHealth; else return 0; }
+        get { if (fightingData != null) return Mathf.Max(fightingData.maxHealth + equipFightingData.maxHealth + buffFightingData.maxHealth, 0); else return 0; }
         set { fightingData.maxHealth = value; }
     }
     public int CurrentHealth
@@ -141,7 +211,7 @@ public class CharacterInformation : MonoBehaviour
     }
     public int MaxVigor
     {
-        get { if (fightingData != null) return fightingData.maxVigor; else return 0; }
+        get { if (fightingData != null) return Mathf.Max(fightingData.maxVigor + equipFightingData.maxVigor + buffFightingData.maxVigor, 0); else return 0; }
         set { fightingData.maxVigor = value; }
     }
     public int CurrentVigor
@@ -151,7 +221,7 @@ public class CharacterInformation : MonoBehaviour
     }
     public int MaxWound
     {
-        get { if (fightingData != null) return fightingData.maxWound; else return 0; }
+        get { if (fightingData != null) return Mathf.Max(fightingData.maxWound + equipFightingData.maxWound + buffFightingData.maxWound, 0); else return 0; }
         set { fightingData.maxWound = value; }
     }
     public int CurrentWound
@@ -161,7 +231,7 @@ public class CharacterInformation : MonoBehaviour
     }
     public int MaxQi
     {
-        get { if (fightingData != null) return fightingData.maxQi; else return 0; }
+        get { if (fightingData != null) return Mathf.Max(fightingData.maxQi + equipFightingData.maxQi + buffFightingData.maxQi, 0); else return 0; }
         set { fightingData.maxQi = value; }
     }
     public int CurrentQi
@@ -171,7 +241,7 @@ public class CharacterInformation : MonoBehaviour
     }
     public int MaxMorale
     {
-        get { if (fightingData != null) return fightingData.maxMorale; else return 0; }
+        get { if (fightingData != null) return Mathf.Max(fightingData.maxMorale + equipFightingData.maxMorale + buffFightingData.maxMorale, 0); else return 0; }
         set { fightingData.maxMorale = value; }
     }
     public int CurrentMorale
@@ -181,22 +251,105 @@ public class CharacterInformation : MonoBehaviour
     }
     public int Argility
     {
-        get { if (fightingData != null) return fightingData.Argility; else return 0; }
+        get { if (fightingData != null) return Mathf.Max(fightingData.Argility + equipFightingData.Argility + buffFightingData.Argility, 0); else return 0; }
         set { fightingData.Argility = value; }
     }
     public int Resilience
     {
-        get { if (fightingData != null) return fightingData.Resilience; else return 0; }
+        get { if (fightingData != null) return Mathf.Max(fightingData.Resilience + equipFightingData.Resilience + buffFightingData.Resilience, 0); else return 0; }
         set { fightingData.Resilience = value; }
     }
     public int Speed
     {
-        get { if (fightingData != null) return fightingData.speed; else return 0; }
+        get { if (fightingData != null) return Mathf.Max(fightingData.speed + equipFightingData.speed + buffFightingData.speed, 0); else return 0; }
         set { fightingData.speed = value; }
+    }
+    public int Attack
+    {
+        get { if (fightingData != null) return Mathf.Max(fightingData.Attack + equipFightingData.Attack + buffFightingData.Attack, 0); else return 0; }
+        set { fightingData.Attack = value; }
+    }
+    public int AttackAccuracy
+    {
+        get { if (fightingData != null) return Mathf.Max(fightingData.attackAccuracy + equipFightingData.attackAccuracy + buffFightingData.attackAccuracy, 0); else return 0; }
+        set { fightingData.attackAccuracy = value; }
+    }
+    public int CreateWound
+    {
+        get { if (fightingData != null) return Mathf.Max(fightingData.createWound + equipFightingData.createWound + buffFightingData.createWound, 0); else return 0; }
+        set { fightingData.createWound = value; }
+    }
+    public int Penetrate
+    {
+        get { if (fightingData != null) return Mathf.Max(fightingData.Penetrate + equipFightingData.Penetrate + buffFightingData.Penetrate, 0); else return 0; }
+        set { fightingData.Penetrate = value; }
+    }
+    public float AttackCooling
+    {
+        get { if (fightingData != null) return Mathf.Max(fightingData.attackCooling + equipFightingData.attackCooling + buffFightingData.attackCooling, 0); else return 0; }
+        set { fightingData.attackCooling = value; }
+    }
+    
+    public float MinimumRange
+    {
+        get { if (fightingData != null) return Mathf.Max(fightingData.minimumRange + equipFightingData.minimumRange + buffFightingData.minimumRange, 0); else return 0; }
+        set { fightingData.minimumRange = value; }
+    }
+    public float MaximumRange
+    {
+        get { if (fightingData != null) return Mathf.Max(fightingData.maximumRange + equipFightingData.maximumRange + buffFightingData.maximumRange, 0); else return 0; }
+        set { fightingData.maximumRange = value; }
+    }
+    public int CriticalPoint
+    {
+        get { if (fightingData != null) return Mathf.Max(fightingData.criticalPoint + equipFightingData.criticalPoint + buffFightingData.criticalPoint, 0); else return 0; }
+        set { fightingData.criticalPoint = value; }
+    }
+    public float Criticalmutiple
+    {
+        get { if (fightingData != null) return Mathf.Max(fightingData.criticalMultiple + equipFightingData.criticalMultiple + buffFightingData.criticalMultiple, 0); else return 0; }
+        set { fightingData.criticalMultiple = value; }
+    }
+    public float Fatal_Enhancement
+    {
+        get { if (fightingData != null) return Mathf.Max(fightingData.fatal_Enhancement + equipFightingData.fatal_Enhancement + buffFightingData.fatal_Enhancement, 0); else return 0; }
+        set { fightingData.fatal_Enhancement = value; }
+    }
+
+    public int Defense
+    {
+        get { if (fightingData != null) return Mathf.Max(fightingData.Defense + equipFightingData.Defense + buffFightingData.Defense, 0); else return 0; }
+        set { fightingData.Defense = value; }
+    }
+    public int PenetrateDefense
+    {
+        get { if (fightingData != null) return Mathf.Max(fightingData.penetrateDefense + equipFightingData.penetrateDefense + buffFightingData.penetrateDefense, 0); else return 0; }
+        set { fightingData.penetrateDefense = value; }
+    }
+    public float CriticalDefense
+    {
+        get { if (fightingData != null) return Mathf.Max(fightingData.criticalDefense + equipFightingData.criticalDefense + buffFightingData.criticalDefense, 0); else return 0; }
+        set { fightingData.criticalDefense = value; }
+    }
+    public float FatalDefense
+    {
+        get { if (fightingData != null) return Mathf.Max(fightingData.fatalDefense + equipFightingData.fatalDefense + buffFightingData.fatalDefense, 0); else return 0; }
+        set { fightingData.fatalDefense = value; }
+    }
+
+    public float Continuous_DamageRate
+    {
+        get { if (fightingData != null) return fightingData.continuous_DamageRate + equipFightingData.continuous_DamageRate + buffFightingData.continuous_DamageRate; else return 0; }
+        set { fightingData.continuous_DamageRate = value; }
+    }
+    public float Continuous_AttackRate
+    {
+        get { if (fightingData != null) return fightingData.continuous_AttackRate + equipFightingData.continuous_AttackRate + buffFightingData.continuous_AttackRate; else return 0; }
+        set { fightingData.continuous_AttackRate = value; }
     }
     public float WoundRecovery
     {
-        get { if (fightingData != null) return fightingData.woundRecovery; else return 0; }
+        get { if (fightingData != null) return fightingData.woundRecovery + equipFightingData.woundRecovery + buffFightingData.woundRecovery; else return 0; }
         set { fightingData.woundRecovery = value; }
     }
     public float SkillCooling
@@ -204,96 +357,15 @@ public class CharacterInformation : MonoBehaviour
         get { if (fightingData != null) return fightingData.skillCooling; else return 0; }
         set { fightingData.skillCooling = value; }
     }
-    
-    public int Attack
-    {
-        get { if (fightingData != null) return fightingData.Attack; else return 0; }
-        set { fightingData.Attack = value; }
-    }
-    public int AttackAccuracy
-    {
-        get { if (fightingData != null) return fightingData.attackAccuracy; else return 0; }
-        set { fightingData.attackAccuracy = value; }
-    }
-    public int CreateWound
-    {
-        get { if (fightingData != null) return fightingData.createWound; else return 0; }
-        set { fightingData.createWound = value; }
-    }
-    public int Penetrate
-    {
-        get { if (fightingData != null) return fightingData.Penetrate; else return 0; }
-        set { fightingData.Penetrate = value; }
-    }
-    public float AttackCooling
-    {
-        get { if (fightingData != null) return fightingData.AttackCooling; else return 0; }
-        set { fightingData.AttackCooling = value; }
-    }
-    public float Cooling
-    {
-        get { if (fightingData != null) return fightingData.skillCooling; else return 0; }
-        set { fightingData.skillCooling = value; }
-    }
-    public float MeleeRange
-    {
-        get { if (fightingData != null) return fightingData.meleeRange; else return 0; }
-        set { fightingData.meleeRange = value; }
-    }
-    public float RangedRange
-    {
-        get { if (fightingData != null) return fightingData.rangedRange; else return 0; }
-        set { fightingData.rangedRange = value; }
-    }
-    public int CriticalPoint
-    {
-        get { if (fightingData != null) return fightingData.criticalRate; else return 0; }
-        set { fightingData.criticalRate = value; }
-    }
-    public float Criticalmutiple
-    {
-        get { if (fightingData != null) return fightingData.criticalMutiple; else return 0; }
-        set { fightingData.criticalMutiple = value; }
-    }
-    public float Fatal_Enhancement
-    {
-        get { if (fightingData != null) return fightingData.fatal_Enhancement; else return 0; }
-        set { fightingData.fatal_Enhancement = value; }
-    }
-    public float Continuous_DamageRate
-    {
-        get { if (fightingData != null) return fightingData.continuous_DamageRate; else return 0; }
-        set { fightingData.continuous_DamageRate = value; }
-    }
-    public float Continuous_AttackRate
-    {
-        get { if (fightingData != null) return fightingData.continuous_AttackRate; else return 0; }
-        set { fightingData.continuous_AttackRate = value; }
-    }
-    public int Defense
-    {
-        get { if (fightingData != null) return fightingData.Defense; else return 0; }
-        set { fightingData.Defense = value; }
-    }
-    public int PenetrateDefense
-    {
-        get { if (fightingData != null) return fightingData.penetrateDefense; else return 0; }
-        set { fightingData.penetrateDefense = value; }
-    }
-    public float CriticalDefense
-    {
-        get { if (fightingData != null) return fightingData.criticalDefense; else return 0; }
-        set { fightingData.criticalDefense = value; }
-    }
-    public float FatalDefense
-    {
-        get { if (fightingData != null) return fightingData.fatalDefense; else return 0; }
-        set { fightingData.fatalDefense = value; }
-    }
     public float ParryCoolDown
     {
         get { if (fightingData != null) return fightingData.parryCoolDown; else return 0; }
         set { fightingData.parryCoolDown = value; }
+    }
+
+    public List<Buff_SO> BuffList
+    {
+        get { if (fightingData != null) return fightingData.buffList; else return null; }
     }
     #endregion
 
@@ -382,7 +454,6 @@ public class CharacterInformation : MonoBehaviour
             defender.GetComponent<Animator>().SetTrigger("Hurt");
             defender.criticalShakeEvent?.Invoke();
             return true;
-            //Debug.Log("Critical"+(int)damage);
         }
         return false;
     }
@@ -414,27 +485,27 @@ public class CharacterInformation : MonoBehaviour
     private void UpdateFatal(float fatalEnhance, float fatalDefense)
     {
         float finalFatal = Mathf.Max((fatalEnhance-fatalDefense + 0.2f), 0.2f);
-        MaxHealth = Mathf.Max(MaxHealth - (int)(templateFightingData.maxHealth * finalFatal), 0);
-        MaxVigor = Mathf.Max(MaxVigor - (int)(templateFightingData.maxVigor * finalFatal), 0);
-        MaxQi = Mathf.Max(MaxQi - (int)(templateFightingData.maxQi * finalFatal), 0);
-        MaxMorale = Mathf.Max(MaxMorale - (int)(templateFightingData.maxMorale * finalFatal), 0);
-        Speed = Mathf.Max(Speed - (int)(templateFightingData.speed * finalFatal), 0);
-        Argility = Mathf.Max(Argility - (int)(templateFightingData.Argility * finalFatal), 0);
-        Resilience = Mathf.Max(Resilience - (int)(templateFightingData.Resilience * finalFatal), 0);
-        SkillCooling = Mathf.Max(SkillCooling - templateFightingData.skillCooling * finalFatal, 0);
-        Attack = Mathf.Max(Attack - (int)(templateFightingData.Attack * finalFatal), 0);
-        CreateWound = Mathf.Max(CreateWound - (int)(templateFightingData.createWound * finalFatal), 0);
-        Penetrate = Mathf.Max(Penetrate - (int)(templateFightingData.Penetrate * finalFatal), 0);
-        CriticalPoint = Mathf.Max(CriticalPoint - (int)(templateFightingData.criticalRate * finalFatal), 0);
+        MaxHealth = Mathf.Max(MaxHealth - (int)(fightingData.maxHealth * finalFatal), 0);
+        MaxVigor = Mathf.Max(MaxVigor - (int)(fightingData.maxVigor * finalFatal), 0);
+        MaxQi = Mathf.Max(MaxQi - (int)(fightingData.maxQi * finalFatal), 0);
+        MaxMorale = Mathf.Max(MaxMorale - (int)(fightingData.maxMorale * finalFatal), 0);
+        Speed = Mathf.Max(Speed - (int)(fightingData.speed * finalFatal), 0);
+        Argility = Mathf.Max(Argility - (int)(fightingData.Argility * finalFatal), 0);
+        Resilience = Mathf.Max(Resilience - (int)(fightingData.Resilience * finalFatal), 0);
+        SkillCooling = Mathf.Max(SkillCooling - fightingData.skillCooling * finalFatal, 0);
+        Attack = Mathf.Max(Attack - (int)(fightingData.Attack * finalFatal), 0);
+        CreateWound = Mathf.Max(CreateWound - (int)(fightingData.createWound * finalFatal), 0);
+        Penetrate = Mathf.Max(Penetrate - (int)(fightingData.Penetrate * finalFatal), 0);
+        CriticalPoint = Mathf.Max(CriticalPoint - (int)(fightingData.criticalPoint * finalFatal), 0);
         //AttackCooling -= templateFightingData.AttackCooling * finalFatal;
-        Criticalmutiple = Mathf.Max(Criticalmutiple - templateFightingData.criticalMutiple * finalFatal, 0);
-        Fatal_Enhancement = Mathf.Max(Fatal_Enhancement - templateFightingData.fatal_Enhancement * finalFatal, 0);
-        Continuous_DamageRate = Mathf.Max(Continuous_DamageRate - templateFightingData.continuous_DamageRate * finalFatal, 0);
-        Continuous_AttackRate = Mathf.Max(Continuous_AttackRate - templateFightingData.continuous_AttackRate * finalFatal, 0);
-        Defense = Mathf.Max(Defense - (int)(templateFightingData.Defense * finalFatal), 0);
-        PenetrateDefense = Mathf.Max(PenetrateDefense - (int)(templateFightingData.penetrateDefense * finalFatal), 0);
-        CriticalDefense = Mathf.Max(CriticalDefense - templateFightingData.criticalDefense * finalFatal, 0);
-        FatalDefense = Mathf.Max(FatalDefense - templateFightingData.fatalDefense * finalFatal, 0);
+        Criticalmutiple = Mathf.Max(Criticalmutiple - fightingData.criticalMultiple * finalFatal, 0);
+        Fatal_Enhancement = Mathf.Max(Fatal_Enhancement - fightingData.fatal_Enhancement * finalFatal, 0);
+        Continuous_DamageRate = Mathf.Max(Continuous_DamageRate - fightingData.continuous_DamageRate * finalFatal, 0);
+        Continuous_AttackRate = Mathf.Max(Continuous_AttackRate - fightingData.continuous_AttackRate * finalFatal, 0);
+        Defense = Mathf.Max(Defense - (int)(fightingData.Defense * finalFatal), 0);
+        PenetrateDefense = Mathf.Max(PenetrateDefense - (int)(fightingData.penetrateDefense * finalFatal), 0);
+        CriticalDefense = Mathf.Max(CriticalDefense - fightingData.criticalDefense * finalFatal, 0);
+        FatalDefense = Mathf.Max(FatalDefense - fightingData.fatalDefense * finalFatal, 0);
         CheckExceedLimit();
     }
 
@@ -449,8 +520,126 @@ public class CharacterInformation : MonoBehaviour
         if (CurrentMorale > MaxMorale)
             CurrentMorale = MaxMorale;
     }
-
     #endregion
+    #region Inventory
+    public void EquipItem(EquipItemDetails equipment)
+    {
+        equipFightingData.Metal += equipment.EquipData.Metal;
+        equipFightingData.Wood += equipment.EquipData.Wood;
+        equipFightingData.Water += equipment.EquipData.Water;
+        equipFightingData.Fire += equipment.EquipData.Fire;
+        equipFightingData.Ground += equipment.EquipData.Ground;
+        equipFightingData.Lunar_Solar += equipment.EquipData.Lunar_Solar;
+
+        equipFightingData.maxHealth += equipment.EquipData.maxHealth;
+        equipFightingData.maxVigor += equipment.EquipData.maxVigor;
+        equipFightingData.maxWound += equipment.EquipData.maxWound;
+        equipFightingData.maxQi += equipment.EquipData.maxQi;
+        equipFightingData.maxMorale += equipment.EquipData.maxMorale;
+        equipFightingData.speed += equipment.EquipData.speed;
+        equipFightingData.Argility += equipment.EquipData.Argility;
+        equipFightingData.Resilience += equipment.EquipData.Resilience;
+
+        equipFightingData.minimumRange += equipment.EquipData.minimumRange;
+        equipFightingData.maximumRange += equipment.EquipData.maximumRange;
+        equipFightingData.Attack += equipment.EquipData.Attack;
+        equipFightingData.attackCooling += equipment.EquipData.attackCooling;
+        equipFightingData.attackAccuracy += equipment.EquipData.attackAccuracy;
+        equipFightingData.Penetrate += equipment.EquipData.Penetrate;
+        equipFightingData.createWound += equipment.EquipData.createWound;
+        equipFightingData.criticalPoint += equipment.EquipData.criticalPoint;
+        equipFightingData.criticalMultiple += equipment.EquipData.criticalMultiple;
+        equipFightingData.fatal_Enhancement += equipment.EquipData.fatal_Enhancement;
+
+        equipFightingData.Defense += equipment.EquipData.Defense;
+        equipFightingData.penetrateDefense += equipment.EquipData.penetrateDefense;
+        equipFightingData.criticalDefense += equipment.EquipData.criticalDefense;
+        equipFightingData.fatalDefense += equipment.EquipData.fatalDefense;
+
+        EventHandler.CallUpdateCharacterInformationUIEvent();
+        InventoryManager.Instance.fightingDataUI.UpdateFightingDataUI(equipFightingData, CharacterFightingDataType.Equip);
+    }
+
+    public void TakeOffItem(EquipItemDetails equipment)
+    {
+        equipFightingData.Metal -= equipment.EquipData.Metal;
+        equipFightingData.Wood -= equipment.EquipData.Wood;
+        equipFightingData.Water -= equipment.EquipData.Water;
+        equipFightingData.Fire -= equipment.EquipData.Fire;
+        equipFightingData.Ground -= equipment.EquipData.Ground;
+        equipFightingData.Lunar_Solar -= equipment.EquipData.Lunar_Solar;
+
+        equipFightingData.maxHealth -= equipment.EquipData.maxHealth;
+        equipFightingData.maxVigor -= equipment.EquipData.maxVigor;
+        equipFightingData.maxWound -= equipment.EquipData.maxWound;
+        equipFightingData.maxQi -= equipment.EquipData.maxQi;
+        equipFightingData.maxMorale -= equipment.EquipData.maxMorale;
+        equipFightingData.speed -= equipment.EquipData.speed;
+        equipFightingData.Argility -= equipment.EquipData.Argility;
+        equipFightingData.Resilience -= equipment.EquipData.Resilience;
+
+        equipFightingData.minimumRange -= equipment.EquipData.minimumRange;
+        equipFightingData.maximumRange -= equipment.EquipData.maximumRange;
+        equipFightingData.Attack -= equipment.EquipData.Attack;
+        equipFightingData.attackCooling -= equipment.EquipData.attackCooling;
+        equipFightingData.attackAccuracy -= equipment.EquipData.attackAccuracy;
+        equipFightingData.Penetrate -= equipment.EquipData.Penetrate;
+        equipFightingData.createWound -= equipment.EquipData.createWound;
+        equipFightingData.criticalPoint -= equipment.EquipData.criticalPoint;
+        equipFightingData.criticalMultiple -= equipment.EquipData.criticalMultiple;
+        equipFightingData.fatal_Enhancement -= equipment.EquipData.fatal_Enhancement;
+
+        equipFightingData.Defense -= equipment.EquipData.Defense;
+        equipFightingData.penetrateDefense -= equipment.EquipData.penetrateDefense;
+        equipFightingData.criticalDefense -= equipment.EquipData.criticalDefense;
+        equipFightingData.fatalDefense -= equipment.EquipData.fatalDefense;
+
+        EventHandler.CallUpdateCharacterInformationUIEvent();
+        InventoryManager.Instance.fightingDataUI.UpdateFightingDataUI(equipFightingData, CharacterFightingDataType.Equip);
+        StartCoroutine(CalculateFatal(0, 0, this));
+    }
+
+    public void ChangeItem(CharacterFightingData_SO currentEquip, CharacterFightingData_SO newEquip)
+    {
+        equipFightingData.Metal = equipFightingData.Metal + newEquip.Metal - currentEquip.Metal;
+        equipFightingData.Wood = equipFightingData.Wood + newEquip.Wood - currentEquip.Wood;
+        equipFightingData.Water = equipFightingData.Water + newEquip.Water - currentEquip.Water;
+        equipFightingData.Fire = equipFightingData.Fire + newEquip.Fire - currentEquip.Fire;
+        equipFightingData.Ground = equipFightingData.Ground + newEquip.Ground - currentEquip.Ground;
+        equipFightingData.Lunar_Solar = equipFightingData.Lunar_Solar + newEquip.Lunar_Solar - currentEquip.Lunar_Solar;
+
+        equipFightingData.maxHealth = equipFightingData.maxHealth + newEquip.maxHealth - currentEquip.maxHealth;
+        equipFightingData.maxVigor = equipFightingData.maxVigor + newEquip.maxVigor - currentEquip.maxVigor;
+        equipFightingData.maxWound = equipFightingData.maxWound + newEquip.maxWound - currentEquip.maxWound;
+        equipFightingData.maxQi = equipFightingData.maxQi + newEquip.maxQi - currentEquip.maxQi;
+        equipFightingData.maxMorale = equipFightingData.maxMorale + newEquip.maxMorale - currentEquip.maxMorale;
+        equipFightingData.speed = equipFightingData.speed + newEquip.speed - currentEquip.speed;
+        equipFightingData.Argility = equipFightingData.Argility + newEquip.Argility - currentEquip.Argility;
+        equipFightingData.Resilience = equipFightingData.Resilience + newEquip.Resilience - currentEquip.Resilience;
+
+        equipFightingData.minimumRange = equipFightingData.minimumRange + newEquip.minimumRange - currentEquip.minimumRange;
+        equipFightingData.maximumRange = equipFightingData.maximumRange + newEquip.maximumRange - currentEquip.maximumRange;
+        equipFightingData.Attack = equipFightingData.Attack + newEquip.Attack - currentEquip.Attack;
+        equipFightingData.attackCooling = equipFightingData.attackCooling + newEquip.attackCooling - currentEquip.attackCooling;
+        equipFightingData.attackAccuracy = equipFightingData.attackAccuracy + newEquip.attackAccuracy - currentEquip.attackAccuracy;
+        equipFightingData.Penetrate = equipFightingData.Penetrate + newEquip.Penetrate - currentEquip.Penetrate;
+        equipFightingData.createWound = equipFightingData.createWound + newEquip.createWound - currentEquip.createWound;
+        equipFightingData.criticalPoint = equipFightingData.criticalPoint + newEquip.criticalPoint - currentEquip.criticalPoint;
+        equipFightingData.criticalMultiple = equipFightingData.criticalMultiple + newEquip.criticalMultiple - currentEquip.criticalMultiple;
+        equipFightingData.fatal_Enhancement = equipFightingData.fatal_Enhancement + newEquip.fatal_Enhancement - currentEquip.fatal_Enhancement;
+
+        equipFightingData.Defense = equipFightingData.Defense + newEquip.Defense - currentEquip.Defense;
+        equipFightingData.penetrateDefense = equipFightingData.penetrateDefense + newEquip.penetrateDefense - currentEquip.penetrateDefense;
+        equipFightingData.criticalDefense = equipFightingData.criticalDefense + newEquip.criticalDefense - currentEquip.criticalDefense;
+        equipFightingData.fatalDefense = equipFightingData.fatalDefense + newEquip.fatalDefense - currentEquip.fatalDefense;
+
+        EventHandler.CallUpdateCharacterInformationUIEvent();
+        StartCoroutine(CalculateFatal(0, 0, this));
+        InventoryManager.Instance.fightingDataUI.UpdateFightingDataUI(equipFightingData, CharacterFightingDataType.Equip);
+    }
+    #endregion
+
+
     #region Recovery
     private void WoundRecoveryProcess()
     {
@@ -464,26 +653,26 @@ public class CharacterInformation : MonoBehaviour
     }
     public void RecoverFatal(float recover)
     {
-        MaxHealth = (int)(templateFightingData.maxHealth * recover);
-        MaxVigor = (int)(templateFightingData.maxVigor * recover);
-        MaxQi = (int)(templateFightingData.maxQi * recover);
-        MaxMorale = (int)(templateFightingData.maxMorale * recover);
-        Speed = (int)(templateFightingData.speed * recover);
-        Argility = (int)(templateFightingData.Argility * recover);
-        Resilience = (int)(templateFightingData.Resilience * recover);
-        SkillCooling = (int)(templateFightingData.skillCooling * recover);
-        Attack = (int)(templateFightingData.Attack * recover);
-        CreateWound = (int)(templateFightingData.createWound * recover);
-        Penetrate = (int)(templateFightingData.Penetrate * recover);
-        CriticalPoint = (int)(templateFightingData.criticalRate * recover);
-        Criticalmutiple = (int)(templateFightingData.criticalMutiple * recover);
-        Fatal_Enhancement = (int)(templateFightingData.fatal_Enhancement * recover);
-        Continuous_DamageRate = (int)(templateFightingData.continuous_DamageRate * recover);
-        Continuous_AttackRate = (int)(templateFightingData.continuous_AttackRate * recover);
-        Defense = (int)(templateFightingData.Defense * recover);
-        PenetrateDefense = (int)(templateFightingData.penetrateDefense * recover);
-        CriticalDefense = (int)(templateFightingData.criticalDefense * recover);
-        FatalDefense = (int)(templateFightingData.fatalDefense * recover);
+        MaxHealth += (int)(fightingData.maxHealth * recover);
+        MaxVigor += (int)(fightingData.maxVigor * recover);
+        MaxQi += (int)(fightingData.maxQi * recover);
+        MaxMorale += (int)(fightingData.maxMorale * recover);
+        Speed += (int)(fightingData.speed * recover);
+        Argility += (int)(fightingData.Argility * recover);
+        Resilience += (int)(fightingData.Resilience * recover);
+        SkillCooling += (int)(fightingData.skillCooling * recover);
+        Attack += (int)(fightingData.Attack * recover);
+        CreateWound += (int)(fightingData.createWound * recover);
+        Penetrate += (int)(fightingData.Penetrate * recover);
+        CriticalPoint += (int)(fightingData.criticalPoint * recover);
+        Criticalmutiple += (int)(fightingData.criticalMultiple * recover);
+        Fatal_Enhancement += (int)(fightingData.fatal_Enhancement * recover);
+        Continuous_DamageRate += (int)(fightingData.continuous_DamageRate * recover);
+        Continuous_AttackRate += (int)(fightingData.continuous_AttackRate * recover);
+        Defense += (int)(fightingData.Defense * recover);
+        PenetrateDefense += (int)(fightingData.penetrateDefense * recover);
+        CriticalDefense += (int)(fightingData.criticalDefense * recover);
+        FatalDefense += (int)(fightingData.fatalDefense * recover);
     }
 
     public void VigorRecovery()
@@ -499,4 +688,6 @@ public class CharacterInformation : MonoBehaviour
         
     }
     #endregion
+
+
 }

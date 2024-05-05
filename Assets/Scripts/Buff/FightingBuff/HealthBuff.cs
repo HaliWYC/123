@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using ShanHai_IsolatedCity.Buff;
 using UnityEngine;
-
 public class HealthBuff : BuffBase
 {
     protected override  void BuffLaunch()
@@ -31,6 +29,6 @@ public class HealthBuff : BuffBase
                 targetInfor.CurrentHealth = Mathf.Max(targetInfor.CurrentHealth - (int)(buffValue * ExpIncrement), 0);
         }
         targetInfor.healthChange.Invoke(targetInfor);
-
+        EventHandler.CallDamageTextPopEvent(targetInfor.transform, buffValue, AttackEffectType.Skill);
     }
 }

@@ -13,18 +13,39 @@ MonoBehaviour:
   m_Name: EquipItemDetailsList_SO
   m_EditorClassIdentifier: 
   equipItemDetailsList:
-  - itemID: 20007
-    itemName: "\u65E0\u654C\u8304\u5B50"
+  - itemID: 30000
+    itemName: Invincible Eggplant
     itemIcon: {fileID: 21300000, guid: 18dd810d9429d489cae29f0f11a4d177, type: 3}
     iconOnWorldSprite: {fileID: 0}
     itemType: 0
-    itemDescription: "\u65E0\u654C\u8304\u5B50"
+    itemDescription: Invincible Eggplant
     useRadius: 0
     canPickUp: 0
     canDrop: 0
     Stackable: 0
-    itemPrice: 0
+    gold: 0
+    shanHaiGold: 0
+    sellPercentage: 0
+    equipItemType: 5
+    EquipItemQuality: 5
+    EquipData: {fileID: 11400000, guid: 4eb0bee3361d249699d3250eece2e53c, type: 2}
+    equipSkills:
+    - {fileID: 11400000, guid: af8fe350ea402f44489edc1c1b379926, type: 2}
+    - {fileID: 11400000, guid: 1784d3df2e3194fc58dad4a7a8a8eda4, type: 2}
+  - itemID: 80000
+    itemName: Long Long Sword
+    itemIcon: {fileID: 21300000, guid: d5ab6ea498c4d064781b7c052c6b6a2a, type: 3}
+    iconOnWorldSprite: {fileID: 0}
+    itemType: 0
+    itemDescription: Long ! Long ! Sword !
+    useRadius: 0
+    canPickUp: 0
+    canDrop: 0
+    Stackable: 0
+    gold: 0
+    shanHaiGold: 0
     sellPercentage: 0
     equipItemType: 4
-    EquipItemQuality: 6
-    EquipData: {fileID: 11400000, guid: 4eb0bee3361d249699d3250eece2e53c, type: 2}
+    EquipItemQuality: 0
+    EquipData: {fileID: 11400000, guid: f50890527bcc24fb0a2cc2294090b0d1, type: 2}
+    equipSkills: []
