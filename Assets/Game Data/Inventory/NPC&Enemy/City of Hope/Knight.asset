@@ -12,4 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e114af62453f422ba369bed66903ec9, type: 3}
   m_Name: Knight
   m_EditorClassIdentifier: 
-  itemList: []
+  ShanHaiGold: 0
+  Gold: 0
+  equipList:
+  - itemID: 30000
+    itemAmount: 1
+    Type: 0
+  consumeList:
+  - itemID: 60000
+    itemAmount: 3
+    Type: 1
+  - itemID: 60000
+    itemAmount: 3
+    Type: 1
+  - itemID: 60000
+    itemAmount: 3
+    Type: 1
+  taskList: []
+  otherList: []

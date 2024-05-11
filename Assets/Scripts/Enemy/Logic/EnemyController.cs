@@ -7,10 +7,11 @@ using ShanHai_IsolatedCity.Skill;
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Skills))]
+[RequireComponent(typeof(LootSpawner))]
 public class EnemyController : MonoBehaviour,IEndGameObserver
 {
     [Header("基本信息")]
-    public string Name;
+    public int NPCID;
     public string initialScene;
     [HideInInspector]
     public GameObject attackTarget;
@@ -79,6 +80,11 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         GameManager.Instance.RemoveObserver(this);
         EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
         EventHandler.UpdateGameStateEvent -= OnUpdateGameStateEvent;
+
+        if (GetComponent<LootSpawner>() != null)
+        {
+            GetComponent<LootSpawner>().InitLootItem((int)npcDetails.enemyType, npcDetails.NPCBag);
+        }
     }
 
     private void OnAfterSceneLoadedEvent()
@@ -101,7 +107,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     protected virtual void Start()
     {
-        npcDetails = NPCManager.Instance.GetNPCDetail(Name);
+        npcDetails = NPCManager.Instance.GetNPCDetail(NPCID);
         speed = enemyInformation.Speed;
         originalPos = transform.position;
         if (isPeace)

@@ -10,7 +10,6 @@ namespace ShanHai_IsolatedCity.Dialogue
         public Sprite faceImage;
         public bool isLeft;
         public string name;
-        public DialoguePieceType dialogueType => DialoguePieceType.WithBox;
 
         [TextArea]
         public string dialogueText;
@@ -23,7 +22,7 @@ namespace ShanHai_IsolatedCity.Dialogue
     public class DialoguePiece
     {
         public string name;
-        public DialoguePieceType dialogueType => DialoguePieceType.OnlyText;
+        public DialoguePieceType dialogueType;
 
         [TextArea]
         public string dialogueText;

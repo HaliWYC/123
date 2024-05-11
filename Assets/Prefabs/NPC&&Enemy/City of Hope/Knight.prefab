@@ -215,6 +215,7 @@ GameObject:
   - component: {fileID: 3686902367925818058}
   - component: {fileID: 7744439956298192678}
   - component: {fileID: 2639723700802354532}
+  - component: {fileID: 1359867286520577405}
   m_Layer: 0
   m_Name: Knight
   m_TagString: Enemy
@@ -306,6 +307,10 @@ MonoBehaviour:
   characterInformation: {fileID: 0}
   templateFightingData: {fileID: 11400000, guid: 02bfb376c50f9db4cb87ffd00e8746e7, type: 2}
   fightingData: {fileID: 0}
+  templateEquipFightingData: {fileID: 11400000, guid: 2678a07fa464f4d1da3df012f926cf32, type: 2}
+  equipFightingData: {fileID: 0}
+  templateBuffFightingData: {fileID: 11400000, guid: 7089348e7a3034ceb873e9b555329c4c, type: 2}
+  buffFightingData: {fileID: 0}
   isUndefeated: 0
   isDodged: 0
   healthChange:
@@ -376,7 +381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1463ccc1f87b67c4ca75a8fe76aafbe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: "\u9A91\u58EB"
+  NPCID: 0
   initialScene: City of Hope
   attackTarget: {fileID: 0}
   skills: {fileID: 2639723700802354532}
@@ -458,3 +463,17 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   skiller: {fileID: 0}
+--- !u!114 &1359867286520577405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5223107398189734544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34adc67dd8d134fbbbe756740bfcbc08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lootItems: []
+  inventoryBag: {fileID: 0}

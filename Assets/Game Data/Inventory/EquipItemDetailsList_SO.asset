@@ -20,7 +20,7 @@ MonoBehaviour:
     itemType: 0
     itemDescription: Invincible Eggplant
     useRadius: 0
-    canPickUp: 0
+    canPickUp: 1
     canDrop: 0
     Stackable: 0
     gold: 0
@@ -39,7 +39,7 @@ MonoBehaviour:
     itemType: 0
     itemDescription: Long ! Long ! Sword !
     useRadius: 0
-    canPickUp: 0
+    canPickUp: 1
     canDrop: 0
     Stackable: 0
     gold: 0

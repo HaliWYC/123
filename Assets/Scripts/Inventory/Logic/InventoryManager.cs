@@ -222,17 +222,17 @@ namespace ShanHai_IsolatedCity.Inventory
                     }
                     
                     return -1;
-                case SlotType.NPCBag:
-                    for (int i = 0; i < NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList.Count; i++)
-                    {
+                //case SlotType.NPCBag:
+                //    for (int i = 0; i < NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList.Count; i++)
+                //    {
 
-                        if (NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[i].itemID == ID)
-                        {
-                            return i;
-                        }
+                //        if (NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[i].itemID == ID)
+                //        {
+                //            return i;
+                //        }
 
-                    }
-                    return -1;
+                //    }
+                //    return -1;
 
             }
             return -1;
@@ -346,44 +346,44 @@ namespace ShanHai_IsolatedCity.Inventory
                         
                     }
                     break;
-                case SlotType.NPCBag:
-                    if (index == -1 )//Does not have this item 
-                    {
-                        //isSell = true;
-                        var Item = new InventoryItem { itemID = ID, itemAmount = amount, Type = itemType };
-                        NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList.Add(Item);
-                        /*EventHandler.callBaseBagOpenEvent(SlotType.NPC背包, NPCManager.Instance.getNPCDetail(NPCName).NPCBag);
-                        isSell = false;*/
-                        EventHandler.CallUpdateInventoryUI(InventoryLocation.NPC, itemType, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList);
+                //case SlotType.NPCBag:
+                //    if (index == -1 )//Does not have this item 
+                //    {
+                //        //isSell = true;
+                //        var Item = new InventoryItem { itemID = ID, itemAmount = amount, Type = itemType };
+                //        NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList.Add(Item);
+                //        /*EventHandler.callBaseBagOpenEvent(SlotType.NPC背包, NPCManager.Instance.getNPCDetail(NPCName).NPCBag);
+                //        isSell = false;*/
+                //        EventHandler.CallUpdateInventoryUI(InventoryLocation.NPC, itemType, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList);
                         
-                    }
-                    else//Does have this item
-                    {
-                        if (GetItemDetails(ID, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].Type).Stackable)
-                        {
-                            int currentAmount = NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].itemAmount + amount;
+                //    }
+                //    else//Does have this item
+                //    {
+                //        if (GetItemDetails(ID, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].Type).Stackable)
+                //        {
+                //            int currentAmount = NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].itemAmount + amount;
 
-                            var Item = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
+                //            var Item = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
 
-                            NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index] = Item;
-                        }
+                //            NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index] = Item;
+                //        }
 
-                        else if (!GetItemDetails(ID, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].Type).Stackable)//Not Stackable
-                        {
-                            //isSell = true;
-                            var Item = new InventoryItem { itemID = ID, itemAmount = amount, Type = itemType };
-                            NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList.Add(Item);
-                            /*EventHandler.callBaseBagOpenEvent(SlotType.NPC背包, NPCManager.Instance.getNPCDetail(NPCName).NPCBag);
-                            isSell = false;*/
-                            EventHandler.CallUpdateInventoryUI(InventoryLocation.NPC, itemType, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList);
-                        }
-                        else
-                        {
-                            return;
-                        }
+                //        else if (!GetItemDetails(ID, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].Type).Stackable)//Not Stackable
+                //        {
+                //            //isSell = true;
+                //            var Item = new InventoryItem { itemID = ID, itemAmount = amount, Type = itemType };
+                //            NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList.Add(Item);
+                //            /*EventHandler.callBaseBagOpenEvent(SlotType.NPC背包, NPCManager.Instance.getNPCDetail(NPCName).NPCBag);
+                //            isSell = false;*/
+                //            EventHandler.CallUpdateInventoryUI(InventoryLocation.NPC, itemType, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList);
+                //        }
+                //        else
+                //        {
+                //            return;
+                //        }
 
-                    }
-                    break;
+                //    }
+                //    break;
             }
 
             
@@ -458,22 +458,22 @@ namespace ShanHai_IsolatedCity.Inventory
                             break;
                     }
                     break;
-                case SlotType.NPCBag:
-                    if (NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].itemAmount > removeAmount)
-                    {
-                        var amount = NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].itemAmount - removeAmount;
-                        var item = new InventoryItem { itemID = ID, itemAmount = amount };
-                        //InventoryUI.Instance.addSlotUIInNPCBag();
-                        NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index] = item;
-                    }
-                    else if (NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].itemAmount == removeAmount)
-                    {
-                        var NPCItem = new InventoryItem();
-                        NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index] = NPCItem;
-                    }
+                //case SlotType.NPCBag:
+                //    if (NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].itemAmount > removeAmount)
+                //    {
+                //        var amount = NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].itemAmount - removeAmount;
+                //        var item = new InventoryItem { itemID = ID, itemAmount = amount };
+                //        //InventoryUI.Instance.addSlotUIInNPCBag();
+                //        NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index] = item;
+                //    }
+                //    else if (NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].itemAmount == removeAmount)
+                //    {
+                //        var NPCItem = new InventoryItem();
+                //        NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index] = NPCItem;
+                //    }
 
-                    EventHandler.CallUpdateInventoryUI(InventoryLocation.NPC, itemType, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList);
-                    break;
+                //    EventHandler.CallUpdateInventoryUI(InventoryLocation.NPC, itemType, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList);
+                //    break;
                     
             }
 

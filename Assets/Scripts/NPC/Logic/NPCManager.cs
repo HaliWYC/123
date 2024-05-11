@@ -45,12 +45,11 @@ public class NPCManager : Singleton<NPCManager>
         }
     }
 
-    //FIXME 后期加上使用ID寻找NPC
-    public NPCDetails GetNPCDetail(string NPCName)
+    public NPCDetails GetNPCDetail(int ID)
     {
         foreach(NPCList_SO NPCList_SO in NPCList)
         {
-            return NPCList_SO.NPCDetailsList.Find(i => i.NPCName == NPCName);
+            return NPCList_SO.NPCDetailsList.Find(i => i.NPCID == ID);
         }
         return null;
     }

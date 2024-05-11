@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace ShanHai_IsolatedCity.Inventory
 {
-    public class ItemManager : MonoBehaviour
+    public class ItemManager : Singleton<ItemManager>
     {
         public Item itemPrefab;
         public Item bounceItemPrefab;
@@ -53,13 +53,13 @@ namespace ShanHai_IsolatedCity.Inventory
 
         private void OnBeforeSceneUnloadEvent()
         {
-            getAllSceneItems();
+            GetAllSceneItems();
         }
 
         /// <summary>
         /// Get all the items in scene
         /// </summary>
-        private void getAllSceneItems()
+        private void GetAllSceneItems()
         {
             List<SceneItem> currentSceneItems = new List<SceneItem>();
 

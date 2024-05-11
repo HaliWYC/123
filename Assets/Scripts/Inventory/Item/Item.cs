@@ -4,8 +4,6 @@ using UnityEngine;
 
 namespace ShanHai_IsolatedCity.Inventory
 {
-
-
     public class Item : MonoBehaviour
     {
         public int itemID;
@@ -35,18 +33,20 @@ namespace ShanHai_IsolatedCity.Inventory
         /// Initiate item on world
         /// </summary>
         /// <param name="ID"></param>
-        public void Init(int ID,ItemType itemType)
+        public void Init(int ID,ItemType ItemType)
         {
             
             itemID = ID;
+            itemType = ItemType;
 
             //Get data from inventory manager
 
-            itemDetails = InventoryManager.Instance.GetItemDetails(itemID,itemType);
+            itemDetails = InventoryManager.Instance.GetItemDetails(itemID, itemType);
             
             if (itemDetails != null)
             {
                 spriteRenderer.sprite = itemDetails.iconOnWorldSprite != null ? itemDetails.iconOnWorldSprite : itemDetails.itemIcon;
+                
                 //Debug.Log(spriteRenderer.sprite);
                 // Change the collider size
 

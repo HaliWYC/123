@@ -34,15 +34,15 @@ MonoBehaviour:
   fatalLevel: 0
   woundRecovery: 0
   skillCooling: 0.5
-  Attack: 10
+  Attack: 20
   attackAccuracy: 100
   createWound: 10
   Penetrate: 3
-  criticalRate: 0
-  AttackCooling: 0.3
-  meleeRange: 1.2
-  rangedRange: 2.5
-  criticalMutiple: 0
+  criticalPoint: 0
+  attackCooling: 0
+  minimumRange: 0
+  maximumRange: 0
+  criticalMultiple: 0
   fatal_Enhancement: 0
   continuous_DamageRate: 1
   continuous_AttackRate: 0.1

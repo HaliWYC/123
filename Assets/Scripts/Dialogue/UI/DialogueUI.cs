@@ -39,13 +39,16 @@ public class DialogueUI : MonoBehaviour
     {
         if (dialoguePiece != null)
         {
-            dialogueBox.SetActive(true);
-            Text piece = Instantiate(dialoguePiecePrefab, dialogueBox.transform).GetComponent<Text>();
-            if (dialoguePiece.name != string.Empty)
-                piece.DOText((dialoguePiece.name + ": " + dialoguePiece.dialogueText), 2f);
-            else
-                piece.DOText(dialoguePiece.dialogueText, 2f);
-            Destroy(piece.gameObject, 5f);
+            if(dialoguePiece.dialogueType== DialoguePieceType.OnlyText)
+            {
+                dialogueBox.SetActive(true);
+                Text piece = Instantiate(dialoguePiecePrefab, dialogueBox.transform).GetComponent<Text>();
+                if (dialoguePiece.name != string.Empty)
+                    piece.DOText((dialoguePiece.name + ": " + dialoguePiece.dialogueText), 2f);
+                else
+                    piece.DOText(dialoguePiece.dialogueText, 2f);
+                Destroy(piece.gameObject, 5f);
+            }
         }
         else
             dialogueBox.SetActive(false);

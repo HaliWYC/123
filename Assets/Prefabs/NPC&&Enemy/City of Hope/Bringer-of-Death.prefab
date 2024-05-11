@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: 3110367797047717075}
   - component: {fileID: 595975948750706796}
   - component: {fileID: 5034710910212452345}
+  - component: {fileID: 1043427063232079308}
   m_Layer: 0
   m_Name: Bringer-of-Death
   m_TagString: Enemy
@@ -229,7 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7755d4950d5762943b805b70de9e0852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: "\u6B7B\u4EA1\u4F7F\u8005"
+  NPCID: 0
   initialScene: City of Hope
   attackTarget: {fileID: 0}
   skills: {fileID: 0}
@@ -257,6 +258,10 @@ MonoBehaviour:
   characterInformation: {fileID: 0}
   templateFightingData: {fileID: 11400000, guid: c91cca1c47ff3e9429c2336dd3518e45, type: 2}
   fightingData: {fileID: 0}
+  templateEquipFightingData: {fileID: 11400000, guid: a382a28ee7eaf4fd9be84b813fa67ef3, type: 2}
+  equipFightingData: {fileID: 0}
+  templateBuffFightingData: {fileID: 11400000, guid: cbefc0b6edf954e4899a2695e29ca401, type: 2}
+  buffFightingData: {fileID: 0}
   isUndefeated: 0
   isDodged: 0
   healthChange:
@@ -364,6 +369,20 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   skiller: {fileID: 0}
+--- !u!114 &1043427063232079308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5093752643386605069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34adc67dd8d134fbbbe756740bfcbc08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lootItems: []
+  inventoryBag: {fileID: 0}
 --- !u!1 &8206966819095673292
 GameObject:
   m_ObjectHideFlags: 0

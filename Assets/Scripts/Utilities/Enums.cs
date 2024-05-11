@@ -131,5 +131,5 @@ public enum CharacterFightingDataType
 
 public enum DialoguePieceType
 {
-    WithBox,OnlyText
+    InCG,OnlyText
 }

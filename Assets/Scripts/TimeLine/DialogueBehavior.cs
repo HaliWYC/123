@@ -25,19 +25,38 @@ public class DialogueBehavior : PlayableBehaviour
                 EventHandler.CallShowDialogueEvent(dialoguePieceWithBox);
                 if (dialoguePieceWithBox.hasToPause)
                 {
-
+                    TimelineManager.Instance.PasueTime(director);
                 }
                 else
                 {
                     EventHandler.CallShowDialogueEvent(null);
                 }
+
             }
            else if (dialoguePiece.dialogueText != string.Empty)
             {
-                EventHandler.CallShowDialoguePieceEvent(dialoguePiece);
+                    EventHandler.CallShowDialoguePieceEvent(dialoguePiece);
             }
             
-            
         }
+    }
+    public override void ProcessFrame(Playable playable, FrameData info, object playerData)
+    {
+        if (Application.isPlaying)
+            TimelineManager.Instance.IsEnd = dialoguePieceWithBox.isEnd;
+    }
+    public override void OnBehaviourPause(Playable playable, FrameData info)
+    {
+        EventHandler.CallShowDialogueEvent(null);
+        EventHandler.CallShowDialoguePieceEvent(null);
+    }
+
+    public override void OnGraphStart(Playable playable)
+    {
+        EventHandler.CallUpdateGameStateEvent(GameState.Pause);
+    }
+    public override void OnGraphStop(Playable playable)
+    {
+        EventHandler.CallUpdateGameStateEvent(GameState.GamePlay);
     }
 }

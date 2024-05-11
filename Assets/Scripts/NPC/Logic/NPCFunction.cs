@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class NPCFunction : MonoBehaviour
 {
-    public string Name;    
     private bool isOpen;
     private void Update()
     {
@@ -17,8 +16,8 @@ public class NPCFunction : MonoBehaviour
     public void OpenShop()
     {
         isOpen = true;
-        EventHandler.CallFindNPCEvent(Name);
-        EventHandler.CallBaseBagOpenEvent(SlotType.NPCBag, NPCManager.Instance.GetNPCDetail(Name).NPCBag);
+        EventHandler.CallFindNPCEvent(GetComponent<EnemyController>().NPCID);
+        EventHandler.CallBaseBagOpenEvent(SlotType.NPCBag, NPCManager.Instance.GetNPCDetail(GetComponent<EnemyController>().NPCID).NPCBag);
         EventHandler.CallUpdateGameStateEvent(GameState.Pause);
         Time.timeScale = 0;
     }
@@ -26,7 +25,7 @@ public class NPCFunction : MonoBehaviour
     public void CloseShop()
     {
         isOpen = false;
-        EventHandler.CallBaseBagCloseEvent(SlotType.NPCBag, NPCManager.Instance.GetNPCDetail(Name).NPCBag);
+        EventHandler.CallBaseBagCloseEvent(SlotType.NPCBag, NPCManager.Instance.GetNPCDetail(GetComponent<EnemyController>().NPCID).NPCBag);
         EventHandler.CallUpdateGameStateEvent(GameState.GamePlay);
         Time.timeScale = 1;
     }

@@ -11,7 +11,7 @@ public class TimeManager : Singleton<TimeManager>
 
     private int monthInSeason = 3;
 
-    private bool gameClockPause;
+    public bool gameClockPause;
 
     private float tikTime;
 
@@ -31,12 +31,19 @@ public class TimeManager : Singleton<TimeManager>
     {
         EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
         EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
+        EventHandler.UpdateGameStateEvent += OnUpdateGameStateEvent;
     }
 
     private void OnDisable()
     {
         EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
         EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
+        EventHandler.UpdateGameStateEvent -= OnUpdateGameStateEvent;
+    }
+
+    private void OnUpdateGameStateEvent(GameState gameState)
+    {
+        gameClockPause = gameState == GameState.Pause;
     }
 
     private void OnBeforeSceneUnloadEvent()

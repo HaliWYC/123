@@ -170,11 +170,10 @@ public static class EventHandler
         GameDateEvent?.Invoke(hour, day, month, year, season);
     }
     #endregion
-    //FIXME: 后面改成用ID查找NPC
-    public static event Action<string> FindNPCEvent;
-    public static void CallFindNPCEvent(string NPCName)
+    public static event Action<int> FindNPCEvent;
+    public static void CallFindNPCEvent(int NPCID)
     {
-        FindNPCEvent?.Invoke(NPCName);
+        FindNPCEvent?.Invoke(NPCID);
     }
     #region UIEvents
     public static event Action UpdateCharacterInformationUIEvent;
