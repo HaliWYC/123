@@ -14,8 +14,6 @@ public class ItemDetails
 
     public ItemType itemType;
 
-
-
     [TextArea]
     public string itemDescription;
 
@@ -144,16 +142,35 @@ public class NPCDetails
     public int NPCID;
     public EnemyLevelType enemyType;
     public EnemyState enemyState;
-
-    [Header("战斗信息")]
-    //后期合并到Attack Data之中
-    public float sightRadius;
-    //public float fightSpeed;
     
     [Header("背包信息")]
     public InventoryBag_SO NPCBag;
+
+    [Header("好感度信息")]
+    //FIXME: 后期视情况改成是否拥有自己的社交圈
+    public RelationShip relationship;
+
+    [Header("喜爱物品")]
+    public List<FavouriteItem> favouriteItems;
 }
 
+[System.Serializable]
+public class RelationShip
+{
+    //FIXME: 后期视情况改成是否拥有自己的社交圈
+    //public string Name;
+    [Range(0, 100)]
+    public int Favourability;
+}
+
+[System.Serializable]
+public class FavouriteItem
+{
+    public int itemID;
+    public ItemType itemType;
+    [Range(-100, 100)]
+    public float extent;
+}
 [System.Serializable]
 public class SceneRoute
 {

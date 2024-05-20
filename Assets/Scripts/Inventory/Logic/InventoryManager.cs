@@ -70,7 +70,6 @@ namespace ShanHai_IsolatedCity.Inventory
         }
 
         #region GetItemDetails
-
         /// <summary>
         /// Use ID to return item
         /// </summary>
@@ -90,6 +89,22 @@ namespace ShanHai_IsolatedCity.Inventory
                     return otherItemDetailsList_SO.otherItemDetailsList.Find(i => i.itemID == ID);
             }
             return null;
+        }
+
+        public ItemDetails GetItemDetails(int ID, string itemName)
+        {
+            ItemDetails item = null;
+            item = equipItemDetailsList_SO.equipItemDetailsList.Find(i => i.itemID == ID && i.itemName == itemName);
+            if (item != null)
+                return item;
+            item = consumeItemDetailsList_SO.consumeItemDetailsList.Find(i => i.itemID == ID && i.itemName == itemName);
+            if (item != null)
+                return item;
+            item = taskItemDetailsList_SO.taskItemDetailsList.Find(i => i.itemID == ID && i.itemName == itemName);
+            if (item != null)
+                return item;
+            item = otherItemDetailsList_SO.otherItemDetailsList.Find(i => i.itemID == ID && i.itemName == itemName);
+            return item;
         }
 
 
@@ -115,23 +130,19 @@ namespace ShanHai_IsolatedCity.Inventory
 
         #endregion
 
+        #region ManipulateItem
         /// <summary>
         /// Add Item to Player's bag
         /// </summary>
         /// <param name="item"></param>
         /// <param name="toDestory">Whether destroy object or not </param>
-        public void AddItem(Item item, bool toDestory)
+        public void AddItem(Item item)
         {
             //Is Bag spare?
 
             var index = GetItemIndexInBag(item.itemID, item.itemType, SlotType.PlayerBag);
 
             AddItemAtIndex(item.itemID, index, item.itemType, 1,SlotType.PlayerBag);
-            if (toDestory)
-            {
-                Destroy(item.gameObject);
-            }
-
             //Update UI
             switch (item.itemType)
             {
@@ -480,6 +491,9 @@ namespace ShanHai_IsolatedCity.Inventory
             
         }
 
+        #endregion
+
+        #region ManipulateCharacterData
         /// <summary>
         /// Equip item on character
         /// </summary>
@@ -687,10 +701,81 @@ namespace ShanHai_IsolatedCity.Inventory
                 RemoveItem(consumeItem.itemID, ItemType.Consume, amount, SlotType.PlayerBag);
                 for (int itemIndex = 0; itemIndex < amount; itemIndex++)
                     EventHandler.CallUseConsumeItemEvent(consumeItem.consumeData);
+                EventHandler.CallUpdateTaskProgressEvent(consumeItem.itemName, amount);
             }
+            //FIXME:Generate proper prompt
             else
                 Debug.Log("I do not have that amount of item");
         }
+
+        #endregion
+
+        #region GetColor
+
+        public Color GetQualityColor(BasicQualityType quality)
+        {
+            Color qualityColor;
+            qualityColor = quality
+                switch
+            {
+                BasicQualityType.赤 => Red,
+                BasicQualityType.橙 => Orange,
+                BasicQualityType.黄 => Yellow,
+                BasicQualityType.绿 => Green,
+                BasicQualityType.青 => Cyan,
+                BasicQualityType.蓝 => Blue,
+                BasicQualityType.紫 => Purple,
+                _ => Grey
+            };
+            return qualityColor;
+        }
+
+        public Color GetEquipQualityColor(EquipQualityType quality)
+        {
+            Color qualityColor;
+            qualityColor = quality
+                switch
+            {
+                EquipQualityType.神器 => Red,
+                EquipQualityType.传说 => Orange,
+                EquipQualityType.史诗 => Yellow,
+                EquipQualityType.卓越 => Green,
+                EquipQualityType.精良 => Cyan,
+                EquipQualityType.优秀 => Blue,
+                EquipQualityType.普通 => Purple,
+                _ => Grey
+            };
+            return qualityColor;
+        }
+        #endregion
+
+        #region Task
+
+        public void CheckItemInBag(string itemName)
+        {
+            foreach(var item in playerBag.equipList)
+            {
+                if (GetEquipItemDetails(item.itemID).itemName == itemName)
+                    EventHandler.CallUpdateTaskProgressEvent(itemName, item.itemAmount);
+            }
+            foreach (var item in playerBag.consumeList)
+            {
+                if (GetConsumeItemDetails(item.itemID).itemName == itemName)
+                    EventHandler.CallUpdateTaskProgressEvent(itemName, item.itemAmount);
+            }
+            foreach (var item in playerBag.taskList)
+            {
+                if (GetTaskItemDetails(item.itemID).itemName == itemName)
+                    EventHandler.CallUpdateTaskProgressEvent(itemName, item.itemAmount);
+            }
+            foreach (var item in playerBag.otherList)
+            {
+                if (GetOtherItemDetails(item.itemID).itemName == itemName)
+                    EventHandler.CallUpdateTaskProgressEvent(itemName, item.itemAmount);
+            }
+        }
+
+        #endregion
 
         //public  void TradeItem(ItemDetails itemDetails,int amount,bool isSellTrade)
         //{
@@ -756,41 +841,6 @@ namespace ShanHai_IsolatedCity.Inventory
         //}
 
 
-        public Color GetQualityColor(BasicQualityType quality)
-        {
-            Color qualityColor;
-            qualityColor = quality
-                switch
-            {
-                BasicQualityType.赤 => Red,
-                BasicQualityType.橙 => Orange,
-                BasicQualityType.黄 => Yellow,
-                BasicQualityType.绿 => Green,
-                BasicQualityType.青 => Cyan,
-                BasicQualityType.蓝 => Blue,
-                BasicQualityType.紫 => Purple,
-                _ => Grey
-            };
-            return qualityColor;
-        }
-
-        public Color GetEquipQualityColor(EquipQualityType quality)
-        {
-            Color qualityColor;
-            qualityColor = quality
-                switch
-            {
-                EquipQualityType.神器 => Red,
-                EquipQualityType.传说 => Orange,
-                EquipQualityType.史诗 => Yellow,
-                EquipQualityType.卓越 => Green,
-                EquipQualityType.精良 => Cyan,
-                EquipQualityType.优秀 => Blue,
-                EquipQualityType.普通 => Purple,
-                _ => Grey
-            };
-            return qualityColor;
-        }
     }
 
 

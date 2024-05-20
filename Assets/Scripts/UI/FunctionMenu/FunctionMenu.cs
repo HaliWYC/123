@@ -1,20 +1,26 @@
 using UnityEngine;
 
 
-public class FunctionMenu : MonoBehaviour
+public class FunctionMenu : Singleton<FunctionMenu>
 {
     public GameObject functionMenu;
+    public GameObject timelineRecord;
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
             functionMenu.SetActive(true);
-            functionMenu.GetComponentInChildren<FunctionMenuDirector>().playTimes = false;
         }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            functionMenu.SetActive(false);
-            functionMenu.GetComponentInChildren<FunctionMenuDirector>().playTimes = true;
+            if (timelineRecord.activeInHierarchy)
+            {
+                functionMenu.GetComponentInChildren<FunctionMenuDirector>().director.Play();
+                functionMenu.GetComponentInChildren<FunctionMenuDirector>().director.Pause();
+                timelineRecord.SetActive(false);
+            }
+            else if (!timelineRecord.activeInHierarchy)
+                functionMenu.SetActive(false);
         }
 
     }

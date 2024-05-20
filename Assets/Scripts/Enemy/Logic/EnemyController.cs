@@ -37,6 +37,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     protected float attackCoolingTime;//Only for base attack Action exclude SkillSpellCooling
     protected float timeAfterSkillSpell;
     public float dizzytime;
+    public float sightRadius;
 
     [Header("位置")]
     private float direction;
@@ -81,10 +82,8 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
         EventHandler.UpdateGameStateEvent -= OnUpdateGameStateEvent;
 
-        if (GetComponent<LootSpawner>() != null)
-        {
-            GetComponent<LootSpawner>().InitLootItem((int)npcDetails.enemyType, npcDetails.NPCBag);
-        }
+        if (TaskManager.isInitialized && isDead)
+            EventHandler.CallUpdateTaskProgressEvent(npcDetails.NPCName, 1);
     }
 
     private void OnAfterSceneLoadedEvent()
@@ -279,6 +278,10 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                 break;
             case EnemyState.死亡:
                 coll.enabled = false;
+                if (GetComponent<LootSpawner>() != null)
+                {
+                    GetComponent<LootSpawner>().InitLootItem((int)npcDetails.enemyType, npcDetails.NPCBag);
+                }
                 Destroy(gameObject, 2f);
                 break;
         }
@@ -291,6 +294,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     /// </summary>
     private void EnemyAttackSelection()
     {
+        
         //FIXME:后期加上如果总概率超过100%要怎么办
         if(timeAfterSkillSpell<=0 && canAttack)
         {
@@ -303,15 +307,18 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                 }
             }
         }
-
+        
         if(attackCoolingTime<=0 && canAttack)
-        StartCoroutine(Attack());
+        {
+
+            StartCoroutine(Attack());
+        }
+
         
     }
 
     private IEnumerator Attack()
     {
-        
         if (TargetInMeleeRange())
         {
             isChase = false;
@@ -374,11 +381,6 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         }
     }
 
-    private float CheckStopDistance()
-    {
-        return Mathf.Min(enemyInformation.MinimumRange, enemyInformation.MaximumRange);
-    }
-
     #endregion
     /// <summary>
     /// Find all the colliders in the circular area and recongise the tag of each colliders
@@ -386,13 +388,12 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     /// <returns></returns>
     private bool FindPlayer()
     {
-        var colliders = Physics2D.OverlapCircleAll(transform.position, npcDetails.sightRadius);
+        var colliders = Physics2D.OverlapCircleAll(transform.position, sightRadius);
         foreach(var target in colliders)
         {
             if (target.CompareTag("Player"))
             {
                 attackTarget = target.gameObject;
-                //foundTarget = true;
                 return true;
             }
         }
@@ -504,6 +505,14 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, PatrolRange);
+        if (enemyInformation != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, enemyInformation.MinimumRange);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, enemyInformation.MaximumRange);
+        }
+        
     }
 
     protected virtual void Hit()

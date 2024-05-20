@@ -16,7 +16,6 @@ public class NPCManager : Singleton<NPCManager>
     protected override void Awake()
     {
         base.Awake();
-        //Debug.Log(sceneRouteDate.sceneRouteList.Count);
         InitSceneRouteDict();
         foreach(NPCPosition position in npcPositionList)
         {
@@ -64,6 +63,4 @@ public class NPCManager : Singleton<NPCManager>
     {
         return sceneRouteDict[fromSceneName + goToSceneName];
     }
-
-    
 }

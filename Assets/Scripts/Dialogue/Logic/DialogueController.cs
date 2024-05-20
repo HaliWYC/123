@@ -10,12 +10,13 @@ namespace ShanHai_IsolatedCity.Dialogue
     public class DialogueController : MonoBehaviour
     {
         private NPCMovement npc => GetComponent<NPCMovement>();
-        
-        public List<DialoguePieceWithBox> dialogueList = new List<DialoguePieceWithBox>();
+        private NPCDetails NPCDetails => NPCManager.Instance.GetNPCDetail(GetComponent<EnemyController>().NPCID);
 
-        public Stack<DialoguePieceWithBox> dialogueStack;
+        [Header("Dialogue Data")]
+        public DialoguePiece_SO currentData;
 
-        public UnityEvent onFinishEvent;
+        //public List<DialoguePieceWithBox> dialogueList = new List<DialoguePieceWithBox>();
+        //public Stack<DialoguePieceWithBox> dialogueStack;
 
         private bool canInteract;
         private bool isTalking;
@@ -24,19 +25,66 @@ namespace ShanHai_IsolatedCity.Dialogue
 
         private void Awake()
         {
-            FillDialogueStack();
             uiSign = transform.GetChild(1).gameObject;
         }
 
-         
+        private void OnEnable()
+        {
+            EventHandler.ShowDialoguePieceEvent += OnShowDialogueWithBoxEvent;
+        }
+
+        private void OnDisable()
+        {
+            EventHandler.ShowDialoguePieceEvent -= OnShowDialogueWithBoxEvent;
+        }
+
+        private void OnShowDialogueWithBoxEvent(DialoguePiece piece)
+        {
+            if (piece == null)
+                isTalking = false;
+        }
+
         private void Update()
         {
             uiSign.SetActive(canInteract);
-
-            if(canInteract & Input.GetKeyDown(KeyCode.Space) && !isTalking)
+            if (Input.GetKeyDown(KeyCode.Space) && canInteract)
             {
-                StartCoroutine(DialogueRoutine()); 
+                if (!isTalking)
+                {
+                    isTalking = true;
+                    EventHandler.CallUpdateGameStateEvent(GameState.Pause);
+                    EventHandler.CallUpdateDialogueDataEvent(currentData);
+                    EventHandler.CallShowDialoguePieceEvent(currentData.dialoguePieces[0]);
+                }
+                else if (DialogueUI.Instance.continueBox.activeInHierarchy)
+                {
+                    int index = DialogueUI.Instance.currentIndex;
+                    if (currentData.dialoguePieces[index - 1].dialogueOptions.Count > 0)
+                    {
+                        DialogueUI.Instance.CreateOptions(currentData.dialoguePieces[index - 1]);
+                    }
+                    else
+                    {
+                        if (index < currentData.dialoguePieces.Count && !currentData.dialoguePieces[index - 1].finishTalk)
+                        {
+                            if (currentData.dialoguePieces[index - 1].targetID != string.Empty && currentData.dialogueIndex.ContainsKey(currentData.dialoguePieces[index - 1].targetID))
+                            {
+                                StartCoroutine(DialogueUI.Instance.ShowDialogue(currentData.dialogueIndex[currentData.dialoguePieces[index - 1].targetID]));
+                            }
+                            else
+                            {
+                                StartCoroutine(DialogueUI.Instance.ShowDialogue(currentData.dialoguePieces[index]));
+                            }
+                        }
+                        else
+                        {
+                            EventHandler.CallShowDialoguePieceEvent(null);
+                        }
+                    }
+
+                }
             }
+                
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -53,43 +101,43 @@ namespace ShanHai_IsolatedCity.Dialogue
         }
 
 
-        private void FillDialogueStack()
-        {
-            dialogueStack = new Stack<DialoguePieceWithBox>();
+        //private void FillDialogueStack()
+        //{
+        //    dialogueStack = new Stack<DialoguePieceWithBox>();
 
-            for(int i = dialogueList.Count - 1; i > -1; i--)
-            {
-                dialogueList[i].isEnd = false;
-                dialogueStack.Push(dialogueList[i]);
-            }
-        }
+        //    for(int i = dialogueList.Count - 1; i > -1; i--)
+        //    {
+        //        dialogueList[i].isEnd = false;
+        //        dialogueStack.Push(dialogueList[i]);
+        //    }
+        //}
 
-        private IEnumerator DialogueRoutine()
-        {
-            //TODO:Add only text dialoguepiece
-            isTalking = true;
-            if(dialogueStack.TryPop(out DialoguePieceWithBox result))
-            {
-                EventHandler.CallShowDialogueEvent(result);
-                EventHandler.CallUpdateGameStateEvent(GameState.Pause);
-                yield return new WaitUntil(() => result.isEnd);
-                isTalking = false;
-            }
-            else
-            {
-                EventHandler.CallUpdateGameStateEvent(GameState.GamePlay);
-                EventHandler.CallShowDialogueEvent(null);
-                FillDialogueStack();
+        //private IEnumerator DialogueRoutine()
+        //{
+        //    //TODO:Add only text dialoguepiece
+        //    isTalking = true;
+        //    if(dialogueStack.TryPop(out DialoguePieceWithBox result))
+        //    {
+        //        EventHandler.CallShowDialogueEvent(result);
+        //        EventHandler.CallUpdateGameStateEvent(GameState.Pause);
+        //        yield return new WaitUntil(() => result.isEnd);
+        //        isTalking = false;
+        //    }
+        //    else
+        //    {
+        //        EventHandler.CallUpdateGameStateEvent(GameState.GamePlay);
+        //        EventHandler.CallShowDialogueEvent(null);
+        //        FillDialogueStack();
                 
-                isTalking = false;
+        //        isTalking = false;
 
-                if (onFinishEvent != null)
-                {
-                    onFinishEvent.Invoke();
-                    canInteract = false;
-                }
-            }
-        }
+        //        if (onFinishEvent != null)
+        //        {
+        //            onFinishEvent.Invoke();
+        //            canInteract = false;
+        //        }
+        //    }
+        //}
     }
 
 }

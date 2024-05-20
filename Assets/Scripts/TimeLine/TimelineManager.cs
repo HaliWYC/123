@@ -23,7 +23,7 @@ public class TimelineManager : Singleton<TimelineManager>
 
     private void OnEnable()
     {
-        EventHandler.ShowDialoguePieceEvent += OnShowDialoguePieceEvent;
+        EventHandler.ShowDialoguePieceOnlyTextEvent += OnShowDialoguePieceEvent;
         currentCG.played += TimeLinePlay;
         currentCG.stopped += TimeLineStopped;
         EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadedEvent;
@@ -31,7 +31,7 @@ public class TimelineManager : Singleton<TimelineManager>
 
     private void OnDisable()
     {
-        EventHandler.ShowDialoguePieceEvent -= OnShowDialoguePieceEvent;
+        EventHandler.ShowDialoguePieceOnlyTextEvent -= OnShowDialoguePieceEvent;
         EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadedEvent;
     }
 
@@ -59,7 +59,7 @@ public class TimelineManager : Singleton<TimelineManager>
 
     
 
-    private void OnShowDialoguePieceEvent(DialoguePiece dialoguePiece)
+    private void OnShowDialoguePieceEvent(DialoguePieceOnlyText dialoguePiece)
     {
         if (dialoguePiece != null && dialoguePiece.dialogueType == DialoguePieceType.InCG)
         {

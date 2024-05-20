@@ -141,16 +141,28 @@ public static class EventHandler
 
     #region TaskEvents
 
-    public static event Action<DialoguePieceWithBox> ShowDialogueWithBoxEvent;
-    public static void CallShowDialogueEvent(DialoguePieceWithBox dialoguePiece)
-    {
-        ShowDialogueWithBoxEvent?.Invoke(dialoguePiece);
-    }
-
     public static event Action<DialoguePiece> ShowDialoguePieceEvent;
     public static void CallShowDialoguePieceEvent(DialoguePiece dialoguePiece)
     {
         ShowDialoguePieceEvent?.Invoke(dialoguePiece);
+    }
+
+    public static event Action<DialoguePieceOnlyText> ShowDialoguePieceOnlyTextEvent;
+    public static void CallShowDialoguePieceOnlyTextEvent(DialoguePieceOnlyText dialoguePiece)
+    {
+        ShowDialoguePieceOnlyTextEvent?.Invoke(dialoguePiece);
+    }
+
+    public static event Action<DialoguePiece_SO> UpdateDialogueDataEvent;
+    public static void CallUpdateDialogueDataEvent(DialoguePiece_SO dialoguePiece_SO)
+    {
+        UpdateDialogueDataEvent?.Invoke(dialoguePiece_SO);
+    }
+
+    public static event Action<string, int> UpdateTaskProgressEvent;
+    public static void CallUpdateTaskProgressEvent(string target, int amount)
+    {
+        UpdateTaskProgressEvent?.Invoke(target, amount);
     }
 
     #endregion

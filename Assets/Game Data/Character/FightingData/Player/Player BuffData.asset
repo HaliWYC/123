@@ -38,11 +38,11 @@ MonoBehaviour:
   attackAccuracy: 0
   createWound: 0
   Penetrate: 0
-  criticalRate: 0
-  AttackCooling: 0
-  meleeRange: 0
-  rangedRange: 0
-  criticalMutiple: 0
+  criticalPoint: 0
+  attackCooling: 0
+  minimumRange: 0
+  maximumRange: 0
+  criticalMultiple: 0
   fatal_Enhancement: 0
   continuous_DamageRate: 0
   continuous_AttackRate: 0

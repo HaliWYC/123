@@ -55,8 +55,4 @@ public class Settings
     public const float popDamageTextAlphaSpeed = 4.0f;
     //Skill
     public const float sustainEffectUpdateTime = 3f;
-
-    #region Color
-    //public Color Red = new Color(255, 0, 0, 255);
-    #endregion
 }

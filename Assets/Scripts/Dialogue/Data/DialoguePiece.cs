@@ -1,11 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace ShanHai_IsolatedCity.Dialogue
 {
     [System.Serializable]
-    public class DialoguePieceWithBox
+    public class DialoguePiece
     {
+        public string ID;
+        public string targetID;
+
         [Header("对话详情")]
         public Sprite faceImage;
         public bool isLeft;
@@ -14,12 +18,16 @@ namespace ShanHai_IsolatedCity.Dialogue
         [TextArea]
         public string dialogueText;
         public bool hasToPause;
+        
         [HideInInspector]public bool isEnd;
-        public UnityEvent onFinishEvent;
+        public bool finishTalk;
+
+        [Header("Option")]
+        public List<DialogueOption> dialogueOptions = new List<DialogueOption>();
     }
 
     [System.Serializable]
-    public class DialoguePiece
+    public class DialoguePieceOnlyText
     {
         public string name;
         public DialoguePieceType dialogueType;
@@ -28,5 +36,16 @@ namespace ShanHai_IsolatedCity.Dialogue
         public string dialogueText;
     }
 
+    [System.Serializable]
+    public class DialogueOption
+    {
+        public string TargetID;
+        public string Text;
+
+        public bool TakeTask;
+
+        public TaskData_SO task;
+        public UnityEvent finishedEvent;
+    }
 }
 

@@ -15,7 +15,9 @@ namespace ShanHai_IsolatedCity.Inventory
                 {
                     //PickUp Item to Bag
 
-                    InventoryManager.Instance.AddItem(item, true);
+                    InventoryManager.Instance.AddItem(item);
+                    EventHandler.CallUpdateTaskProgressEvent(item.itemDetails.itemName, 1);
+                    Destroy(gameObject);
                 }
             }
         }

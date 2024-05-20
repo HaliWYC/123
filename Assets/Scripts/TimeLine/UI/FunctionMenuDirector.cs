@@ -16,11 +16,8 @@ public class FunctionMenuDirector : MonoBehaviour
     public Button settingsButton;
     public PlayableDirector director;
 
-    public bool playTimes;
-
     private void Awake()
     {
-        playTimes = false;
         charButton.onClick.AddListener(CharButtonEvent);
         abilityButton.onClick.AddListener(AbilityButtonEvent);
         skillButton.onClick.AddListener(SkillButtonEvent);
@@ -32,76 +29,75 @@ public class FunctionMenuDirector : MonoBehaviour
 
     private void CharButtonEvent()
     {
-        if (!playTimes)
+        if (!FunctionMenu.Instance.timelineRecord.activeInHierarchy)
         {
             director.Play();
+            FunctionMenu.Instance.timelineRecord.SetActive(true);
         }
-        playTimes = true;
-        
         charButton.GetComponentInChildren<Toggle>().isOn = true;
     }
     private void AbilityButtonEvent()
     {
-        if (!playTimes)
+        if (!FunctionMenu.Instance.timelineRecord.activeInHierarchy)
         {
             director.Play();
+            FunctionMenu.Instance.timelineRecord.SetActive(true);
         }
-        playTimes = true;
 
         abilityButton.GetComponentInChildren<Toggle>().isOn = true;
 
     }
     private void SkillButtonEvent()
     {
-        if (!playTimes)
+        if (!FunctionMenu.Instance.timelineRecord.activeInHierarchy)
         {
             director.Play();
+            FunctionMenu.Instance.timelineRecord.SetActive(true);
         }
-        playTimes = true;
 
         skillButton.GetComponentInChildren<Toggle>().isOn = true;
 
     }
     private void InventoryButtonEvent()
     {
-        if (!playTimes)
+        if (!FunctionMenu.Instance.timelineRecord.activeInHierarchy)
         {
             director.Play();
+            FunctionMenu.Instance.timelineRecord.SetActive(true);
         }
-        playTimes = true;
 
         inventoryButton.GetComponentInChildren<Toggle>().isOn = true;
 
     }
     private void TaskButtonEvent()
     {
-        if (!playTimes)
+        if (!FunctionMenu.Instance.timelineRecord.activeInHierarchy)
         {
             director.Play();
+            FunctionMenu.Instance.timelineRecord.SetActive(true);
         }
-        playTimes = true;
 
         taskButton.GetComponentInChildren<Toggle>().isOn = true;
 
     }
     private void MapButtonEvent()
     {
-        if (!playTimes)
+        if (!FunctionMenu.Instance.timelineRecord.activeInHierarchy)
         {
             director.Play();
+            FunctionMenu.Instance.timelineRecord.SetActive(true);
         }
-        playTimes = true;
 
         mapButton.GetComponentInChildren<Toggle>().isOn = true;
 
     }
     private void SettingsButtonEvent()
     {
-        if (!playTimes)
+        if (!FunctionMenu.Instance.timelineRecord.activeInHierarchy)
         {
             director.Play();
+            FunctionMenu.Instance.timelineRecord.SetActive(true);
         }
-        playTimes = true;
 
         settingsButton.GetComponentInChildren<Toggle>().isOn = true;
     }

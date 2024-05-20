@@ -10,8 +10,6 @@ public class LootSpawner : MonoBehaviour
 
     public void InitLootItem(int enemyLevel, InventoryBag_SO inventoryBag)
     {
-
-
         List<InventoryItem> allItems = new List<InventoryItem>();
 
         foreach(InventoryItem equip in inventoryBag.equipList)
@@ -58,8 +56,11 @@ public class LootSpawner : MonoBehaviour
                 for (int num = 0; num < Item.itemAmount; num++)
                 {
                     Vector3 range = new Vector3(Random.Range(transform.position.x, transform.position.x + 1), Random.Range(transform.position.y, transform.position.y + 1), transform.position.z);
-                    Item item = Instantiate(ItemManager.Instance.itemPrefab, range, Quaternion.identity);
-                    item.Init(Item.itemID, Item.Type);
+                    if (ItemManager.Instance.isActiveAndEnabled && Application.isPlaying)
+                    {
+                        Item item = Instantiate(ItemManager.Instance.itemPrefab, range, Quaternion.identity);
+                        item.Init(Item.itemID, Item.Type);
+                    }
                 }
             }
         }

@@ -106,7 +106,7 @@ namespace ShanHai_IsolatedCity.Inventory
                                 {
                                     var Item = Instantiate(equipSlot, equipBag.transform).GetComponent<SlotUI>();
                                     equipSlots.Add(Item);
-                                    Item.UpDateSlot(InventoryManager.Instance.GetItemDetails(list[i].itemID, list[i].Type), list[i].Type, list[i].itemAmount);
+                                    Item.UpDateSlot(InventoryManager.Instance.GetEquipItemDetails(list[i].itemID), list[i].Type, list[i].itemAmount);
                                 }
                             }
                             break;
@@ -123,7 +123,7 @@ namespace ShanHai_IsolatedCity.Inventory
                                 {
                                     var Item = Instantiate(consumeSlot, consumeBag.transform).GetComponent<SlotUI>();
                                     consumeSlots.Add(Item);
-                                    Item.UpDateSlot(InventoryManager.Instance.GetItemDetails(list[i].itemID, list[i].Type), list[i].Type, list[i].itemAmount);
+                                    Item.UpDateSlot(InventoryManager.Instance.GetConsumeItemDetails(list[i].itemID), list[i].Type, list[i].itemAmount);
                                 }
                             }
                             break;
@@ -140,7 +140,7 @@ namespace ShanHai_IsolatedCity.Inventory
                                 {
                                     var Item = Instantiate(taskSlot, taskBag.transform).GetComponent<SlotUI>();
                                     taskSlots.Add(Item);
-                                    Item.UpDateSlot(InventoryManager.Instance.GetItemDetails(list[i].itemID, list[i].Type), list[i].Type, list[i].itemAmount);
+                                    Item.UpDateSlot(InventoryManager.Instance.GetTaskItemDetails(list[i].itemID), list[i].Type, list[i].itemAmount);
                                 }
                             }
                             break;
@@ -157,7 +157,7 @@ namespace ShanHai_IsolatedCity.Inventory
                                 {
                                     var Item = Instantiate(otherSlot, otherBag.transform).GetComponent<SlotUI>();
                                     otherSlots.Add(Item);
-                                    Item.UpDateSlot(InventoryManager.Instance.GetItemDetails(list[i].itemID, list[i].Type), list[i].Type, list[i].itemAmount);
+                                    Item.UpDateSlot(InventoryManager.Instance.GetOtherItemDetails(list[i].itemID), list[i].Type, list[i].itemAmount);
                                 }
                             }
                             break;

@@ -8,8 +8,8 @@ using ShanHai_IsolatedCity.Dialogue;
 public class DialogueBehavior : PlayableBehaviour
 {
     private PlayableDirector director;
-    public DialoguePieceWithBox dialoguePieceWithBox;
     public DialoguePiece dialoguePiece;
+    public DialoguePieceOnlyText dialoguePieceOnlyText;
 
     public override void OnPlayableCreate(Playable playable)
     {
@@ -20,22 +20,22 @@ public class DialogueBehavior : PlayableBehaviour
     {
         if (Application.isPlaying)
         {
-            if (dialoguePieceWithBox.dialogueText != string.Empty)
+            if (dialoguePiece.dialogueText != string.Empty)
             {
-                EventHandler.CallShowDialogueEvent(dialoguePieceWithBox);
-                if (dialoguePieceWithBox.hasToPause)
+                EventHandler.CallShowDialoguePieceEvent(dialoguePiece);
+                if (dialoguePiece.hasToPause)
                 {
                     TimelineManager.Instance.PasueTime(director);
                 }
                 else
                 {
-                    EventHandler.CallShowDialogueEvent(null);
+                    EventHandler.CallShowDialoguePieceEvent(null);
                 }
 
             }
-           else if (dialoguePiece.dialogueText != string.Empty)
+           else if (dialoguePieceOnlyText.dialogueText != string.Empty)
             {
-                    EventHandler.CallShowDialoguePieceEvent(dialoguePiece);
+                EventHandler.CallShowDialoguePieceOnlyTextEvent(dialoguePieceOnlyText);
             }
             
         }
@@ -43,12 +43,12 @@ public class DialogueBehavior : PlayableBehaviour
     public override void ProcessFrame(Playable playable, FrameData info, object playerData)
     {
         if (Application.isPlaying)
-            TimelineManager.Instance.IsEnd = dialoguePieceWithBox.isEnd;
+            TimelineManager.Instance.IsEnd = dialoguePiece.isEnd;
     }
     public override void OnBehaviourPause(Playable playable, FrameData info)
     {
-        EventHandler.CallShowDialogueEvent(null);
         EventHandler.CallShowDialoguePieceEvent(null);
+        EventHandler.CallShowDialoguePieceOnlyTextEvent(null);
     }
 
     public override void OnGraphStart(Playable playable)
