@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using ShanHai_IsolatedCity.Inventory;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,8 +14,10 @@ namespace ShanHai_IsolatedCity.Dialogue
         private NPCDetails NPCDetails => NPCManager.Instance.GetNPCDetail(GetComponent<EnemyController>().NPCID);
 
         [Header("Dialogue Data")]
+        [SerializeField]private DialoguePiece_SO openingDialogue;
         public DialoguePiece_SO currentData;
-
+        private DialogueOptionType optionFinishEvent;
+        private bool haveFinishEvent = false;
         //public List<DialoguePieceWithBox> dialogueList = new List<DialoguePieceWithBox>();
         //public Stack<DialoguePieceWithBox> dialogueStack;
 
@@ -30,15 +33,37 @@ namespace ShanHai_IsolatedCity.Dialogue
 
         private void OnEnable()
         {
-            EventHandler.ShowDialoguePieceEvent += OnShowDialogueWithBoxEvent;
+            EventHandler.UpdateDialoguePieceEvent += OnUpdateDialoguePieceEvent;
+            EventHandler.UpdateDialogueDataEvent += OnUpdateDialogueDataEvent;
+            EventHandler.UpdateDialogueOptionEvent += OnUpdateDialogueOptionEvent;
         }
 
         private void OnDisable()
         {
-            EventHandler.ShowDialoguePieceEvent -= OnShowDialogueWithBoxEvent;
+            EventHandler.UpdateDialoguePieceEvent -= OnUpdateDialoguePieceEvent;
+            EventHandler.UpdateDialogueDataEvent -= OnUpdateDialogueDataEvent;
+            EventHandler.UpdateDialogueOptionEvent -= OnUpdateDialogueOptionEvent;
         }
 
-        private void OnShowDialogueWithBoxEvent(DialoguePiece piece)
+        private void OnUpdateDialogueOptionEvent(DialogueOptionType type)
+        {
+            optionFinishEvent = type;
+            haveFinishEvent = true;
+            //if(currentData==null && isTalking)
+            //{
+            //    CallFinishEvent();
+            //    haveFinishEvent = false;
+            //    isTalking = false;
+            //}
+        }
+
+        private void OnUpdateDialogueDataEvent(DialoguePiece_SO DP_SO)
+        {
+            currentData = DP_SO;
+            haveFinishEvent = false;
+        }
+
+        private void OnUpdateDialoguePieceEvent(DialoguePiece piece)
         {
             if (piece == null)
                 isTalking = false;
@@ -46,7 +71,7 @@ namespace ShanHai_IsolatedCity.Dialogue
 
         private void Update()
         {
-            uiSign.SetActive(canInteract);
+            uiSign.SetActive(canInteract && !isTalking);
             if (Input.GetKeyDown(KeyCode.Space) && canInteract)
             {
                 if (!isTalking)
@@ -54,11 +79,12 @@ namespace ShanHai_IsolatedCity.Dialogue
                     isTalking = true;
                     EventHandler.CallUpdateGameStateEvent(GameState.Pause);
                     EventHandler.CallUpdateDialogueDataEvent(currentData);
-                    EventHandler.CallShowDialoguePieceEvent(currentData.dialoguePieces[0]);
+                    EventHandler.CallUpdateDialoguePieceEvent(currentData.dialoguePieces[0]);
                 }
                 else if (DialogueUI.Instance.continueBox.activeInHierarchy)
                 {
                     int index = DialogueUI.Instance.currentIndex;
+
                     if (currentData.dialoguePieces[index - 1].dialogueOptions.Count > 0)
                     {
                         DialogueUI.Instance.CreateOptions(currentData.dialoguePieces[index - 1]);
@@ -69,28 +95,39 @@ namespace ShanHai_IsolatedCity.Dialogue
                         {
                             if (currentData.dialoguePieces[index - 1].targetID != string.Empty && currentData.dialogueIndex.ContainsKey(currentData.dialoguePieces[index - 1].targetID))
                             {
-                                StartCoroutine(DialogueUI.Instance.ShowDialogue(currentData.dialogueIndex[currentData.dialoguePieces[index - 1].targetID]));
+                                EventHandler.CallUpdateDialoguePieceEvent(currentData.dialogueIndex[currentData.dialoguePieces[index - 1].targetID]);
                             }
                             else
                             {
-                                StartCoroutine(DialogueUI.Instance.ShowDialogue(currentData.dialoguePieces[index]));
+                                EventHandler.CallUpdateDialoguePieceEvent(currentData.dialoguePieces[index]);
                             }
                         }
                         else
                         {
-                            EventHandler.CallShowDialoguePieceEvent(null);
+
+                            EventHandler.CallUpdateDialoguePieceEvent(null);
+                            if (haveFinishEvent)
+                            {
+                                CallFinishEvent();
+                            }
+                            else
+                            {
+                                EventHandler.CallUpdateGameStateEvent(GameState.GamePlay);
+                            }
+                            EventHandler.CallUpdateDialogueDataEvent(openingDialogue);
+
                         }
                     }
 
                 }
-            }
-                
+            }   
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if(collision.CompareTag("Player"))
-            canInteract = !npc.isNPCMoving && npc.interactable; 
+            canInteract = !npc.isNPCMoving && npc.interactable;
+            currentData = openingDialogue;
             
         }
 
@@ -98,6 +135,70 @@ namespace ShanHai_IsolatedCity.Dialogue
         {
             if (collision.CompareTag("Player"))
                 canInteract = false;
+        }
+
+        private void CallFinishEvent()
+        {
+            switch (optionFinishEvent)
+            {
+                case DialogueOptionType.Task:
+                    Task();
+                    break;
+                case DialogueOptionType.Trade:
+                    Trade();
+                    break;
+                case DialogueOptionType.GivePresent:
+                    GivePresent();
+                    break;
+                case DialogueOptionType.Leave:
+                    Leave();
+                    break;
+            }
+        }
+
+        private void Task()
+        {
+            if (currentData.GetTask()!= null)
+            {
+                var newTask = new TaskManager.Task
+                {
+                    taskData = Instantiate(currentData.GetTask())
+                };
+
+                if (TaskManager.Instance.HaveTask(newTask.taskData))
+                {
+                    if (TaskManager.Instance.GetTask(newTask.taskData).IsFinished)
+                    {
+                        newTask.taskData.GiveRewards();
+                        TaskManager.Instance.GetTask(newTask.taskData).IsCompleted = true;
+                    }
+                }
+                else
+                {
+                    TaskManager.Instance.tasks.Add(newTask);
+                    TaskManager.Instance.GetTask(newTask.taskData).IsStarted = true;
+                    foreach (var requireItem in newTask.taskData.GenerateRequirementsNameList())
+                    {
+                        InventoryManager.Instance.CheckItemInBag(requireItem);
+                    }
+                }
+            }
+            EventHandler.CallUpdateGameStateEvent(GameState.GamePlay);
+        }
+
+        private void Trade()
+        {
+
+        }
+
+        private void GivePresent()
+        {
+
+        }
+
+        private void Leave()
+        {
+            EventHandler.CallUpdateGameStateEvent(GameState.GamePlay);
         }
 
 

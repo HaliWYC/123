@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 namespace ShanHai_IsolatedCity.Inventory
 {
@@ -162,6 +163,76 @@ namespace ShanHai_IsolatedCity.Inventory
 
         }
 
+        public void AddItem(ItemDetails itemDetails ,int amount)
+        {
+            var index = GetItemIndexInBag(itemDetails.itemID, itemDetails.itemType, SlotType.PlayerBag);
+
+            AddItemAtIndex(itemDetails.itemID, index, itemDetails.itemType, amount, SlotType.PlayerBag);
+            //Update UI
+            switch (itemDetails.itemType)
+            {
+                case ItemType.Equip:
+                    EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, itemDetails.itemType, playerBag.equipList);
+                    break;
+                case ItemType.Consume:
+                    EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, itemDetails.itemType, playerBag.consumeList);
+                    break;
+                case ItemType.Task:
+                    EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, itemDetails.itemType, playerBag.taskList);
+                    break;
+                case ItemType.Other:
+                    EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, itemDetails.itemType, playerBag.otherList);
+                    break;
+            }
+        }
+
+        private void AddNewItem(int ID, int amount, ItemType type)
+        {
+            if(GetItemDetails(ID, type).Stackable)
+            {
+                var Item = new InventoryItem { itemID = ID, itemAmount = amount, Type = type };
+                switch (type)
+                {
+                    case ItemType.Equip:
+                        playerBag.equipList.Add(Item);
+                        break;
+                    case ItemType.Consume:
+                        playerBag.consumeList.Add(Item);
+                        break;
+                    case ItemType.Task:
+                        playerBag.taskList.Add(Item);
+                        break;
+                    case ItemType.Other:
+                        playerBag.otherList.Add(Item);
+                        break;
+
+                }
+            }
+            else
+            {
+                for(int index = 0; index < amount; index++)
+                {
+                    var Item = new InventoryItem { itemID = ID, itemAmount = 1, Type = type };
+                    switch (type)
+                    {
+                        case ItemType.Equip:
+                            playerBag.equipList.Add(Item);
+                            break;
+                        case ItemType.Consume:
+                            playerBag.consumeList.Add(Item);
+                            break;
+                        case ItemType.Task:
+                            playerBag.taskList.Add(Item);
+                            break;
+                        case ItemType.Other:
+                            playerBag.otherList.Add(Item);
+                            break;
+
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Is Bag spare?
         /// </summary>
@@ -263,24 +334,7 @@ namespace ShanHai_IsolatedCity.Inventory
                 case SlotType.PlayerBag:
                     if (index == -1)//Does not have this item 
                     {
-                        var Item = new InventoryItem { itemID = ID, itemAmount = amount, Type=itemType };
-                        switch (itemType)
-                        {
-                            case ItemType.Equip:
-                                playerBag.equipList.Add(Item);
-                                break;
-                            case ItemType.Consume:
-                                playerBag.consumeList.Add(Item);
-                                break;
-                            case ItemType.Task:
-                                playerBag.taskList.Add(Item);
-                                break;
-                            case ItemType.Other:
-                                playerBag.otherList.Add(Item);
-                                break;
-
-                        }
-
+                        AddNewItem(ID, amount, itemType);
                         //for (int i = 0; i < playerBag.itemList.Count; i++)
                         //{
                         //    if (playerBag.itemList[i].itemID == 0)
@@ -327,32 +381,9 @@ namespace ShanHai_IsolatedCity.Inventory
                                     break;
                             }
                         }
-
-                        else if (!GetItemDetails(ID, itemType).Stackable)//Not Stackable
-                        {
-                            switch (itemType)
-                            {
-                                case ItemType.Equip:
-                                    var equipItem = new InventoryItem { itemID = ID, itemAmount = amount, Type = itemType };
-                                    playerBag.equipList.Add(equipItem);
-                                    break;
-                                case ItemType.Consume:
-                                    var consumeItem = new InventoryItem { itemID = ID, itemAmount = amount, Type = itemType };
-                                    playerBag.consumeList.Add(consumeItem);
-                                    break;
-                                case ItemType.Task:
-                                    var taskItem = new InventoryItem { itemID = ID, itemAmount = amount, Type = itemType };
-                                    playerBag.taskList.Add(taskItem);
-                                    break;
-                                case ItemType.Other:
-                                    var otherItem = new InventoryItem { itemID = ID, itemAmount = amount, Type = itemType };
-                                    playerBag.otherList.Add(otherItem);
-                                    break;
-                            }
-                        }
                         else
                         {
-                            return;
+                            AddNewItem(ID, amount, itemType);
                         }
                         
                     }

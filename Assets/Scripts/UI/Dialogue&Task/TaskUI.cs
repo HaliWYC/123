@@ -166,7 +166,10 @@ public class TaskUI : Singleton<TaskUI>
         foreach(var Requirement in taskData.taskRequirements)
         {
             TaskRequirementUI taskRequire = Instantiate(RequirementPrefab, RequirementsHolder).GetComponent<TaskRequirementUI>();
-            taskRequire.SetUpTaskRequirement(Requirement.targetName, Requirement.RequiredAmount, Requirement.CurrentAmount);
+            if (taskData.isCompleted)
+                taskRequire.SetUpTaskRequirement(Requirement.requireName, Requirement.RequiredAmount);
+            else
+                taskRequire.SetUpTaskRequirement(Requirement.requireName, Requirement.RequiredAmount, Requirement.CurrentAmount);
         }
     }
 
@@ -184,7 +187,7 @@ public class TaskUI : Singleton<TaskUI>
                 rewardText.text = "A secret reward";
             else
             {
-                switch (reward.type)
+                switch (reward.rewardType)
                 {
                     case TaskRewardType.Item:
                         rewardText.text = reward.amount.ToString() + " " + reward.RewardName;

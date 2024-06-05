@@ -21,6 +21,7 @@ namespace ShanHai_IsolatedCity.Dialogue
         
         [HideInInspector]public bool isEnd;
         public bool finishTalk;
+        public TaskData_SO task;
 
         [Header("Option")]
         public List<DialogueOption> dialogueOptions = new List<DialogueOption>();
@@ -40,12 +41,9 @@ namespace ShanHai_IsolatedCity.Dialogue
     public class DialogueOption
     {
         public string TargetID;
-        public string Text;
-
-        public bool TakeTask;
-
-        public TaskData_SO task;
-        public UnityEvent finishedEvent;
+        public string OptionName;
+        public DialogueOptionType optionType;
+        public DialoguePiece_SO dialogueData;
     }
 }
 

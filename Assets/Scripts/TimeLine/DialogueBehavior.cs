@@ -22,14 +22,14 @@ public class DialogueBehavior : PlayableBehaviour
         {
             if (dialoguePiece.dialogueText != string.Empty)
             {
-                EventHandler.CallShowDialoguePieceEvent(dialoguePiece);
+                EventHandler.CallUpdateDialoguePieceEvent(dialoguePiece);
                 if (dialoguePiece.hasToPause)
                 {
                     TimelineManager.Instance.PasueTime(director);
                 }
                 else
                 {
-                    EventHandler.CallShowDialoguePieceEvent(null);
+                    EventHandler.CallUpdateDialoguePieceEvent(null);
                 }
 
             }
@@ -47,7 +47,7 @@ public class DialogueBehavior : PlayableBehaviour
     }
     public override void OnBehaviourPause(Playable playable, FrameData info)
     {
-        EventHandler.CallShowDialoguePieceEvent(null);
+        EventHandler.CallUpdateDialoguePieceEvent(null);
         EventHandler.CallShowDialoguePieceOnlyTextEvent(null);
     }
 

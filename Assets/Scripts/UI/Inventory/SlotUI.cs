@@ -23,8 +23,6 @@ namespace ShanHai_IsolatedCity.Inventory
 
         public ItemDetails itemDetails;
         public int itemAmount;
-
-        //FIXME:修改每一个typeofItem
         /// <summary>
         /// Update Slot UI and information
         /// </summary>

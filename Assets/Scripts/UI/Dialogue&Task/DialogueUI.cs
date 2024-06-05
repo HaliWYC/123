@@ -34,14 +34,14 @@ public class DialogueUI : Singleton<DialogueUI>
 
     private void OnEnable()
     {
-        EventHandler.ShowDialoguePieceEvent += OnShowDialogueWithBoxEvent;
+        EventHandler.UpdateDialoguePieceEvent += OnUpdateDialoguePieceEvent;
         EventHandler.ShowDialoguePieceOnlyTextEvent += OnShowDialoguePieceEvent;
         EventHandler.UpdateDialogueDataEvent += OnUpdateDialogueDataEvent;
     }
 
     private void OnDisable()
     {
-        EventHandler.ShowDialoguePieceEvent -= OnShowDialogueWithBoxEvent;
+        EventHandler.UpdateDialoguePieceEvent -= OnUpdateDialoguePieceEvent;
         EventHandler.ShowDialoguePieceOnlyTextEvent -= OnShowDialoguePieceEvent;
         EventHandler.UpdateDialogueDataEvent -= OnUpdateDialogueDataEvent;
     }
@@ -74,12 +74,12 @@ public class DialogueUI : Singleton<DialogueUI>
         
     }
 
-    private void OnShowDialogueWithBoxEvent(DialoguePiece dialoguePiece)
+    private void OnUpdateDialoguePieceEvent(DialoguePiece dialoguePiece)
     {
         StartCoroutine(ShowDialogue(dialoguePiece));
     }
 
-    public IEnumerator ShowDialogue(DialoguePiece dialoguePiece)
+    private IEnumerator ShowDialogue(DialoguePiece dialoguePiece)
     {
         if(currentData!=null)
             currentIndex = currentData.dialoguePieces.IndexOf(dialoguePiece) + 1;
@@ -126,8 +126,6 @@ public class DialogueUI : Singleton<DialogueUI>
         else
         {
             dialoguePanel.SetActive(false);
-            if(currentData!=null)
-                StartCoroutine(FinishDialogues());
             yield break;
         }
     }

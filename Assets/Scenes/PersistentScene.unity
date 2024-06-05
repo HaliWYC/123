@@ -745,7 +745,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 14.166667
+  orthographic size: 18.6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2022,8 +2022,8 @@ GameObject:
   - component: {fileID: 1208964155}
   - component: {fileID: 1208964160}
   - component: {fileID: 1208964159}
-  - component: {fileID: 1208964162}
   - component: {fileID: 1208964161}
+  - component: {fileID: 1208964167}
   - component: {fileID: 1208964163}
   - component: {fileID: 1208964164}
   - component: {fileID: 1208964165}
@@ -2228,22 +2228,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e3c50103b34b467e8ed9ea9286bfabc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentData: {fileID: 11400000, guid: c9bb2e10f2b66488f909e9e24595df70, type: 2}
-  onFinishEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &1208964162
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1208964154}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: afcc5fb80010e437da3b56d62f61b248, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  openingDialogue: {fileID: 11400000, guid: c9bb2e10f2b66488f909e9e24595df70, type: 2}
+  currentData: {fileID: 0}
 --- !u!114 &1208964163
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2352,6 +2338,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lootItems: []
+--- !u!114 &1208964167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208964154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b722b759e60cb410c99a8418d81f507b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progressDialogue: {fileID: 0}
+  finishedDialogue: {fileID: 0}
+  completedDialogue: {fileID: 0}
 --- !u!1 &1210098956
 GameObject:
   m_ObjectHideFlags: 0
@@ -3565,8 +3566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdfb4c1c9c9934673af9b1cc92c5b66a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tasks:
-  - taskData: {fileID: 11400000, guid: 0a500659d6e1d40e387649f8d6e3b1fd, type: 2}
+  tasks: []
 --- !u!1 &1932038976
 GameObject:
   m_ObjectHideFlags: 0

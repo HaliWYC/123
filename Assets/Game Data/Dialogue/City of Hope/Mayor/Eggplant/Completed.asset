@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9792d0d1ef74adf9e663d0576d3633, type: 3}
+  m_Name: Completed
+  m_EditorClassIdentifier: 
+  dialoguePieces:
+  - ID: Piece01
+    targetID: 
+    faceImage: {fileID: 21300000, guid: 36e7d59ac1efc4cf7bc6a250df52e2b4, type: 3}
+    isLeft: 0
+    name: Lucas
+    dialogueText: "\u6751\u957F\uFF0C\u4F60\u7684\u8170\u597D\u4E9B\u4E86\u6CA1\uFF1F"
+    hasToPause: 1
+    isEnd: 1
+    finishTalk: 0
+    task: {fileID: 11400000, guid: 0a500659d6e1d40e387649f8d6e3b1fd, type: 2}
+    dialogueOptions: []
+  - ID: Piece02
+    targetID: 
+    faceImage: {fileID: 21300000, guid: 7951faae60d314030a0981ea02e3c592, type: 3}
+    isLeft: 1
+    name: "\u5B59\u7A0B"
+    dialogueText: "\u597D\u591A\u4E86\uFF0C\u592A\u611F\u8C22\u4F60\u4E86\uFF0C\u4E4B\u540E\u6709\u4EFB\u4F55\u95EE\u9898\u53EF\u4EE5\u6765\u627E\u6211"
+    hasToPause: 1
+    isEnd: 1
+    finishTalk: 1
+    task: {fileID: 0}
+    dialogueOptions: []
+  FinishDialogues: []

@@ -16,16 +16,23 @@ MonoBehaviour:
   taskName: "\u5E2E\u52A9\u6751\u957F\u62FF\u5230\u8304\u5B50"
   taskType: 1
   taskIcon: {fileID: 0}
-  description: 
+  description: "\u6751\u957F\u597D\u50CF\u9047\u5230\u4E86\u4E00\u4E9B\u95EE\u9898\uFF0C\u9700\u89813\u4E2A\u8304\u5B50\uFF0C\u542C\u8BF4\u5728\u5C0F\u9547\u7684\u897F\u5317\u89D2\u53EF\u4EE5\u627E\u5230"
+  progressDialogue: {fileID: 11400000, guid: d91066348d51a4570933aa6e35afaaa0, type: 2}
+  finishedDialogue: {fileID: 11400000, guid: 8b659acc94cf44773892a9816271fa7f, type: 2}
+  completedDialogue: {fileID: 11400000, guid: 61d21dc9866ee4363b004d55bdce5b25, type: 2}
   isStarted: 0
-  isCompleted: 0
   isFinished: 0
+  isCompleted: 0
+  isTraced: 0
   taskRequirements:
-  - targetName: Invincible Eggplant
-    targetType: 0
-    RequiredAmount: 3
+  - requireID: 30000
+    requireName: Invincible Eggplant
+    requireType: 0
+    RequiredAmount: 2
     CurrentAmount: 0
   taskRewards:
-  - ID: 60000
+  - RewardID: 80000
+    RewardName: Long Long Sword
     amount: 1
-    type: 0
+    rewardType: 0
+    isSecret: 0

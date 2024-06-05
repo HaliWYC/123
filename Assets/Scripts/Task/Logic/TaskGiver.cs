@@ -7,13 +7,43 @@ using ShanHai_IsolatedCity.Dialogue;
 public class TaskGiver : MonoBehaviour
 {
     private DialogueController controller;
-
     private TaskData_SO currentTask;
+    private DialoguePiece_SO progressDialogue;
+    private DialoguePiece_SO finishedDialogue;
+    private DialoguePiece_SO completedDialogue;
 
-    public DialoguePiece_SO startDialogue;
-    public DialoguePiece_SO processingDialogue;
-    public DialoguePiece_SO finishedDialogue;
-    public DialoguePiece_SO completedDialogue;
+    private void OnEnable()
+    {
+        EventHandler.UpdateTaskDataEvent += OnUpdateTaskDataEvent;
+    }
+
+    private void OnDisable()
+    {
+        EventHandler.UpdateTaskDataEvent -= OnUpdateTaskDataEvent;
+    }
+
+    private void OnUpdateTaskDataEvent(TaskData_SO taskData)
+    {
+        currentTask = taskData;
+        if (currentTask != null)
+        {
+            if (currentTask.progressDialogue != null)
+            {
+                progressDialogue = currentTask.progressDialogue;
+            }
+
+            if (currentTask.finishedDialogue != null)
+            {
+                finishedDialogue = currentTask.finishedDialogue;
+            }
+
+            if (currentTask.completedDialogue != null)
+            {
+                completedDialogue = currentTask.completedDialogue;
+            }
+        }
+        UpdateDialogueState();
+    }
 
     #region GetTaskState
     public bool IsStarted
@@ -56,8 +86,26 @@ public class TaskGiver : MonoBehaviour
         controller = GetComponent<DialogueController>();
     }
 
-    private void Start()
+    public void UpdateDialogueState()
     {
-        controller.currentData = startDialogue;
+        if (IsStarted)
+        {
+            if (IsFinished)
+            {
+                controller.currentData = finishedDialogue;
+            }
+            else
+            {
+                controller.currentData = progressDialogue;
+            }
+        }
+
+        if (IsCompleted)
+        {
+            controller.currentData = completedDialogue;
+        }
+        EventHandler.CallUpdateDialogueDataEvent(controller.currentData);
+        EventHandler.CallUpdateDialogueOptionEvent(DialogueOptionType.Task);
+        EventHandler.CallUpdateDialoguePieceEvent(controller.currentData.dialoguePieces[0]);
     }
 }

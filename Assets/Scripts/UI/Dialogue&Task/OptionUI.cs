@@ -12,6 +12,7 @@ namespace ShanHai_IsolatedCity.Dialogue
 
         private DialoguePiece currentPiece;
         private DialogueOption currentOption;
+        private DialoguePiece_SO currentDialogue;
         private string nextPieceID;
 
         private void Awake()
@@ -22,58 +23,42 @@ namespace ShanHai_IsolatedCity.Dialogue
 
         public void SetUpOptionUI(DialoguePiece dialoguePiece,DialogueOption option)
         {
-            currentPiece = dialoguePiece;
             currentOption = option;
-            OptionText.text = currentOption.Text;
+            currentDialogue = currentOption.dialogueData;
+            OptionText.text = currentOption.OptionName;
             nextPieceID = currentOption.TargetID;
         }
 
         private void OnOptionClicked()
         {
-            if (currentOption.task != null)
+            DialogueUI.Instance.CleanOptions();
+            EventHandler.CallUpdateDialogueDataEvent(null);
+            EventHandler.CallUpdateDialogueOptionEvent(currentOption.optionType);
+            if (nextPieceID == string.Empty)
             {
-                var newTask = new TaskManager.Task
+                if(currentDialogue != null)
                 {
-                    taskData = Instantiate(currentOption.task)
-                };
-                if (currentOption.TakeTask)
-                {
-                    if (TaskManager.Instance.HaveTask(newTask.taskData))
+                    EventHandler.CallUpdateTaskDataEvent(currentDialogue.GetTask());
+                    if (!TaskManager.Instance.HaveTask(currentDialogue.GetTask()))
                     {
-
-                    }
-                    else
-                    {
-                        TaskManager.Instance.tasks.Add(newTask);
-                        TaskManager.Instance.GetTask(newTask.taskData).IsStarted = true;
-
-                        foreach(var requireItem in newTask.taskData.GenerateRequirementsNameList())
-                        {
-                            InventoryManager.Instance.CheckItemInBag(requireItem);
-                        }
+                        EventHandler.CallUpdateDialogueDataEvent(currentDialogue);
+                        EventHandler.CallUpdateDialoguePieceEvent(currentDialogue.dialoguePieces[0]);
                     }
                 }
                 else
                 {
-
+                    EventHandler.CallUpdateDialoguePieceEvent(null);
                 }
-            }
-
-            if (nextPieceID == string.Empty)
-            {
-                EventHandler.CallShowDialoguePieceEvent(null);
-                //TODO:Switch here for different function
                 //FIXME:Create plot finishdialogues when finish some plot option
-                StartCoroutine(DialogueUI.Instance.FinishDialogues());
-                return;
+                //StartCoroutine(DialogueUI.Instance.FinishDialogues());
             }
             else
             {
-                DialogueUI.Instance.CleanOptions();
-                EventHandler.CallShowDialoguePieceEvent(DialogueUI.Instance.currentData.dialogueIndex[nextPieceID]);
+                if(DialogueUI.Instance.currentData.dialogueIndex.ContainsKey(nextPieceID))
+                    EventHandler.CallUpdateDialoguePieceEvent(DialogueUI.Instance.currentData.dialogueIndex[nextPieceID]);
             }
-            //Destroy(gameObject);
         }
+
     }
 }
 

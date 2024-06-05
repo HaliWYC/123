@@ -112,8 +112,6 @@ namespace ShanHai_IsolatedCity.Inventory
             }
 
             LayoutRebuilder.ForceRebuildLayoutImmediate(bufflist.GetComponent<RectTransform>());
-            //FIXME:后期用ID去查找每一个Buff
-            //OnUpdateBuffUIEvent();
         }
 
         private string GetCharacterData()

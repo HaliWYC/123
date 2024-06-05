@@ -14,6 +14,25 @@ namespace ShanHai_IsolatedCity.Dialogue
 
         public List<DialoguePieceOnlyText> FinishDialogues = new List<DialoguePieceOnlyText>();
 
+        public DialoguePiece GetDialoguePiece(string ID)
+        {
+            return dialoguePieces.Find(i => i.ID == ID);
+        }
+
+        public TaskData_SO GetTask()
+        {
+            foreach(var piece in dialoguePieces)
+            {
+                if (piece.task != null)
+                {
+                    return piece.task;
+                }
+            }
+            return null;
+        }
+
+
+
 #if UNITY_EDITOR
         void OnValidate()
         {
@@ -35,9 +54,6 @@ namespace ShanHai_IsolatedCity.Dialogue
         }
     }
 #endif
-        public DialoguePiece GetDialoguePiece(string ID)
-        {
-            return dialoguePieces.Find(i => i.ID == ID);
-        }
+        
     }
 }

@@ -130,6 +130,11 @@ public enum DialoguePieceType
     InCG, OnlyText
 }
 
+public enum DialogueOptionType
+{
+    Talk, Task, Trade, GivePresent, Leave
+}
+
 public enum TaskType
 {
     Mission, SideQuest, DailyQuest

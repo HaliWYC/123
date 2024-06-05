@@ -20,4 +20,12 @@ public class TaskRequirementUI : MonoBehaviour
         requireName.text = Name;
         progressNumber.text = currentAmount.ToString() + " / " + requireAmount.ToString();
     }
+
+    public void SetUpTaskRequirement(string Name, int requireAmount)
+    {
+        requireName.text = Name;
+        progressNumber.text = requireAmount.ToString() + " / " + requireAmount.ToString();
+        requireName.color = Color.gray;
+        progressNumber.color = Color.gray;
+    }
 }

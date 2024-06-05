@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9792d0d1ef74adf9e663d0576d3633, type: 3}
+  m_Name: Base
+  m_EditorClassIdentifier: 
+  dialoguePieces:
+  - ID: Piece01
+    targetID: 
+    faceImage: {fileID: 21300000, guid: ea77018ff180a4f759488a662f67da94, type: 3}
+    isLeft: 1
+    name: "\u5B59\u7A0B"
+    dialogueText: "\u4F60\u597D\u554ALucas"
+    hasToPause: 1
+    isEnd: 1
+    finishTalk: 0
+    task: {fileID: 0}
+    dialogueOptions: []
+  - ID: Piece02
+    targetID: 
+    faceImage: {fileID: 21300000, guid: 36e7d59ac1efc4cf7bc6a250df52e2b4, type: 3}
+    isLeft: 0
+    name: Lucas
+    dialogueText: "\u60A8\u597D\uFF0C\u6751\u957F"
+    hasToPause: 1
+    isEnd: 1
+    finishTalk: 0
+    task: {fileID: 0}
+    dialogueOptions: []
+  - ID: Piece03
+    targetID: 
+    faceImage: {fileID: 21300000, guid: 63a5eb4156cc3417896789f322630021, type: 3}
+    isLeft: 1
+    name: "\u5B59\u7A0B"
+    dialogueText: "\u4ECA\u5929\u5929\u6C14\u771F\u4E0D\u9519,\u4F60\u627E\u6211\u6709\u4EC0\u4E48\u4E8B\u5417\uFF1F"
+    hasToPause: 1
+    isEnd: 1
+    finishTalk: 0
+    task: {fileID: 0}
+    dialogueOptions:
+    - TargetID: 
+      OptionName: "\u804A\u4E00\u804A\u6751\u957F\u7684\u4E8B"
+      optionType: 0
+      dialogueData: {fileID: 11400000, guid: 118006bc0f7c9409d9d9b7134a8e81e2, type: 2}
+    - TargetID: 
+      OptionName: "\u6709\u4EC0\u4E48\u53EF\u4EE5\u5E2E\u52A9\u60A8\u7684\uFF1F"
+      optionType: 1
+      dialogueData: {fileID: 11400000, guid: a49fe8ad8ccac4960af9b485586bc9b8, type: 2}
+    - TargetID: 
+      OptionName: "\u6211\u60F3\u627E\u60A8\u4E70\u70B9\u4E1C\u897F"
+      optionType: 2
+      dialogueData: {fileID: 11400000, guid: c6324d213d7c14db78c6163453b1ea12, type: 2}
+    - TargetID: 
+      OptionName: "\u6211\u8FD9\u91CC\u6709\u4E00\u4E9B\u4E1C\u897F"
+      optionType: 3
+      dialogueData: {fileID: 11400000, guid: 1438de04a7c0e4d78b3d1dbed7643225, type: 2}
+    - TargetID: 
+      OptionName: "\u6CA1\u4EC0\u4E48\u4E8B\u4E86\uFF0C\u6211\u8D70\u4E86"
+      optionType: 4
+      dialogueData: {fileID: 11400000, guid: 59011756c2c2f480e811d0b320b4326f, type: 2}
+  FinishDialogues:
+  - name: "\u5B59\u7A0B"
+    dialogueType: 1
+    dialogueText: "\u795D\u4F60\u597D\u8FD0"
+  - name: "\u5B59\u7A0B"
+    dialogueType: 1
+    dialogueText: "\u5E0C\u671B\u4E0B\u6B21\u8FD8\u80FD\u770B\u5230\u4F60"

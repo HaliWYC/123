@@ -139,12 +139,12 @@ public static class EventHandler
     }
     #endregion
 
-    #region TaskEvents
+    #region Dialougue/TaskEvents
 
-    public static event Action<DialoguePiece> ShowDialoguePieceEvent;
-    public static void CallShowDialoguePieceEvent(DialoguePiece dialoguePiece)
+    public static event Action<DialoguePiece> UpdateDialoguePieceEvent;
+    public static void CallUpdateDialoguePieceEvent(DialoguePiece dialoguePiece)
     {
-        ShowDialoguePieceEvent?.Invoke(dialoguePiece);
+        UpdateDialoguePieceEvent?.Invoke(dialoguePiece);
     }
 
     public static event Action<DialoguePieceOnlyText> ShowDialoguePieceOnlyTextEvent;
@@ -163,6 +163,18 @@ public static class EventHandler
     public static void CallUpdateTaskProgressEvent(string target, int amount)
     {
         UpdateTaskProgressEvent?.Invoke(target, amount);
+    }
+
+    public static event Action<DialogueOptionType> UpdateDialogueOptionEvent;
+    public static void CallUpdateDialogueOptionEvent(DialogueOptionType option)
+    {
+        UpdateDialogueOptionEvent?.Invoke(option);
+    }
+
+    public static event Action<TaskData_SO> UpdateTaskDataEvent;
+    public static void CallUpdateTaskDataEvent(TaskData_SO taskData)
+    {
+        UpdateTaskDataEvent?.Invoke(taskData);
     }
 
     #endregion

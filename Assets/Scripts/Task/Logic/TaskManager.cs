@@ -30,7 +30,7 @@ public class TaskManager : Singleton<TaskManager>
     {
         foreach(var task in tasks)
         {
-            var matchTasks = task.taskData.taskRequirements.Find(r => r.targetName == Name);
+            var matchTasks = task.taskData.taskRequirements.Find(r => r.requireName == Name);
             if (matchTasks != null)
                 matchTasks.CurrentAmount += amount;
             task.taskData.CheckTaskProgress();
