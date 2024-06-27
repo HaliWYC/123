@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace ShanHai_IsolatedCity.Inventory
 {
-    public class FightingDataDetailsUI : MonoBehaviour
+    public class FightingDataDetailsUI : Singleton<FightingDataDetailsUI>
     {
         public Color Yellow;
         public Color Green;
@@ -27,6 +27,8 @@ namespace ShanHai_IsolatedCity.Inventory
         public Text Argility;
         public Text Resilience;
         public Text Speed;
+        public Text WoundRecovery;
+        public Text SkillCooling;
 
         public Text MinRange;
         public Text MaxRange;
@@ -44,13 +46,13 @@ namespace ShanHai_IsolatedCity.Inventory
         public Text CriticalDefense;
         public Text FatalDefense;
 
-        private float[,] FightingData = new float[3, 28];
-        private string[] Text = new string[28];
+        private float[,] FightingData = new float[3, 30];
+        private string[] Text = new string[30];
 
 
-        private void Awake()
+        protected override void Awake()
         {
-            InventoryManager.Instance.fightingDataUI = this;
+            base.Awake();
             Metal.color = Yellow;
             Attack.color = Yellow;
             Penetrate.color = Yellow;
@@ -116,20 +118,22 @@ namespace ShanHai_IsolatedCity.Inventory
             FightingData[index, 11] = Data.Argility;
             FightingData[index, 12] = Data.Resilience;
             FightingData[index, 13] = Data.speed;
-            FightingData[index, 14] = Data.minimumRange;
-            FightingData[index, 15] = Data.maximumRange;
-            FightingData[index, 16] = Data.Attack;
-            FightingData[index, 17] = Data.attackCooling;
-            FightingData[index, 18] = Data.attackAccuracy;
-            FightingData[index, 19] = Data.Penetrate;
-            FightingData[index, 20] = Data.createWound;
-            FightingData[index, 21] = Data.criticalPoint;
-            FightingData[index, 22] = Data.criticalMultiple;
-            FightingData[index, 23] = Data.fatal_Enhancement;
-            FightingData[index, 24] = Data.Defense;
-            FightingData[index, 25] = Data.penetrateDefense;
-            FightingData[index, 26] = Data.criticalDefense;
-            FightingData[index, 27] = Data.fatalDefense;
+            FightingData[index, 14] = Data.woundRecovery;
+            FightingData[index, 15] = Data.skillCooling;
+            FightingData[index, 16] = Data.minimumRange;
+            FightingData[index, 17] = Data.maximumRange;
+            FightingData[index, 18] = Data.Attack;
+            FightingData[index, 19] = Data.attackCooling;
+            FightingData[index, 20] = Data.attackAccuracy;
+            FightingData[index, 21] = Data.Penetrate;
+            FightingData[index, 22] = Data.createWound;
+            FightingData[index, 23] = Data.criticalPoint;
+            FightingData[index, 24] = Data.criticalMultiple;
+            FightingData[index, 25] = Data.fatal_Enhancement;
+            FightingData[index, 26] = Data.Defense;
+            FightingData[index, 27] = Data.penetrateDefense;
+            FightingData[index, 28] = Data.criticalDefense;
+            FightingData[index, 29] = Data.fatalDefense;
         }
 
         private void UpdateCharacterFightingDataUI()
@@ -149,20 +153,22 @@ namespace ShanHai_IsolatedCity.Inventory
             Argility.text = "Argility: " + Text[11];
             Resilience.text = "Resilience: " + Text[12];
             Speed.text = "Speed: " + Text[13];
-            MinRange.text = "Minimum Range: " + Text[14];
-            MaxRange.text = "Maximum Range: " + Text[15];
-            Attack.text = "Attack: " + Text[16];
-            AttackCooling.text = "Attack Cooling: " + Text[17];
-            AttackAccuracy.text = "Attack Accuracy: " + Text[18];
-            Penetrate.text = "Penetrate: " + Text[19];
-            WoundCreate.text = "Wound Create: " + Text[20];
-            CriticalPoint.text = "Critical Point: " + Text[21];
-            CriticalMultiple.text = "Critical Multiple: " + Text[22];
-            Fatal_Enhancement.text = "Fatal Enhancement: " + Text[23];
-            Defense.text = "Defense: " + Text[24];
-            PenetrateDefense.text = "Penetrate Defense: " + Text[25];
-            CriticalDefense.text = "Critical Defense: " + Text[26];
-            FatalDefense.text = "Fatal Defense: " + Text[27];
+            WoundRecovery.text = "Wound Recovery" + Text[14];
+            SkillCooling.text = "Skill Cooling" + Text[15];
+            MinRange.text = "Minimum Range: " + Text[16];
+            MaxRange.text = "Maximum Range: " + Text[17];
+            Attack.text = "Attack: " + Text[18];
+            AttackCooling.text = "Attack Cooling: " + Text[19];
+            AttackAccuracy.text = "Attack Accuracy: " + Text[20];
+            Penetrate.text = "Penetrate: " + Text[21];
+            WoundCreate.text = "Wound Create: " + Text[22];
+            CriticalPoint.text = "Critical Point: " + Text[23];
+            CriticalMultiple.text = "Critical Multiple: " + Text[24];
+            Fatal_Enhancement.text = "Fatal Enhancement: " + Text[25];
+            Defense.text = "Defense: " + Text[26];
+            PenetrateDefense.text = "Penetrate Defense: " + Text[27];
+            CriticalDefense.text = "Critical Defense: " + Text[28];
+            FatalDefense.text = "Fatal Defense: " + Text[29];
         }
         private void GenerateText()
         {

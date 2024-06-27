@@ -11,7 +11,7 @@ namespace ShanHai_IsolatedCity.Dialogue
     public class DialogueController : MonoBehaviour
     {
         private NPCMovement npc => GetComponent<NPCMovement>();
-        private NPCDetails NPCDetails => NPCManager.Instance.GetNPCDetail(GetComponent<EnemyController>().NPCID);
+        private NPCDetails NPCDetails ;
 
         [Header("Dialogue Data")]
         [SerializeField]private DialoguePiece_SO openingDialogue;
@@ -23,12 +23,14 @@ namespace ShanHai_IsolatedCity.Dialogue
 
         private bool canInteract;
         private bool isTalking;
+        private bool isAvailable;
 
         private GameObject uiSign;
 
         private void Awake()
         {
             uiSign = transform.GetChild(1).gameObject;
+
         }
 
         private void OnEnable()
@@ -36,6 +38,7 @@ namespace ShanHai_IsolatedCity.Dialogue
             EventHandler.UpdateDialoguePieceEvent += OnUpdateDialoguePieceEvent;
             EventHandler.UpdateDialogueDataEvent += OnUpdateDialogueDataEvent;
             EventHandler.UpdateDialogueOptionEvent += OnUpdateDialogueOptionEvent;
+            EventHandler.NPCAvailableEvent += OnNPCAvailableEvent;
         }
 
         private void OnDisable()
@@ -43,18 +46,22 @@ namespace ShanHai_IsolatedCity.Dialogue
             EventHandler.UpdateDialoguePieceEvent -= OnUpdateDialoguePieceEvent;
             EventHandler.UpdateDialogueDataEvent -= OnUpdateDialogueDataEvent;
             EventHandler.UpdateDialogueOptionEvent -= OnUpdateDialogueOptionEvent;
+            EventHandler.NPCAvailableEvent -= OnNPCAvailableEvent;
+        }
+
+        private void OnNPCAvailableEvent(bool available)
+        {
+            isAvailable = available;
+            if(!isAvailable)
+                EventHandler.CallUpdateGameStateEvent(GameState.Pause);
+            else
+                EventHandler.CallUpdateGameStateEvent(GameState.GamePlay);
         }
 
         private void OnUpdateDialogueOptionEvent(DialogueOptionType type)
         {
             optionFinishEvent = type;
             haveFinishEvent = true;
-            //if(currentData==null && isTalking)
-            //{
-            //    CallFinishEvent();
-            //    haveFinishEvent = false;
-            //    isTalking = false;
-            //}
         }
 
         private void OnUpdateDialogueDataEvent(DialoguePiece_SO DP_SO)
@@ -68,11 +75,15 @@ namespace ShanHai_IsolatedCity.Dialogue
             if (piece == null)
                 isTalking = false;
         }
-
+        private void Start()
+        {
+            NPCDetails = NPCManager.Instance.GetNPCDetail(GetComponent<EnemyController>().NPCID);
+            isAvailable = true;
+        }
         private void Update()
         {
             uiSign.SetActive(canInteract && !isTalking);
-            if (Input.GetKeyDown(KeyCode.Space) && canInteract)
+            if (Input.GetKeyDown(KeyCode.Space) && canInteract && isAvailable)
             {
                 if (!isTalking)
                 {
@@ -158,6 +169,7 @@ namespace ShanHai_IsolatedCity.Dialogue
 
         private void Task()
         {
+            EventHandler.CallNPCAvailableEvent(false);
             if (currentData.GetTask()!= null)
             {
                 var newTask = new TaskManager.Task
@@ -183,12 +195,13 @@ namespace ShanHai_IsolatedCity.Dialogue
                     }
                 }
             }
-            EventHandler.CallUpdateGameStateEvent(GameState.GamePlay);
+            EventHandler.CallNPCAvailableEvent(true);
         }
 
         private void Trade()
         {
-
+            EventHandler.CallNPCAvailableEvent(false);
+            TradeUI.Instance.SetUpTraderBag(GetComponent<CharacterInformation>(), NPCDetails, InventoryManager.Instance.playerBag);
         }
 
         private void GivePresent()

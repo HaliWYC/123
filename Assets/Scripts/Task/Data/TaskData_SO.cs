@@ -72,7 +72,7 @@ public class TaskData_SO : ScriptableObject
                     ItemDetails item = InventoryManager.Instance.GetItemDetails(require.requireID, require.requireName);
                     for(int num = 0; num < require.RequiredAmount; num++)
                     {
-                        InventoryManager.Instance.RemoveItem(item.itemID, item.itemType, 1, SlotType.PlayerBag);
+                        InventoryManager.Instance.RemoveItem(item.itemID, item.itemType, 1);
                     }
                     break;
             }

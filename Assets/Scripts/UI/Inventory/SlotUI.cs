@@ -15,7 +15,6 @@ namespace ShanHai_IsolatedCity.Inventory
         [SerializeField] private Text QualityText;
         [SerializeField] private Text itemTypeText;
         [SerializeField] private Text subType;
-        [SerializeField] private GameObject Action;
         [Header("SlotType")]
         public SlotType slotType;
         public int slotIndex;
@@ -52,7 +51,7 @@ namespace ShanHai_IsolatedCity.Inventory
                         break;
                     case ItemType.Consume:
                         ConsumeItemDetails consume = InventoryManager.Instance.GetConsumeItemDetails(itemDetails.itemID);
-                        Quality.color = InventoryManager.Instance.GetQualityColor(consume.ConsumeItemQuality);
+                        Quality.color = InventoryManager.Instance.GetBasicQualityColor(consume.ConsumeItemQuality);
                         amountText.text = "X " + itemAmount.ToString();
                         QualityText.text = consume.ConsumeItemQuality.ToString();
                         if (itemTypeText != null)
@@ -61,7 +60,7 @@ namespace ShanHai_IsolatedCity.Inventory
                         break;
                     case ItemType.Task:
                         TaskItemDetails task = InventoryManager.Instance.GetTaskItemDetails(itemDetails.itemID);
-                        Quality.color = InventoryManager.Instance.GetQualityColor(task.TaskItemQuality);
+                        Quality.color = InventoryManager.Instance.GetBasicQualityColor(task.TaskItemQuality);
                         amountText.text = itemAmount.ToString();
                         QualityText.text = task.TaskItemQuality.ToString();
                         if (itemTypeText != null)
@@ -70,7 +69,7 @@ namespace ShanHai_IsolatedCity.Inventory
                         break;
                     case ItemType.Other:
                         OtherItemDetails other = InventoryManager.Instance.GetOtherItemDetails(itemDetails.itemID);
-                        Quality.color = InventoryManager.Instance.GetQualityColor(other.OtherItemQuality);
+                        Quality.color = InventoryManager.Instance.GetBasicQualityColor(other.OtherItemQuality);
                         amountText.text = itemAmount.ToString();
                         QualityText.text = other.OtherItemQuality.ToString();
                         if (itemTypeText != null)
@@ -100,13 +99,6 @@ namespace ShanHai_IsolatedCity.Inventory
                 switch (itemDetails.itemType)
                 {
                     case ItemType.Equip:
-                        if (slotType == SlotType.PlayerBag)
-                        {
-                            EquipItemTips equipItemTips = InventoryManager.Instance.inventoryUI.equipItemTip;
-                            equipItemTips.gameObject.SetActive(!equipItemTips.gameObject.activeInHierarchy);
-                            equipItemTips.SetUpItemToolTip(InventoryManager.Instance.GetEquipItemDetails(itemDetails.itemID));
-                        }
-
                         if (eventData.clickCount % 2 == 0 && slotType == SlotType.Player)
                         {
                             InventoryManager.Instance.TakeOffItem(InventoryManager.Instance.GetEquipItemDetails(itemDetails.itemID));
@@ -115,12 +107,9 @@ namespace ShanHai_IsolatedCity.Inventory
                         {
                             InventoryManager.Instance.EquipItem(InventoryManager.Instance.GetEquipItemDetails(itemDetails.itemID));
                         }
-                        
+
                         break;
                     case ItemType.Consume:
-                        ConsumeItemTip consumeItemTip = InventoryManager.Instance.inventoryUI.consumeItemTip;
-                        consumeItemTip.gameObject.SetActive(!consumeItemTip.gameObject.activeInHierarchy);
-                        consumeItemTip.SetupToolTip(InventoryManager.Instance.GetConsumeItemDetails(itemDetails.itemID));
                         if (eventData.clickCount % 2 == 0)
                         {
                             InventoryManager.Instance.inventoryUI.ConsumeItemPanel.SetActive(true);
@@ -139,25 +128,34 @@ namespace ShanHai_IsolatedCity.Inventory
         public void OnPointerEnter(PointerEventData eventData)
         {
             //TODO:播放声音
+            if(itemDetails!=null && Input.GetKeyDown(KeyCode.I))
+            {
+                switch (itemDetails.itemType)
+                {
+                    case ItemType.Equip:
+                        if (slotType == SlotType.PlayerBag)
+                        {
+                            EquipItemTips equipItemTips = InventoryManager.Instance.inventoryUI.equipItemTip;
+                            equipItemTips.gameObject.SetActive(!equipItemTips.gameObject.activeInHierarchy);
+                            equipItemTips.SetUpItemToolTip(InventoryManager.Instance.GetEquipItemDetails(itemDetails.itemID));
+                        }
+                        break;
+                    case ItemType.Consume:
+                        ConsumeItemTip consumeItemTip = InventoryManager.Instance.inventoryUI.consumeItemTip;
+                        consumeItemTip.gameObject.SetActive(!consumeItemTip.gameObject.activeInHierarchy);
+                        consumeItemTip.SetupToolTip(InventoryManager.Instance.GetConsumeItemDetails(itemDetails.itemID));
+                        break;
+                    case ItemType.Task:
+                        break;
+                    case ItemType.Other:
+                        break;
+                }
+            }
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if(Action!=null)
-                Action.SetActive(false);
-        }
 
-        public void EquipItem()
-        {
-            EquipItemDetails equip = InventoryManager.Instance.GetEquipItemDetails(itemDetails.itemID);
-            InventoryManager.Instance.EquipItem(equip);
-        }
-
-        public void ShowItemTip()
-        {
-            EquipItemDetails equip = InventoryManager.Instance.GetEquipItemDetails(itemDetails.itemID);
-            InventoryManager.Instance.inventoryUI.equipItemTip.SetUpItemToolTip(equip);
-            InventoryManager.Instance.inventoryUI.equipItemTip.gameObject.SetActive(true);
         }
 
         //public void OnBeginDrag(PointerEventData eventData)

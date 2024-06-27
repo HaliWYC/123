@@ -13,14 +13,18 @@ MonoBehaviour:
   m_Name: Mayor
   m_EditorClassIdentifier: 
   Name: "\u5B59\u7A0B"
+  Appellation: 
+  charIcon: {fileID: 0}
   Personality: 
   commandStyle: 
   Spirit: 
-  prestigeLevel: 0
+  prestigeIndex: 0
+  prestigeLevel: 5
   currentPrestige: 0
+  nextPrestige: 0
   Fitness: 0
   Eloquence: 0
   Wisedom: 0
   Luck: 0
   Strength: 0
-  Understanding: 0
+  Perception: 0

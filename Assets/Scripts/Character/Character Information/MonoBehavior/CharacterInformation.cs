@@ -37,19 +37,8 @@ public class CharacterInformation : MonoBehaviour
         if (templateBuffFightingData != null)
             buffFightingData = Instantiate(templateBuffFightingData);
     }
-    private void OnEnable()
-    {
-        EventHandler.UseConsumeItemEvent += OnUseConsumeItemEvent;
-    }
 
-    
-
-    private void OnDisable()
-    {
-        EventHandler.UseConsumeItemEvent -= OnUseConsumeItemEvent;
-    }
-
-    private void OnUseConsumeItemEvent(ConsumeItem_SO Consume)
+    public void UseConsumeItem(ConsumeItem_SO Consume)
     {
         CurrentPrestige += Consume.currentPrestige;
         Fitness += Consume.Fitness;
@@ -77,6 +66,8 @@ public class CharacterInformation : MonoBehaviour
         Argility += Consume.Argility;
         Resilience += Consume.Resilience;
         Speed += Consume.Speed;
+        WoundRecovery += Consume.WoundRecovery;
+        SkillCooling += Consume.SkillCooling;
         MinimumRange += Consume.MinimumRange;
         MaximumRange += Consume.MaximumRange;
         Attack += Consume.Attack;
@@ -497,7 +488,6 @@ public class CharacterInformation : MonoBehaviour
         CreateWound = Mathf.Max(CreateWound - (int)(fightingData.createWound * finalFatal), 0);
         Penetrate = Mathf.Max(Penetrate - (int)(fightingData.Penetrate * finalFatal), 0);
         CriticalPoint = Mathf.Max(CriticalPoint - (int)(fightingData.criticalPoint * finalFatal), 0);
-        //AttackCooling -= templateFightingData.AttackCooling * finalFatal;
         Criticalmutiple = Mathf.Max(Criticalmutiple - fightingData.criticalMultiple * finalFatal, 0);
         Fatal_Enhancement = Mathf.Max(Fatal_Enhancement - fightingData.fatal_Enhancement * finalFatal, 0);
         Continuous_DamageRate = Mathf.Max(Continuous_DamageRate - fightingData.continuous_DamageRate * finalFatal, 0);
@@ -557,7 +547,7 @@ public class CharacterInformation : MonoBehaviour
         equipFightingData.fatalDefense += equipment.EquipData.fatalDefense;
 
         EventHandler.CallUpdateCharacterInformationUIEvent();
-        InventoryManager.Instance.fightingDataUI.UpdateFightingDataUI(equipFightingData, CharacterFightingDataType.Equip);
+        FightingDataDetailsUI.Instance.UpdateFightingDataUI(equipFightingData, CharacterFightingDataType.Equip);
     }
 
     public void TakeOffItem(EquipItemDetails equipment)
@@ -595,7 +585,7 @@ public class CharacterInformation : MonoBehaviour
         equipFightingData.fatalDefense -= equipment.EquipData.fatalDefense;
 
         EventHandler.CallUpdateCharacterInformationUIEvent();
-        InventoryManager.Instance.fightingDataUI.UpdateFightingDataUI(equipFightingData, CharacterFightingDataType.Equip);
+        FightingDataDetailsUI.Instance.UpdateFightingDataUI(equipFightingData, CharacterFightingDataType.Equip);
         StartCoroutine(CalculateFatal(0, 0, this));
     }
 
@@ -635,7 +625,7 @@ public class CharacterInformation : MonoBehaviour
 
         EventHandler.CallUpdateCharacterInformationUIEvent();
         StartCoroutine(CalculateFatal(0, 0, this));
-        InventoryManager.Instance.fightingDataUI.UpdateFightingDataUI(equipFightingData, CharacterFightingDataType.Equip);
+        FightingDataDetailsUI.Instance.UpdateFightingDataUI(equipFightingData, CharacterFightingDataType.Equip);
     }
     #endregion
 

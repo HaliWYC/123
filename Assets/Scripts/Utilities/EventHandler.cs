@@ -32,11 +32,10 @@ public static class EventHandler
     #endregion
 
     #region Inventory/ItemEvents
-    public static event Action<InventoryLocation, ItemType, List<InventoryItem>> UpdateInventoryUI;
-
-    public static void CallUpdateInventoryUI(InventoryLocation location, ItemType itemType, List<InventoryItem> list)
+    public static event Action<ItemType, List<InventoryItem>> UpdatePlayerInventoryUI;
+    public static void CallUpdatePlayerInventoryUI(ItemType itemType, List<InventoryItem> list)
     {
-        UpdateInventoryUI?.Invoke(location, itemType, list);
+        UpdatePlayerInventoryUI?.Invoke(itemType, list);
     }
 
     public static event Action<int, Vector3> InstantiateItemInScene;
@@ -55,12 +54,6 @@ public static class EventHandler
     public static void CallItemSelectedEvent(ItemDetails itemDetails, bool isSelected)
     {
         ItemSelectedEvent?.Invoke(itemDetails, isSelected);
-    }
-
-    public static event Action<ConsumeItem_SO> UseConsumeItemEvent;
-    public static void CallUseConsumeItemEvent(ConsumeItem_SO consume)
-    {
-        UseConsumeItemEvent?.Invoke(consume);
     }
 
     #endregion
@@ -119,28 +112,12 @@ public static class EventHandler
 
     #endregion
 
-    #region ShopEvents
-    public static event Action<SlotType, InventoryBag_SO> BaseBagOpenEvent;
-    public static void CallBaseBagOpenEvent(SlotType slotType, InventoryBag_SO bag_SO)
+    #region Dialougue
+    public static event Action<int> FindNPCEvent;
+    public static void CallFindNPCEvent(int NPCID)
     {
-        BaseBagOpenEvent?.Invoke(slotType, bag_SO);
+        FindNPCEvent?.Invoke(NPCID);
     }
-
-    public static event Action<SlotType, InventoryBag_SO> BaseBagCloseEvent;
-    public static void CallBaseBagCloseEvent(SlotType slotType, InventoryBag_SO bag_SO)
-    {
-        BaseBagCloseEvent?.Invoke(slotType, bag_SO);
-    }
-
-    public static event Action<ItemDetails, bool, ItemType> ShowTradeUI;
-    public static void CallShowTradeUI(ItemDetails item, bool isSell, ItemType itemType)
-    {
-        ShowTradeUI?.Invoke(item, isSell, itemType);
-    }
-    #endregion
-
-    #region Dialougue/TaskEvents
-
     public static event Action<DialoguePiece> UpdateDialoguePieceEvent;
     public static void CallUpdateDialoguePieceEvent(DialoguePiece dialoguePiece)
     {
@@ -159,24 +136,31 @@ public static class EventHandler
         UpdateDialogueDataEvent?.Invoke(dialoguePiece_SO);
     }
 
-    public static event Action<string, int> UpdateTaskProgressEvent;
-    public static void CallUpdateTaskProgressEvent(string target, int amount)
-    {
-        UpdateTaskProgressEvent?.Invoke(target, amount);
-    }
+    
 
     public static event Action<DialogueOptionType> UpdateDialogueOptionEvent;
     public static void CallUpdateDialogueOptionEvent(DialogueOptionType option)
     {
         UpdateDialogueOptionEvent?.Invoke(option);
     }
+    #endregion
 
+    #region NPCFunction
+    public static event Action<string, int> UpdateTaskProgressEvent;
+    public static void CallUpdateTaskProgressEvent(string target, int amount)
+    {
+        UpdateTaskProgressEvent?.Invoke(target, amount);
+    }
+    public static event Action<bool> NPCAvailableEvent;
+    public static void CallNPCAvailableEvent(bool isAvailable)
+    {
+        NPCAvailableEvent?.Invoke(isAvailable);
+    }
     public static event Action<TaskData_SO> UpdateTaskDataEvent;
     public static void CallUpdateTaskDataEvent(TaskData_SO taskData)
     {
         UpdateTaskDataEvent?.Invoke(taskData);
     }
-
     #endregion
 
     #region TimeEvents
@@ -194,11 +178,7 @@ public static class EventHandler
         GameDateEvent?.Invoke(hour, day, month, year, season);
     }
     #endregion
-    public static event Action<int> FindNPCEvent;
-    public static void CallFindNPCEvent(int NPCID)
-    {
-        FindNPCEvent?.Invoke(NPCID);
-    }
+
     #region UIEvents
     public static event Action UpdateCharacterInformationUIEvent;
     public static void CallUpdateCharacterInformationUIEvent()

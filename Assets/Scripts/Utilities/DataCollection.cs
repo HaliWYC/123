@@ -23,6 +23,8 @@ public class ItemDetails
 
     public bool canDrop;
 
+    public bool notForSale;
+
     public bool Stackable;
 
     public int gold;
@@ -159,7 +161,7 @@ public class RelationShip
 {
     //FIXME: 后期视情况改成是否拥有自己的社交圈
     //public string Name;
-    [Range(0, 100)]
+    [Range(-100, 100)]
     public int Favourability;
 }
 

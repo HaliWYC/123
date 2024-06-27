@@ -41,8 +41,8 @@ public class TaskGiver : MonoBehaviour
             {
                 completedDialogue = currentTask.completedDialogue;
             }
+            UpdateDialogueState();
         }
-        UpdateDialogueState();
     }
 
     #region GetTaskState

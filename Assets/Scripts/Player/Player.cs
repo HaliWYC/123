@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     private Animator anim;
     public PlayerInputControl inputControl;
     private bool inputDisable;
-
+    private PlayerState playerState;
     public CharacterInformation playerInformation;
 
     [SerializeField] private Transform playerTransform;
@@ -61,6 +61,7 @@ public class Player : MonoBehaviour
         playerInformation.vigorChange?.Invoke(playerInformation);
         playerInformation.woundChange?.Invoke(playerInformation);
         playerInformation.moraleChange?.Invoke(playerInformation);
+        playerState = PlayerState.和平;
     }
 
     private void Update()
@@ -79,14 +80,38 @@ public class Player : MonoBehaviour
         lastAttackTime -= Time.deltaTime;
         lastParryTime -= Time.deltaTime;
 
-        SelectEnemyFromList();
+        switch (playerState)
+        {
+            case PlayerState.和平:
+                if (Input.GetKeyDown(KeyCode.J))
+                    playerState = PlayerState.战斗;
+                if (Input.GetKeyDown(KeyCode.C))
+                {
+                    playerState = PlayerState.潜行;
+                    Debug.Log(playerState);
+                }
 
-        PlayerExecute();
-        PlayerParry();
+                break;
+            case PlayerState.战斗:
+                //TODO:Play combat Animation
+                if (Input.GetKeyDown(KeyCode.J))
+                    playerState = PlayerState.和平;
+                SelectEnemyFromList();
+                PlayerExecute();
+                PlayerParry();
+                PlayerAttack();
+                break;
+            case PlayerState.潜行:
+                //TODO:Play sqaut Animation
+                if (Input.GetKeyDown(KeyCode.C))
+                {
+                    playerState = PlayerState.和平;
+                    Debug.Log(playerState);
+                }
+                break;
+        }
         PlayerRolling();
-        PlayerAttack();
         PlayerRunning();
-
         movementInput = inputControl.Gameplay.Move.ReadValue<Vector2>();
         SwitchAnimation();
     }

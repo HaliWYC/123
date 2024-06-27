@@ -22,12 +22,13 @@ MonoBehaviour:
     useRadius: 0
     canPickUp: 1
     canDrop: 0
+    notForSale: 0
     Stackable: 0
-    gold: 0
-    shanHaiGold: 0
+    gold: 2000
+    shanHaiGold: 20
     sellPercentage: 0
     equipItemType: 5
-    EquipItemQuality: 5
+    EquipItemQuality: 2
     EquipData: {fileID: 11400000, guid: 4eb0bee3361d249699d3250eece2e53c, type: 2}
     equipSkills:
     - {fileID: 11400000, guid: af8fe350ea402f44489edc1c1b379926, type: 2}
@@ -41,11 +42,12 @@ MonoBehaviour:
     useRadius: 0
     canPickUp: 1
     canDrop: 0
+    notForSale: 0
     Stackable: 0
-    gold: 0
-    shanHaiGold: 0
+    gold: 100
+    shanHaiGold: 20000
     sellPercentage: 0
     equipItemType: 4
-    EquipItemQuality: 0
+    EquipItemQuality: 7
     EquipData: {fileID: 11400000, guid: f50890527bcc24fb0a2cc2294090b0d1, type: 2}
     equipSkills: []

@@ -133,6 +133,7 @@ public class DialogueUI : Singleton<DialogueUI>
     public void CreateOptions(DialoguePiece dialoguePiece)
     {
         dialoguePanel.SetActive(false);
+        optionPanel.gameObject.SetActive(true);
         CleanOptions();
         for (int index = 0; index < dialoguePiece.dialogueOptions.Count; index++)
         {

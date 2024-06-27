@@ -15,7 +15,7 @@ namespace ShanHai_IsolatedCity.Buff
         {
             buffData = buff;
             buffName.text = buffData.buffName;
-            BG.color = InventoryManager.Instance.GetQualityColor(buff.buffQuality);
+            BG.color = InventoryManager.Instance.GetBasicQualityColor(buff.buffQuality);
         }
     }
 }

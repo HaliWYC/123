@@ -226,6 +226,12 @@ public class OtherItemDetailsEditor : EditorWindow
             activeItem.canDrop = evt.newValue;
         });
 
+        itemDetailsSection.Q<Toggle>("notForSale").value = activeItem.notForSale;
+        itemDetailsSection.Q<Toggle>("notForSale").RegisterValueChangedCallback(evt =>
+        {
+            activeItem.notForSale = evt.newValue;
+        });
+
         itemDetailsSection.Q<IntegerField>("Gold").value = activeItem.gold;
         itemDetailsSection.Q<IntegerField>("Gold").RegisterValueChangedCallback(evt =>
         {

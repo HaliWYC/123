@@ -25,7 +25,7 @@ public class UseConsumeItemPanel : MonoBehaviour,IDragHandler
         consumeItem = consume;
         itemName.text = consumeItem.itemName;
         itemIcon.sprite = consumeItem.itemIcon;
-        quality.color = InventoryManager.Instance.GetQualityColor(consumeItem.ConsumeItemQuality);
+        quality.color = InventoryManager.Instance.GetBasicQualityColor(consumeItem.ConsumeItemQuality);
 
     }
 

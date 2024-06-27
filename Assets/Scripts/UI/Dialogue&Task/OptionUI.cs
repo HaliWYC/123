@@ -32,18 +32,18 @@ namespace ShanHai_IsolatedCity.Dialogue
         private void OnOptionClicked()
         {
             DialogueUI.Instance.CleanOptions();
-            EventHandler.CallUpdateDialogueDataEvent(null);
-            EventHandler.CallUpdateDialogueOptionEvent(currentOption.optionType);
             if (nextPieceID == string.Empty)
             {
-                if(currentDialogue != null)
+
+                if (currentDialogue != null && currentDialogue.dialoguePieces.Count>0)
                 {
-                    EventHandler.CallUpdateTaskDataEvent(currentDialogue.GetTask());
+                    
                     if (!TaskManager.Instance.HaveTask(currentDialogue.GetTask()))
                     {
                         EventHandler.CallUpdateDialogueDataEvent(currentDialogue);
                         EventHandler.CallUpdateDialoguePieceEvent(currentDialogue.dialoguePieces[0]);
                     }
+                    EventHandler.CallUpdateTaskDataEvent(currentDialogue.GetTask());
                 }
                 else
                 {
@@ -57,6 +57,8 @@ namespace ShanHai_IsolatedCity.Dialogue
                 if(DialogueUI.Instance.currentData.dialogueIndex.ContainsKey(nextPieceID))
                     EventHandler.CallUpdateDialoguePieceEvent(DialogueUI.Instance.currentData.dialogueIndex[nextPieceID]);
             }
+            EventHandler.CallUpdateDialogueOptionEvent(currentOption.optionType);
+            DialogueUI.Instance.optionPanel.gameObject.SetActive(false);
         }
 
     }

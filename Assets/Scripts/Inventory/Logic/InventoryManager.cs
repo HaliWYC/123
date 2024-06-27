@@ -19,12 +19,6 @@ namespace ShanHai_IsolatedCity.Inventory
 
         public InventoryBag_SO playerBag;
         public InventoryUI inventoryUI;
-        public FightingDataDetailsUI fightingDataUI;
-
-        [Header("交易数据")]
-        private string NPCName;
-
-        //public bool isSell =false;
 
         [Header("基础品质颜色")]
         public Color Red;
@@ -38,36 +32,17 @@ namespace ShanHai_IsolatedCity.Inventory
 
         private void Start()
         {
-            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, ItemType.Equip, playerBag.equipList);
-            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, ItemType.Consume, playerBag.consumeList);
-            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, ItemType.Task, playerBag.taskList);
-            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, ItemType.Other, playerBag.otherList);
+            EventHandler.CallUpdatePlayerInventoryUI(ItemType.Equip, playerBag.equipList);
+            EventHandler.CallUpdatePlayerInventoryUI(ItemType.Consume, playerBag.consumeList);
+            EventHandler.CallUpdatePlayerInventoryUI(ItemType.Task, playerBag.taskList);
+            EventHandler.CallUpdatePlayerInventoryUI(ItemType.Other, playerBag.otherList);
         }
 
-        private void OnEnable()
-        {
-            EventHandler.UseConsumeItemEvent += OnUseConsumeItemEvent;
-            EventHandler.DropItemEvent += OnDropItemEvent;
-        }
-
-        
-
-        private void OnDisable()
-        {
-            EventHandler.UseConsumeItemEvent -= OnUseConsumeItemEvent;
-            EventHandler.DropItemEvent -= OnDropItemEvent;
-        }
-
-        private void OnUseConsumeItemEvent(ConsumeItem_SO consume)
+        private void UseConsumeItem(ConsumeItem_SO consume)
         {
             playerBag.Gold += consume.Gold;
             playerBag.ShanHaiGold += consume.ShanHaiGold;
-            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, ItemType.Consume, playerBag.consumeList);
-        }
-
-        private void OnDropItemEvent(int ID, Vector3 pos)
-        {
-            //RemoveItem(ID, 1,SlotType.人物背包);
+            EventHandler.CallUpdatePlayerInventoryUI(ItemType.Consume, playerBag.consumeList);
         }
 
         #region GetItemDetails
@@ -141,23 +116,23 @@ namespace ShanHai_IsolatedCity.Inventory
         {
             //Is Bag spare?
 
-            var index = GetItemIndexInBag(item.itemID, item.itemType, SlotType.PlayerBag);
+            var index = GetItemIndexInBag(item.itemID, item.itemType);
 
-            AddItemAtIndex(item.itemID, index, item.itemType, 1,SlotType.PlayerBag);
+            AddItemAtIndex(item.itemID, index, item.itemType, 1);
             //Update UI
             switch (item.itemType)
             {
                 case ItemType.Equip:
-                    EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, item.itemType, playerBag.equipList);
+                    EventHandler.CallUpdatePlayerInventoryUI(item.itemType, playerBag.equipList);
                     break;
                 case ItemType.Consume:
-                    EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, item.itemType, playerBag.consumeList);
+                    EventHandler.CallUpdatePlayerInventoryUI(item.itemType, playerBag.consumeList);
                     break;
                 case ItemType.Task:
-                    EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, item.itemType, playerBag.taskList);
+                    EventHandler.CallUpdatePlayerInventoryUI(item.itemType, playerBag.taskList);
                     break;
                 case ItemType.Other:
-                    EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, item.itemType, playerBag.otherList);
+                    EventHandler.CallUpdatePlayerInventoryUI(item.itemType, playerBag.otherList);
                     break;
             }
 
@@ -165,25 +140,34 @@ namespace ShanHai_IsolatedCity.Inventory
 
         public void AddItem(ItemDetails itemDetails ,int amount)
         {
-            var index = GetItemIndexInBag(itemDetails.itemID, itemDetails.itemType, SlotType.PlayerBag);
+            var index = GetItemIndexInBag(itemDetails.itemID, itemDetails.itemType);
 
-            AddItemAtIndex(itemDetails.itemID, index, itemDetails.itemType, amount, SlotType.PlayerBag);
+            AddItemAtIndex(itemDetails.itemID, index, itemDetails.itemType, amount);
             //Update UI
             switch (itemDetails.itemType)
             {
                 case ItemType.Equip:
-                    EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, itemDetails.itemType, playerBag.equipList);
+                    EventHandler.CallUpdatePlayerInventoryUI(itemDetails.itemType, playerBag.equipList);
                     break;
                 case ItemType.Consume:
-                    EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, itemDetails.itemType, playerBag.consumeList);
+                    EventHandler.CallUpdatePlayerInventoryUI(itemDetails.itemType, playerBag.consumeList);
                     break;
                 case ItemType.Task:
-                    EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, itemDetails.itemType, playerBag.taskList);
+                    EventHandler.CallUpdatePlayerInventoryUI(itemDetails.itemType, playerBag.taskList);
                     break;
                 case ItemType.Other:
-                    EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, itemDetails.itemType, playerBag.otherList);
+                    EventHandler.CallUpdatePlayerInventoryUI(itemDetails.itemType, playerBag.otherList);
                     break;
             }
+        }
+
+        public void AddItem(ItemDetails itemDetails, int amount, NPCDetails NPC)
+        {
+            var index = GetItemIndexInBag(itemDetails.itemID, itemDetails.itemType, NPC);
+
+            AddItemAtIndex(itemDetails.itemID, index, itemDetails.itemType, amount, NPC);
+            //Update UI
+            TradeUI.Instance.UpdateNPCBagItems();
         }
 
         private void AddNewItem(int ID, int amount, ItemType type)
@@ -232,6 +216,52 @@ namespace ShanHai_IsolatedCity.Inventory
                 }
             }
         }
+        private void AddNewItem(int ID, int amount, ItemType type, NPCDetails NPC)
+        {
+            if (GetItemDetails(ID, type).Stackable)
+            {
+                var Item = new InventoryItem { itemID = ID, itemAmount = amount, Type = type };
+                switch (type)
+                {
+                    case ItemType.Equip:
+                        NPC.NPCBag.equipList.Add(Item);
+                        break;
+                    case ItemType.Consume:
+                        NPC.NPCBag.consumeList.Add(Item);
+                        break;
+                    case ItemType.Task:
+                        NPC.NPCBag.taskList.Add(Item);
+                        break;
+                    case ItemType.Other:
+                        NPC.NPCBag.otherList.Add(Item);
+                        break;
+
+                }
+            }
+            else
+            {
+                for (int index = 0; index < amount; index++)
+                {
+                    var Item = new InventoryItem { itemID = ID, itemAmount = 1, Type = type };
+                    switch (type)
+                    {
+                        case ItemType.Equip:
+                            NPC.NPCBag.equipList.Add(Item);
+                            break;
+                        case ItemType.Consume:
+                            NPC.NPCBag.consumeList.Add(Item);
+                            break;
+                        case ItemType.Task:
+                            NPC.NPCBag.taskList.Add(Item);
+                            break;
+                        case ItemType.Other:
+                            NPC.NPCBag.otherList.Add(Item);
+                            break;
+
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Is Bag spare?
@@ -245,7 +275,7 @@ namespace ShanHai_IsolatedCity.Inventory
         //        {
         //            return true;
         //        }
-                
+
         //    }
         //    return false;
         //}
@@ -254,72 +284,93 @@ namespace ShanHai_IsolatedCity.Inventory
         /// </summary>
         /// <param name="ID">Item ID</param>
         /// <returns>-1 means not exist else return the index</returns>
-        private int GetItemIndexInBag(int ID,ItemType itemType,SlotType slotType)
+        private int GetItemIndexInBag(int ID,ItemType itemType)
         {
-            switch (slotType)
+            switch (itemType)
             {
-                case SlotType.PlayerBag:
-                    switch (itemType)
+                case ItemType.Equip:
+                    for (int i = 0; i < playerBag.equipList.Count; i++)
                     {
-                        case ItemType.Equip:
-                            for (int i = 0; i < playerBag.equipList.Count; i++)
-                            {
-                                if (playerBag.equipList[i].itemID == ID)
-                                {
-                                    return i;
-                                }
-
-                            }
-                            break;
-                        case ItemType.Consume:
-                            for (int i = 0; i < playerBag.consumeList.Count; i++)
-                            {
-                                if (playerBag.consumeList[i].itemID == ID)
-                                {
-                                    return i;
-                                }
-
-                            }
-                            break;
-                        case ItemType.Task:
-                            for (int i = 0; i < playerBag.taskList.Count; i++)
-                            {
-                                if (playerBag.taskList[i].itemID == ID)
-                                {
-                                    return i;
-                                }
-
-                            }
-                            break;
-                        case ItemType.Other:
-                            for (int i = 0; i < playerBag.otherList.Count; i++)
-                            {
-                                if (playerBag.otherList[i].itemID == ID)
-                                {
-                                    return i;
-                                }
-
-                            }
-                            break;
+                        if (playerBag.equipList[i].itemID == ID)
+                        {
+                            return i;
+                        }
                     }
-                    
-                    return -1;
-                //case SlotType.NPCBag:
-                //    for (int i = 0; i < NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList.Count; i++)
-                //    {
-
-                //        if (NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[i].itemID == ID)
-                //        {
-                //            return i;
-                //        }
-
-                //    }
-                //    return -1;
-
+                    break;
+                case ItemType.Consume:
+                    for (int i = 0; i < playerBag.consumeList.Count; i++)
+                    {
+                        if (playerBag.consumeList[i].itemID == ID)
+                        {
+                            return i;
+                        }
+                    }
+                    break;
+                case ItemType.Task:
+                    for (int i = 0; i < playerBag.taskList.Count; i++)
+                    {
+                        if (playerBag.taskList[i].itemID == ID)
+                        {
+                            return i;
+                        }
+                    }
+                    break;
+                case ItemType.Other:
+                    for (int i = 0; i < playerBag.otherList.Count; i++)
+                    {
+                        if (playerBag.otherList[i].itemID == ID)
+                        {
+                            return i;
+                        }
+                    }
+                    break;
             }
             return -1;
-            
-        }        
+        }
+
+        private int GetItemIndexInBag(int ID, ItemType itemType, NPCDetails NPC)
+        {
+            switch (itemType)
+            {
+                case ItemType.Equip:
+                    for (int i = 0; i < NPC.NPCBag.equipList.Count; i++)
+                    {
+                        if (NPC.NPCBag.equipList[i].itemID == ID)
+                        {
+                            return i;
+                        }
+                    }
+                    break;
+                case ItemType.Consume:
+                    for (int i = 0; i < NPC.NPCBag.consumeList.Count; i++)
+                    {
+                        if (NPC.NPCBag.consumeList[i].itemID == ID)
+                        {
+                            return i;
+                        }
+                    }
+                    break;
+                case ItemType.Task:
+                    for (int i = 0; i < NPC.NPCBag.taskList.Count; i++)
+                    {
+                        if (NPC.NPCBag.taskList[i].itemID == ID)
+                        {
+                            return i;
+                        }
+                    }
+                    break;
+                case ItemType.Other:
+                    for (int i = 0; i < NPC.NPCBag.otherList.Count; i++)
+                    {
+                        if (NPC.NPCBag.otherList[i].itemID == ID)
+                        {
+                            return i;
+                        }
+                    }
+                    break;
+            }
+            return -1;
+        }
 
         /// <summary>
         /// Add the item at the certain index
@@ -327,199 +378,234 @@ namespace ShanHai_IsolatedCity.Inventory
         /// <param name="ID"></param>
         /// <param name="index"></param>
         /// <param name="amount"></param>
-        private void AddItemAtIndex(int ID, int index, ItemType itemType, int amount,SlotType slotType)
+        private void AddItemAtIndex(int ID, int index, ItemType itemType, int amount)
         {
-            switch (slotType)
+            if (index == -1)//Does not have this item 
             {
-                case SlotType.PlayerBag:
-                    if (index == -1)//Does not have this item 
+                AddNewItem(ID, amount, itemType);
+            }
+            else//Does have this item
+            {
+                if (GetItemDetails(ID, itemType).Stackable)
+                {
+                    int currentAmount;
+                    switch (itemType)
                     {
-                        AddNewItem(ID, amount, itemType);
-                        //for (int i = 0; i < playerBag.itemList.Count; i++)
-                        //{
-                        //    if (playerBag.itemList[i].itemID == 0)
-                        //    {
-                        //        playerBag.itemList[i] = Item;
-                        //        break;
-                        //    }
-                        //}
+                        case ItemType.Equip:
+                            currentAmount = playerBag.equipList[index].itemAmount + amount;
+
+                            var equipItem = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
+
+                            playerBag.equipList[index] = equipItem;
+                            break;
+                        case ItemType.Consume:
+                            currentAmount = playerBag.consumeList[index].itemAmount + amount;
+
+                            var consumeItem = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
+
+                            playerBag.consumeList[index] = consumeItem;
+                            break;
+                        case ItemType.Task:
+                            currentAmount = playerBag.taskList[index].itemAmount + amount;
+
+                            var taskItem = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
+
+                            playerBag.taskList[index] = taskItem;
+                            break;
+                        case ItemType.Other:
+                            currentAmount = playerBag.otherList[index].itemAmount + amount;
+
+                            var otherItem = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
+
+                            playerBag.otherList[index] = otherItem;
+                            break;
                     }
-                    else//Does have this item
+                }
+                else
+                {
+                    AddNewItem(ID, amount, itemType);
+                }
+            }
+        }
+
+        private void AddItemAtIndex(int ID, int index, ItemType itemType, int amount, NPCDetails NPC)
+        {
+            if (index == -1)//Does not have this item 
+            {
+                AddNewItem(ID, amount, itemType, NPC);
+            }
+            else//Does have this item
+            {
+                if (GetItemDetails(ID, itemType).Stackable)
+                {
+                    int currentAmount;
+                    switch (itemType)
                     {
-                        if (GetItemDetails(ID, itemType).Stackable)
-                        {
-                            int currentAmount;
-                            switch (itemType)
-                            {
-                                case ItemType.Equip:
-                                    currentAmount = playerBag.equipList[index].itemAmount + amount;
+                        case ItemType.Equip:
+                            currentAmount = NPC.NPCBag.equipList[index].itemAmount + amount;
 
-                                    var equipItem = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
+                            var equipItem = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
 
-                                    playerBag.equipList[index] = equipItem;
-                                    break;
-                                case ItemType.Consume:
-                                    currentAmount = playerBag.consumeList[index].itemAmount + amount;
+                            NPC.NPCBag.equipList[index] = equipItem;
+                            break;
+                        case ItemType.Consume:
+                            currentAmount = NPC.NPCBag.consumeList[index].itemAmount + amount;
 
-                                    var consumeItem = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
+                            var consumeItem = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
 
-                                    playerBag.consumeList[index] = consumeItem;
-                                    break;
-                                case ItemType.Task:
-                                    currentAmount = playerBag.taskList[index].itemAmount + amount;
+                            NPC.NPCBag.consumeList[index] = consumeItem;
+                            break;
+                        case ItemType.Task:
+                            currentAmount = NPC.NPCBag.taskList[index].itemAmount + amount;
 
-                                    var taskItem = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
+                            var taskItem = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
 
-                                    playerBag.taskList[index] = taskItem;
-                                    break;
-                                case ItemType.Other:
-                                    currentAmount = playerBag.otherList[index].itemAmount + amount;
+                            NPC.NPCBag.taskList[index] = taskItem;
+                            break;
+                        case ItemType.Other:
+                            currentAmount = NPC.NPCBag.otherList[index].itemAmount + amount;
 
-                                    var otherItem = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
+                            var otherItem = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
 
-                                    playerBag.otherList[index] = otherItem;
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            AddNewItem(ID, amount, itemType);
-                        }
-                        
+                            NPC.NPCBag.otherList[index] = otherItem;
+                            break;
                     }
-                    break;
-                //case SlotType.NPCBag:
-                //    if (index == -1 )//Does not have this item 
-                //    {
-                //        //isSell = true;
-                //        var Item = new InventoryItem { itemID = ID, itemAmount = amount, Type = itemType };
-                //        NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList.Add(Item);
-                //        /*EventHandler.callBaseBagOpenEvent(SlotType.NPC背包, NPCManager.Instance.getNPCDetail(NPCName).NPCBag);
-                //        isSell = false;*/
-                //        EventHandler.CallUpdateInventoryUI(InventoryLocation.NPC, itemType, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList);
-                        
-                //    }
-                //    else//Does have this item
-                //    {
-                //        if (GetItemDetails(ID, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].Type).Stackable)
-                //        {
-                //            int currentAmount = NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].itemAmount + amount;
-
-                //            var Item = new InventoryItem { itemID = ID, itemAmount = currentAmount, Type = itemType };
-
-                //            NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index] = Item;
-                //        }
-
-                //        else if (!GetItemDetails(ID, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].Type).Stackable)//Not Stackable
-                //        {
-                //            //isSell = true;
-                //            var Item = new InventoryItem { itemID = ID, itemAmount = amount, Type = itemType };
-                //            NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList.Add(Item);
-                //            /*EventHandler.callBaseBagOpenEvent(SlotType.NPC背包, NPCManager.Instance.getNPCDetail(NPCName).NPCBag);
-                //            isSell = false;*/
-                //            EventHandler.CallUpdateInventoryUI(InventoryLocation.NPC, itemType, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList);
-                //        }
-                //        else
-                //        {
-                //            return;
-                //        }
-
-                //    }
-                //    break;
+                }
+                else
+                {
+                    AddNewItem(ID, amount, itemType, NPC);
+                }
             }
 
-            
-
         }
-        
-
         /// <summary>
         /// Remove certain amount of item in bag
         /// </summary>
         /// <param name="ID">ID</param>
         /// <param name="removeAmount">Amount</param>
-        public void RemoveItem(int ID, ItemType itemType,int removeAmount,SlotType slotType)
+        public void RemoveItem(int ID, ItemType itemType,int removeAmount)
         {
-            int index = GetItemIndexInBag(ID,itemType,slotType);
-            switch (slotType)
+            int index = GetItemIndexInBag(ID,itemType);
+            if (index != -1)
             {
-                case SlotType.PlayerBag:
-                    switch (itemType)
-                    {
-                        case ItemType.Equip:
-                            if (playerBag.equipList[index].itemAmount > removeAmount)
-                            {
-                                var amount = playerBag.equipList[index].itemAmount - removeAmount;
-                                var item = new InventoryItem { itemID = ID, itemAmount = amount, Type = playerBag.equipList[index].Type };
-                                playerBag.equipList[index] = item;
-                            }
-                            else if (playerBag.equipList[index].itemAmount == removeAmount)
-                            {
-                                playerBag.equipList.RemoveAt(index);
-                            }
-                            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, itemType, playerBag.equipList);
-                            break;
-                        case ItemType.Consume:
-                            if (playerBag.consumeList[index].itemAmount > removeAmount)
-                            {
-                                var amount = playerBag.consumeList[index].itemAmount - removeAmount;
-                                var item = new InventoryItem { itemID = ID, itemAmount = amount, Type = playerBag.consumeList[index].Type };
-                                playerBag.consumeList[index] = item;
-                            }
-                            else if (playerBag.consumeList[index].itemAmount == removeAmount)
-                            {
-                                playerBag.consumeList.RemoveAt(index);
-                            }
-                            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, itemType, playerBag.consumeList);
-                            break;
-                        case ItemType.Task:
-                            if (playerBag.taskList[index].itemAmount > removeAmount)
-                            {
-                                var amount = playerBag.taskList[index].itemAmount - removeAmount;
-                                var item = new InventoryItem { itemID = ID, itemAmount = amount, Type = playerBag.taskList[index].Type };
-                                playerBag.taskList[index] = item;
-                            }
-                            else if (playerBag.taskList[index].itemAmount == removeAmount)
-                            {
-                                playerBag.taskList.RemoveAt(index);
-                            }
-                            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, itemType, playerBag.taskList);
-                            break;
-                        case ItemType.Other:
-                            if (playerBag.otherList[index].itemAmount > removeAmount)
-                            {
-                                var amount = playerBag.otherList[index].itemAmount - removeAmount;
-                                var item = new InventoryItem { itemID = ID, itemAmount = amount, Type = playerBag.otherList[index].Type };
-                                playerBag.otherList[index] = item;
-                            }
-                            else if (playerBag.otherList[index].itemAmount == removeAmount)
-                            {
-                                playerBag.otherList.RemoveAt(index);
-                            }
-                            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, itemType, playerBag.otherList);
-                            break;
-                    }
-                    break;
-                //case SlotType.NPCBag:
-                //    if (NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].itemAmount > removeAmount)
-                //    {
-                //        var amount = NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].itemAmount - removeAmount;
-                //        var item = new InventoryItem { itemID = ID, itemAmount = amount };
-                //        //InventoryUI.Instance.addSlotUIInNPCBag();
-                //        NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index] = item;
-                //    }
-                //    else if (NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index].itemAmount == removeAmount)
-                //    {
-                //        var NPCItem = new InventoryItem();
-                //        NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList[index] = NPCItem;
-                //    }
+                switch (itemType)
+                {
+                    case ItemType.Equip:
+                        if (playerBag.equipList[index].itemAmount > removeAmount)
+                        {
+                            var amount = playerBag.equipList[index].itemAmount - removeAmount;
+                            var item = new InventoryItem { itemID = ID, itemAmount = amount, Type = playerBag.equipList[index].Type };
+                            playerBag.equipList[index] = item;
+                        }
+                        else if (playerBag.equipList[index].itemAmount == removeAmount)
+                        {
+                            playerBag.equipList.RemoveAt(index);
+                        }
+                        EventHandler.CallUpdatePlayerInventoryUI(itemType, playerBag.equipList);
+                        break;
+                    case ItemType.Consume:
+                        if (playerBag.consumeList[index].itemAmount > removeAmount)
+                        {
+                            var amount = playerBag.consumeList[index].itemAmount - removeAmount;
+                            var item = new InventoryItem { itemID = ID, itemAmount = amount, Type = playerBag.consumeList[index].Type };
+                            playerBag.consumeList[index] = item;
+                        }
+                        else if (playerBag.consumeList[index].itemAmount == removeAmount)
+                        {
+                            playerBag.consumeList.RemoveAt(index);
+                        }
+                        EventHandler.CallUpdatePlayerInventoryUI(itemType, playerBag.consumeList);
+                        break;
+                    case ItemType.Task:
+                        if (playerBag.taskList[index].itemAmount > removeAmount)
+                        {
+                            var amount = playerBag.taskList[index].itemAmount - removeAmount;
+                            var item = new InventoryItem { itemID = ID, itemAmount = amount, Type = playerBag.taskList[index].Type };
+                            playerBag.taskList[index] = item;
+                        }
+                        else if (playerBag.taskList[index].itemAmount == removeAmount)
+                        {
+                            playerBag.taskList.RemoveAt(index);
+                        }
+                        EventHandler.CallUpdatePlayerInventoryUI(itemType, playerBag.taskList);
+                        break;
+                    case ItemType.Other:
+                        if (playerBag.otherList[index].itemAmount > removeAmount)
+                        {
+                            var amount = playerBag.otherList[index].itemAmount - removeAmount;
+                            var item = new InventoryItem { itemID = ID, itemAmount = amount, Type = playerBag.otherList[index].Type };
+                            playerBag.otherList[index] = item;
+                        }
+                        else if (playerBag.otherList[index].itemAmount == removeAmount)
+                        {
+                            playerBag.otherList.RemoveAt(index);
+                        }
+                        EventHandler.CallUpdatePlayerInventoryUI(itemType, playerBag.otherList);
+                        break;
+                }
+            }
+            
+        }
+        public void RemoveItem(int ID, ItemType itemType, int removeAmount, NPCDetails NPC)
+        {
+            int index = GetItemIndexInBag(ID, itemType, NPC);
+            if (index != -1)
+            {
+                switch (itemType)
+                {
+                    case ItemType.Equip:
+                        if (NPC.NPCBag.equipList[index].itemAmount > removeAmount)
+                        {
+                            var amount = NPC.NPCBag.equipList[index].itemAmount - removeAmount;
+                            var item = new InventoryItem { itemID = ID, itemAmount = amount, Type = NPC.NPCBag.equipList[index].Type };
+                            NPC.NPCBag.equipList[index] = item;
+                        }
+                        else if (NPC.NPCBag.equipList[index].itemAmount == removeAmount)
+                        {
+                            NPC.NPCBag.equipList.RemoveAt(index);
+                        }
+                        break;
+                    case ItemType.Consume:
+                        if (NPC.NPCBag.consumeList[index].itemAmount > removeAmount)
+                        {
+                            var amount = NPC.NPCBag.consumeList[index].itemAmount - removeAmount;
+                            var item = new InventoryItem { itemID = ID, itemAmount = amount, Type = NPC.NPCBag.consumeList[index].Type };
+                            NPC.NPCBag.consumeList[index] = item;
+                        }
+                        else if (NPC.NPCBag.consumeList[index].itemAmount == removeAmount)
+                        {
+                            NPC.NPCBag.consumeList.RemoveAt(index);
+                        }
 
-                //    EventHandler.CallUpdateInventoryUI(InventoryLocation.NPC, itemType, NPCManager.Instance.GetNPCDetail(NPCName).NPCBag.equipList);
-                //    break;
-                    
+                        break;
+                    case ItemType.Task:
+                        if (NPC.NPCBag.taskList[index].itemAmount > removeAmount)
+                        {
+                            var amount = NPC.NPCBag.taskList[index].itemAmount - removeAmount;
+                            var item = new InventoryItem { itemID = ID, itemAmount = amount, Type = NPC.NPCBag.taskList[index].Type };
+                            NPC.NPCBag.taskList[index] = item;
+                        }
+                        else if (NPC.NPCBag.taskList[index].itemAmount == removeAmount)
+                        {
+                            NPC.NPCBag.taskList.RemoveAt(index);
+                        }
+                        break;
+                    case ItemType.Other:
+                        if (NPC.NPCBag.otherList[index].itemAmount > removeAmount)
+                        {
+                            var amount = NPC.NPCBag.otherList[index].itemAmount - removeAmount;
+                            var item = new InventoryItem { itemID = ID, itemAmount = amount, Type = NPC.NPCBag.otherList[index].Type };
+                            NPC.NPCBag.otherList[index] = item;
+                        }
+                        else if (NPC.NPCBag.otherList[index].itemAmount == removeAmount)
+                        {
+                            NPC.NPCBag.otherList.RemoveAt(index);
+                        }
+                        break;
+                }
+                TradeUI.Instance.UpdateNPCBagItems();
             }
 
-            
         }
 
         #endregion
@@ -544,7 +630,7 @@ namespace ShanHai_IsolatedCity.Inventory
                     {
                         GameManager.Instance.playerInformation.EquipItem(equip);
                     }
-                    RemoveItem(equip.itemID, equip.itemType, 1, SlotType.PlayerBag);
+                    RemoveItem(equip.itemID, equip.itemType, 1);
                     inventoryUI.Head.UpDateSlot(equip, ItemType.Equip, 1);
                     break;
                 case EquipItemType.Neck:
@@ -558,7 +644,7 @@ namespace ShanHai_IsolatedCity.Inventory
                     {
                         GameManager.Instance.playerInformation.EquipItem(equip);
                     }
-                    RemoveItem(equip.itemID, equip.itemType, 1, SlotType.PlayerBag);
+                    RemoveItem(equip.itemID, equip.itemType, 1);
                     inventoryUI.Neck.UpDateSlot(equip, ItemType.Equip, 1);
                     break;
                 case EquipItemType.UpperBody:
@@ -572,7 +658,7 @@ namespace ShanHai_IsolatedCity.Inventory
                     {
                         GameManager.Instance.playerInformation.EquipItem(equip);
                     }
-                    RemoveItem(equip.itemID, equip.itemType, 1, SlotType.PlayerBag);
+                    RemoveItem(equip.itemID, equip.itemType, 1);
                     inventoryUI.UpperBody.UpDateSlot(equip, ItemType.Equip, 1);
                     break;
                 case EquipItemType.LowerBody:
@@ -586,7 +672,7 @@ namespace ShanHai_IsolatedCity.Inventory
                     {
                         GameManager.Instance.playerInformation.EquipItem(equip);
                     }
-                    RemoveItem(equip.itemID, equip.itemType, 1, SlotType.PlayerBag);
+                    RemoveItem(equip.itemID, equip.itemType, 1);
                     inventoryUI.LowerBody.UpDateSlot(equip, ItemType.Equip, 1);
                     break;
                 case EquipItemType.LeftHand:
@@ -600,7 +686,7 @@ namespace ShanHai_IsolatedCity.Inventory
                     {
                         GameManager.Instance.playerInformation.EquipItem(equip);
                     }
-                    RemoveItem(equip.itemID, equip.itemType, 1, SlotType.PlayerBag);
+                    RemoveItem(equip.itemID, equip.itemType, 1);
                     inventoryUI.LeftHand.UpDateSlot(equip, ItemType.Equip, 1);
                     break;
                 case EquipItemType.RightHand:
@@ -614,7 +700,7 @@ namespace ShanHai_IsolatedCity.Inventory
                     {
                         GameManager.Instance.playerInformation.EquipItem(equip);
                     }
-                    RemoveItem(equip.itemID, equip.itemType, 1, SlotType.PlayerBag);
+                    RemoveItem(equip.itemID, equip.itemType, 1);
                     inventoryUI.RightHand.UpDateSlot(equip, ItemType.Equip, 1);
                     break;
                 case EquipItemType.Accessory:
@@ -628,7 +714,7 @@ namespace ShanHai_IsolatedCity.Inventory
                     {
                         GameManager.Instance.playerInformation.EquipItem(equip);
                     }
-                    RemoveItem(equip.itemID, equip.itemType, 1, SlotType.PlayerBag);
+                    RemoveItem(equip.itemID, equip.itemType, 1);
                     inventoryUI.Accessory.UpDateSlot(equip, ItemType.Equip, 1);
                     break;
                 case EquipItemType.Shoe:
@@ -642,7 +728,7 @@ namespace ShanHai_IsolatedCity.Inventory
                     {
                         GameManager.Instance.playerInformation.EquipItem(equip);
                     }
-                    RemoveItem(equip.itemID, equip.itemType, 1, SlotType.PlayerBag);
+                    RemoveItem(equip.itemID, equip.itemType, 1);
                     inventoryUI.Shoe.UpDateSlot(equip, ItemType.Equip, 1);
                     break;
                 case EquipItemType.Special:
@@ -656,7 +742,7 @@ namespace ShanHai_IsolatedCity.Inventory
                     {
                         GameManager.Instance.playerInformation.EquipItem(equip);
                     }
-                    RemoveItem(equip.itemID, equip.itemType, 1, SlotType.PlayerBag);
+                    RemoveItem(equip.itemID, equip.itemType, 1);
                     inventoryUI.Special.UpDateSlot(equip, ItemType.Equip, 1);
                     break;
                 case EquipItemType.Mount:
@@ -670,11 +756,11 @@ namespace ShanHai_IsolatedCity.Inventory
                     {
                         GameManager.Instance.playerInformation.EquipItem(equip);
                     }
-                    RemoveItem(equip.itemID, equip.itemType, 1, SlotType.PlayerBag);
+                    RemoveItem(equip.itemID, equip.itemType, 1);
                     inventoryUI.Mount.UpDateSlot(equip, ItemType.Equip, 1);
                     break;
             }
-            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, ItemType.Equip, playerBag.equipList);
+            EventHandler.CallUpdatePlayerInventoryUI(ItemType.Equip, playerBag.equipList);
             LayoutRebuilder.ForceRebuildLayoutImmediate(inventoryUI.equipBag.GetComponent<RectTransform>());
         }
         /// <summary>
@@ -718,7 +804,7 @@ namespace ShanHai_IsolatedCity.Inventory
                     inventoryUI.Mount.UpDateEmptySlot();
                     break;
             }
-            EventHandler.CallUpdateInventoryUI(InventoryLocation.Player, ItemType.Equip, playerBag.equipList);
+            EventHandler.CallUpdatePlayerInventoryUI(ItemType.Equip, playerBag.equipList);
             LayoutRebuilder.ForceRebuildLayoutImmediate(inventoryUI.equipBag.GetComponent<RectTransform>());
             GameManager.Instance.playerInformation.TakeOffItem(equip);
         }
@@ -726,12 +812,15 @@ namespace ShanHai_IsolatedCity.Inventory
 
         public void UseConsumeItem(ConsumeItemDetails consumeItem, int amount)
         {
-            int index = GetItemIndexInBag(consumeItem.itemID, ItemType.Consume, SlotType.PlayerBag);
+            int index = GetItemIndexInBag(consumeItem.itemID, ItemType.Consume);
             if (playerBag.consumeList[index].itemAmount >= amount)
             {
-                RemoveItem(consumeItem.itemID, ItemType.Consume, amount, SlotType.PlayerBag);
+                RemoveItem(consumeItem.itemID, ItemType.Consume, amount);
                 for (int itemIndex = 0; itemIndex < amount; itemIndex++)
-                    EventHandler.CallUseConsumeItemEvent(consumeItem.consumeData);
+                {
+                    GameManager.Instance.playerInformation.UseConsumeItem(consumeItem.consumeData);
+                    UseConsumeItem(consumeItem.consumeData);
+                }
                 EventHandler.CallUpdateTaskProgressEvent(consumeItem.itemName, amount);
             }
             //FIXME:Generate proper prompt
@@ -743,7 +832,7 @@ namespace ShanHai_IsolatedCity.Inventory
 
         #region GetColor
 
-        public Color GetQualityColor(BasicQualityType quality)
+        public Color GetBasicQualityColor(BasicQualityType quality)
         {
             Color qualityColor;
             qualityColor = quality

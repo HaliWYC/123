@@ -22,11 +22,12 @@ MonoBehaviour:
     useRadius: 7
     canPickUp: 0
     canDrop: 0
-    Stackable: 0
-    gold: 0
+    notForSale: 0
+    Stackable: 1
+    gold: 100
     shanHaiGold: 0
     sellPercentage: 0
     consumeItemType: 0
-    ConsumeItemQuality: 2
+    ConsumeItemQuality: 5
     consumeData: {fileID: 11400000, guid: b29a401cffd454a959415af862c016dc, type: 2}
     BuffList: []

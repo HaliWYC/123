@@ -22,8 +22,10 @@ MonoBehaviour:
     useRadius: 0
     canPickUp: 0
     canDrop: 0
+    notForSale: 0
     Stackable: 0
-    itemPrice: 0
+    gold: 0
+    shanHaiGold: 0
     sellPercentage: 0
     TaskItemQuality: 0
     taskItemType: 0

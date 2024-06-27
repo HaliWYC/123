@@ -25,7 +25,7 @@ namespace ShanHai_IsolatedCity.Skill
         {
             skillDetails = skill;
             skillIcon.sprite = skillDetails.skillIcon;
-            qualityIcon.color = InventoryManager.Instance.GetQualityColor(skillDetails.skillQuality);
+            qualityIcon.color = InventoryManager.Instance.GetBasicQualityColor(skillDetails.skillQuality);
             Percentage.fillAmount = skillDetails.currentExp / skillDetails.nextExp;
             Name.text = skillDetails.SkillName;
             Quality.text = skillDetails.skillQuality.ToString();

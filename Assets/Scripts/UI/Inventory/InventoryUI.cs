@@ -49,7 +49,7 @@ namespace ShanHai_IsolatedCity.Inventory
 
         private void OnEnable()
         {
-            EventHandler.UpdateInventoryUI += OnUpdateInventoryUI;
+            EventHandler.UpdatePlayerInventoryUI += OnUpdatePlayerInventoryUI;
             EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
         }
 
@@ -57,7 +57,7 @@ namespace ShanHai_IsolatedCity.Inventory
 
         private void OnDisable()
         {
-            EventHandler.UpdateInventoryUI -= OnUpdateInventoryUI;
+            EventHandler.UpdatePlayerInventoryUI -= OnUpdatePlayerInventoryUI;
             EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
         }
 
@@ -65,125 +65,97 @@ namespace ShanHai_IsolatedCity.Inventory
         {
             
             //Give each slot a index 
-            for (int i = 0; i < equipSlots.Count; i++)
-            {
-                equipSlots[i].slotIndex = i;
-            }
-            for (int i = 0; i < consumeSlots.Count; i++)
-            {
-                consumeSlots[i].slotIndex = i;
-            }
-            for (int i = 0; i < taskSlots.Count; i++)
-            {
-                taskSlots[i].slotIndex = i;
-            }
-            for (int i = 0; i < otherSlots.Count; i++)
-            {
-                otherSlots[i].slotIndex = i;
-            }
-            
+            //for (int i = 0; i < equipSlots.Count; i++)
+            //{
+            //    equipSlots[i].slotIndex = i;
+            //}
+            //for (int i = 0; i < consumeSlots.Count; i++)
+            //{
+            //    consumeSlots[i].slotIndex = i;
+            //}
+            //for (int i = 0; i < taskSlots.Count; i++)
+            //{
+            //    taskSlots[i].slotIndex = i;
+            //}
+            //for (int i = 0; i < otherSlots.Count; i++)
+            //{
+            //    otherSlots[i].slotIndex = i;
+            //}
             playerSHGText.text = InventoryManager.Instance.playerBag.ShanHaiGold.ToString();
             playerGoldText.text = InventoryManager.Instance.playerBag.Gold.ToString();
         }
 
-        private void OnUpdateInventoryUI(InventoryLocation location, ItemType itemType, List<InventoryItem> list)
+        private void OnUpdatePlayerInventoryUI(ItemType itemType, List<InventoryItem> list)
         {
-            switch (location)
+            switch (itemType)
             {
-                case InventoryLocation.Player:
-                    switch (itemType)
+                case ItemType.Equip:
+                    foreach (var slot in equipSlots)
                     {
-                        case ItemType.Equip:
-                            foreach (var slot in equipSlots)
-                            {
-                                Destroy(slot.gameObject);
-                            }
-                            equipSlots.Clear();
+                        Destroy(slot.gameObject);
+                    }
+                    equipSlots.Clear();
 
-                            for (int i = 0; i < InventoryManager.Instance.playerBag.equipList.Count; i++)
-                            {
-                                if (InventoryManager.Instance.playerBag.equipList[i].itemAmount > 0)
-                                {
-                                    var Item = Instantiate(equipSlot, equipBag.transform).GetComponent<SlotUI>();
-                                    equipSlots.Add(Item);
-                                    Item.UpDateSlot(InventoryManager.Instance.GetEquipItemDetails(list[i].itemID), list[i].Type, list[i].itemAmount);
-                                }
-                            }
-                            break;
-                        case ItemType.Consume:
-                            foreach (var slot in consumeSlots)
-                            {
-                                Destroy(slot.gameObject);
-                            }
-                            consumeSlots.Clear();
-
-                            for (int i = 0; i < InventoryManager.Instance.playerBag.consumeList.Count; i++)
-                            {
-                                if (InventoryManager.Instance.playerBag.consumeList[i].itemAmount > 0)
-                                {
-                                    var Item = Instantiate(consumeSlot, consumeBag.transform).GetComponent<SlotUI>();
-                                    consumeSlots.Add(Item);
-                                    Item.UpDateSlot(InventoryManager.Instance.GetConsumeItemDetails(list[i].itemID), list[i].Type, list[i].itemAmount);
-                                }
-                            }
-                            break;
-                        case ItemType.Task:
-                            foreach (var slot in taskSlots)
-                            {
-                                Destroy(slot.gameObject);
-                            }
-                            taskSlots.Clear();
-
-                            for (int i = 0; i < InventoryManager.Instance.playerBag.taskList.Count; i++)
-                            {
-                                if (InventoryManager.Instance.playerBag.taskList[i].itemAmount > 0)
-                                {
-                                    var Item = Instantiate(taskSlot, taskBag.transform).GetComponent<SlotUI>();
-                                    taskSlots.Add(Item);
-                                    Item.UpDateSlot(InventoryManager.Instance.GetTaskItemDetails(list[i].itemID), list[i].Type, list[i].itemAmount);
-                                }
-                            }
-                            break;
-                        case ItemType.Other:
-                            foreach (var slot in otherSlots)
-                            {
-                                Destroy(slot.gameObject);
-                            }
-                            otherSlots.Clear();
-
-                            for (int i = 0; i < InventoryManager.Instance.playerBag.otherList.Count; i++)
-                            {
-                                if (InventoryManager.Instance.playerBag.otherList[i].itemAmount > 0)
-                                {
-                                    var Item = Instantiate(otherSlot, otherBag.transform).GetComponent<SlotUI>();
-                                    otherSlots.Add(Item);
-                                    Item.UpDateSlot(InventoryManager.Instance.GetOtherItemDetails(list[i].itemID), list[i].Type, list[i].itemAmount);
-                                }
-                            }
-                            break;
-
+                    for (int i = 0; i < InventoryManager.Instance.playerBag.equipList.Count; i++)
+                    {
+                        if (InventoryManager.Instance.playerBag.equipList[i].itemAmount > 0)
+                        {
+                            var Item = Instantiate(equipSlot, equipBag.transform).GetComponent<SlotUI>();
+                            equipSlots.Add(Item);
+                            Item.UpDateSlot(InventoryManager.Instance.GetEquipItemDetails(list[i].itemID), list[i].Type, list[i].itemAmount);
+                        }
                     }
                     break;
-
-                case InventoryLocation.NPC:
-           
-                    for (int i = 0; i < bagSlots.Count; i++)
+                case ItemType.Consume:
+                    foreach (var slot in consumeSlots)
                     {
-                        if (list[i].itemAmount == 0 || list[i].itemID == 0)
-                            bagSlots[i].gameObject.SetActive(false);
+                        Destroy(slot.gameObject);
+                    }
+                    consumeSlots.Clear();
 
-                        if (list[i].itemAmount > 0)
+                    for (int i = 0; i < InventoryManager.Instance.playerBag.consumeList.Count; i++)
+                    {
+                        if (InventoryManager.Instance.playerBag.consumeList[i].itemAmount > 0)
                         {
-                            var Item = InventoryManager.Instance.GetItemDetails(list[i].itemID, list[i].Type);
-                            bagSlots[i].UpDateSlot(Item, list[i].Type, list[i].itemAmount);
-                        }
-                        else
-                        {
-                            //bagSlots[i].UpDateEmptySlot();
+                            var Item = Instantiate(consumeSlot, consumeBag.transform).GetComponent<SlotUI>();
+                            consumeSlots.Add(Item);
+                            Item.UpDateSlot(InventoryManager.Instance.GetConsumeItemDetails(list[i].itemID), list[i].Type, list[i].itemAmount);
                         }
                     }
+                    break;
+                case ItemType.Task:
+                    foreach (var slot in taskSlots)
+                    {
+                        Destroy(slot.gameObject);
+                    }
+                    taskSlots.Clear();
 
-                        LayoutRebuilder.ForceRebuildLayoutImmediate(equipBag.GetComponent<RectTransform>());
+                    for (int i = 0; i < InventoryManager.Instance.playerBag.taskList.Count; i++)
+                    {
+                        if (InventoryManager.Instance.playerBag.taskList[i].itemAmount > 0)
+                        {
+                            var Item = Instantiate(taskSlot, taskBag.transform).GetComponent<SlotUI>();
+                            taskSlots.Add(Item);
+                            Item.UpDateSlot(InventoryManager.Instance.GetTaskItemDetails(list[i].itemID), list[i].Type, list[i].itemAmount);
+                        }
+                    }
+                    break;
+                case ItemType.Other:
+                    foreach (var slot in otherSlots)
+                    {
+                        Destroy(slot.gameObject);
+                    }
+                    otherSlots.Clear();
+
+                    for (int i = 0; i < InventoryManager.Instance.playerBag.otherList.Count; i++)
+                    {
+                        if (InventoryManager.Instance.playerBag.otherList[i].itemAmount > 0)
+                        {
+                            var Item = Instantiate(otherSlot, otherBag.transform).GetComponent<SlotUI>();
+                            otherSlots.Add(Item);
+                            Item.UpDateSlot(InventoryManager.Instance.GetOtherItemDetails(list[i].itemID), list[i].Type, list[i].itemAmount);
+                        }
+                    }
                     break;
 
             }

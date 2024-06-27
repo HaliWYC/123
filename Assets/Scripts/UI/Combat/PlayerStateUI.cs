@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class PlayerStateUI : MonoBehaviour
 {
+    public GameObject playerState;
     public Image healthImage;
     public Image qiImage;
     public Image vigorImage;

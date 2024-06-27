@@ -12,5 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c9792d0d1ef74adf9e663d0576d3633, type: 3}
   m_Name: Leave
   m_EditorClassIdentifier: 
-  dialoguePieces: []
+  dialoguePieces:
+  - ID: Piece01
+    targetID: 
+    faceImage: {fileID: 21300000, guid: 2acedd98a2e4247569fc702d2b8fc91d, type: 3}
+    isLeft: 0
+    name: Lucas
+    dialogueText: "\u6CA1\u4EC0\u4E48\u4E8B\u4E86\uFF0C\u6211\u8D70\u4E86"
+    hasToPause: 1
+    isEnd: 0
+    finishTalk: 0
+    task: {fileID: 0}
+    dialogueOptions: []
+  - ID: Piece02
+    targetID: 
+    faceImage: {fileID: 21300000, guid: 63a5eb4156cc3417896789f322630021, type: 3}
+    isLeft: 1
+    name: "\u5B59\u7A0B"
+    dialogueText: "\u795D\u4F60\u597D\u8FD0"
+    hasToPause: 1
+    isEnd: 0
+    finishTalk: 1
+    task: {fileID: 0}
+    dialogueOptions: []
   FinishDialogues: []

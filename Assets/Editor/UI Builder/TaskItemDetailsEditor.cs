@@ -194,5 +194,11 @@ public class TaskItemDetailsEditor : EditorWindow
         {
             activeItem.Stackable = evt.newValue;
         });
+
+        itemDetailsSection.Q<Toggle>("notForSale").value = activeItem.notForSale;
+        itemDetailsSection.Q<Toggle>("notForSale").RegisterValueChangedCallback(evt =>
+        {
+            activeItem.notForSale = evt.newValue;
+        });
     }
 }

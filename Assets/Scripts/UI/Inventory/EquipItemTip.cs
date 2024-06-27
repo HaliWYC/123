@@ -45,6 +45,8 @@ namespace ShanHai_IsolatedCity.Inventory
         public Text Argility;
         public Text Resilience;
         public Text Speed;
+        public Text WoundRecovery;
+        public Text SkillCooling;
 
         public Text MinRange;
         public Text MaxRange;
@@ -137,6 +139,8 @@ namespace ShanHai_IsolatedCity.Inventory
             Argility.text = "Argility: " + equipItem.EquipData.Argility.ToString();
             Resilience.text = "Resilience: " + equipItem.EquipData.Resilience.ToString();
             Speed.text = "Speed: " + equipItem.EquipData.speed.ToString();
+            WoundRecovery.text = "Wound Recovery" + equipItem.EquipData.woundRecovery.ToString();
+            SkillCooling.text = "Skill Cooling" + equipItem.EquipData.skillCooling.ToString();
             MinRange.text = "Minimum Range: " + equipItem.EquipData.minimumRange.ToString();
             MaxRange.text = "Maximum Range: " + equipItem.EquipData.maximumRange.ToString();
             Attack.text = "Attack: " + equipItem.EquipData.Attack.ToString();

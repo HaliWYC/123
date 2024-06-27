@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e114af62453f422ba369bed66903ec9, type: 3}
   m_Name: Mayor_Shop
   m_EditorClassIdentifier: 
-  ShanHaiGold: 0
-  Gold: 0
+  ShanHaiGold: 1000
+  Gold: 5000
   equipList: []
   consumeList: []
   taskList: []

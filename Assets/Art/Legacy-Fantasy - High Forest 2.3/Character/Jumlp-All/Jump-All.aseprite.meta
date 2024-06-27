@@ -77,6 +77,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -89,6 +90,7 @@ ScriptedImporter:
     defaultPivotSpace: 0
     defaultPivotAlignment: 7
     customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
     spritePadding: 0
     generateModelPrefab: 1
     generateAnimationClips: 1
@@ -430,6 +432,7 @@ ScriptedImporter:
     cells:
     - name: Jump-All_Frame_0
       frameIndex: 0
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 0
@@ -438,6 +441,7 @@ ScriptedImporter:
       spriteId: afea43b2efa13294dbda92b143a0c406
     - name: Jump-All_Frame_1
       frameIndex: 1
+      additiveSortOrder: 0
       cellRect:
         x: 11
         y: 0
@@ -446,6 +450,7 @@ ScriptedImporter:
       spriteId: d2514046a0e85e648880035ba75923a5
     - name: Jump-All_Frame_2
       frameIndex: 2
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 1
@@ -454,6 +459,7 @@ ScriptedImporter:
       spriteId: efd9a03aa56edc540b6e4f6925d15ee2
     - name: Jump-All_Frame_3
       frameIndex: 3
+      additiveSortOrder: 0
       cellRect:
         x: 5
         y: 2
@@ -462,6 +468,7 @@ ScriptedImporter:
       spriteId: cd3707dcf71f2e544a870611490b7c1a
     - name: Jump-All_Frame_4
       frameIndex: 4
+      additiveSortOrder: 0
       cellRect:
         x: 5
         y: 4
@@ -470,6 +477,7 @@ ScriptedImporter:
       spriteId: 30323f30e7b0ebd44a349cfc7cc09ec0
     - name: Jump-All_Frame_5
       frameIndex: 5
+      additiveSortOrder: 0
       cellRect:
         x: 7
         y: 5
@@ -478,6 +486,7 @@ ScriptedImporter:
       spriteId: a46f68e6554f86444adb3ca66fdb4447
     - name: Jump-All_Frame_6
       frameIndex: 6
+      additiveSortOrder: 0
       cellRect:
         x: 8
         y: 2
@@ -486,6 +495,7 @@ ScriptedImporter:
       spriteId: 571c02d900dac7d4b88b977b25e2d65f
     - name: Jump-All_Frame_7
       frameIndex: 7
+      additiveSortOrder: 0
       cellRect:
         x: 9
         y: 2
@@ -494,6 +504,7 @@ ScriptedImporter:
       spriteId: 412a6b0b5cce3ba449010ee5816feda3
     - name: Jump-All_Frame_8
       frameIndex: 8
+      additiveSortOrder: 0
       cellRect:
         x: 8
         y: 5
@@ -502,6 +513,7 @@ ScriptedImporter:
       spriteId: 9fece227728239345b8cc177f0dc749d
     - name: Jump-All_Frame_9
       frameIndex: 9
+      additiveSortOrder: 0
       cellRect:
         x: 9
         y: 6
@@ -510,6 +522,7 @@ ScriptedImporter:
       spriteId: da455d0db27fbac469404bd671f84e96
     - name: Jump-All_Frame_10
       frameIndex: 10
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 5
@@ -518,6 +531,7 @@ ScriptedImporter:
       spriteId: 17b63b4c9705e934787fd15cb5934077
     - name: Jump-All_Frame_11
       frameIndex: 11
+      additiveSortOrder: 0
       cellRect:
         x: 11
         y: 4
@@ -526,6 +540,7 @@ ScriptedImporter:
       spriteId: 78766e18077c5e04db1956112a27832a
     - name: Jump-All_Frame_12
       frameIndex: 12
+      additiveSortOrder: 0
       cellRect:
         x: 13
         y: 1
@@ -534,6 +549,7 @@ ScriptedImporter:
       spriteId: d29caa4987cb67d47ab7a006d2b0e22d
     - name: Jump-All_Frame_13
       frameIndex: 13
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 0
@@ -542,6 +558,7 @@ ScriptedImporter:
       spriteId: e3cb47b79d128574f9d60587bbd5b267
     - name: Jump-All_Frame_14
       frameIndex: 14
+      additiveSortOrder: 0
       cellRect:
         x: 12
         y: 0
@@ -551,6 +568,7 @@ ScriptedImporter:
     linkedCells: []
     parentIndex: -1
   platformSettings: []
+  generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 64, y: 64}

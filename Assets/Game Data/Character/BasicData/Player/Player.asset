@@ -19,7 +19,7 @@ MonoBehaviour:
   commandStyle: "\u970D\u53BB\u75C5"
   Spirit: "\u5F81\u670D\u8005"
   prestigeIndex: 0
-  prestigeLevel: 0
+  prestigeLevel: 5
   currentPrestige: 0
   nextPrestige: 0
   Fitness: 0

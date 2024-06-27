@@ -17,7 +17,7 @@ public class ConsumeItemTip : MonoBehaviour
     public void SetupToolTip(ConsumeItemDetails consume)
     {
         itemIcon.sprite = consume.itemIcon;
-        quality.color = InventoryManager.Instance.GetQualityColor(consume.ConsumeItemQuality);
+        quality.color = InventoryManager.Instance.GetBasicQualityColor(consume.ConsumeItemQuality);
         typeText.text = consume.itemType.ToString() + "-" + consume.consumeItemType.ToString();
         Description.text = consume.itemDescription;
     }

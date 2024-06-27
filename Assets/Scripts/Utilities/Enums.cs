@@ -9,11 +9,6 @@ public enum SlotType
     PlayerBag,Player,WareHouse,NPCBag
 }
 
-public enum InventoryLocation
-{
-    Player,NPC
-}
-
 public enum EquipItemType
 {
     Head,Neck,UpperBody,LowerBody,LeftHand,RightHand,Shoe,Accessory,Mount,Special
@@ -41,7 +36,7 @@ public enum WeaponType
 
 public enum EquipQualityType
 {
-    神器,传说,史诗,卓越,精良,优秀,普通,残品
+    残品, 普通, 优秀, 精良, 卓越, 史诗, 传说, 神器
 }
 
 public enum CharacterFightingDataType
@@ -53,7 +48,7 @@ public enum CharacterFightingDataType
 #region GameProperty
 public enum BasicQualityType
 {
-    赤,橙,黄,绿,青,蓝,紫,灰
+    灰, 紫, 蓝, 青, 绿, 黄, 橙, 赤
 }
 
 public enum Seasons
@@ -81,7 +76,11 @@ public enum Prestige
 }
 #endregion
 
-#region NPC&Enemy
+#region Character
+public enum PlayerState
+{
+    和平,战斗,潜行
+}
 public enum EnemyState
 {
     和平, 警惕, 攻击, 巡逻, 死亡
@@ -93,7 +92,7 @@ public enum EnemyLevelType
 }
 #endregion
 
-#region SKil&Buff
+#region SKill&Buff
 public enum SkillTargetType
 {
     单体,范围,群体
@@ -150,6 +149,9 @@ public enum TaskRewardType
 }
 #endregion
 
+#region NPCFunctions
+
+#endregion
 
 public enum ParticleEffectType
 {

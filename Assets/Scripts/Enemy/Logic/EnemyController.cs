@@ -55,7 +55,6 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
 
     private void Awake()
     {
-        
         anim = GetComponent<Animator>();
         coll = GetComponent<BoxCollider2D>();
         remainLookAtTime = lookAtTime;
@@ -64,6 +63,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         canAttack = true;
         dizzytime = 0;
         canAction = true;
+
     }
 
     private void OnEnable()

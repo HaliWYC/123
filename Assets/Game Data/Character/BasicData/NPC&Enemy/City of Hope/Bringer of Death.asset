@@ -13,14 +13,18 @@ MonoBehaviour:
   m_Name: Bringer of Death
   m_EditorClassIdentifier: 
   Name: Bringer of Death
+  Appellation: 
+  charIcon: {fileID: 0}
   Personality: 
   commandStyle: 
   Spirit: 
-  prestigeLevel: 0
+  prestigeIndex: 0
+  prestigeLevel: 3
   currentPrestige: 0
+  nextPrestige: 0
   Fitness: 0
   Eloquence: 0
   Wisedom: 0
   Luck: 0
   Strength: 0
-  Understanding: 0
+  Perception: 0

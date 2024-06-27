@@ -216,7 +216,7 @@ AudioSource:
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
-  Mute: 0
+  Mute: 1
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
@@ -745,7 +745,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 18.6
+  orthographic size: 1
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1032,7 +1032,7 @@ AudioSource:
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
-  Mute: 0
+  Mute: 1
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
@@ -1224,7 +1224,6 @@ MonoBehaviour:
   otherItemDetailsList_SO: {fileID: 11400000, guid: 9801429c449084fca96955472920dd6d, type: 2}
   playerBag: {fileID: 11400000, guid: 49e31b5c091594002a88505ba1fd46c3, type: 2}
   inventoryUI: {fileID: 0}
-  fightingDataUI: {fileID: 0}
   Red: {r: 1, g: 0, b: 0, a: 1}
   Orange: {r: 1, g: 0.43137255, b: 0, a: 1}
   Yellow: {r: 1, g: 0.84313726, b: 0, a: 1}
@@ -2267,7 +2266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00cf2c95a878b4446b73e9fa35e946c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  templateInformation: {fileID: 11400000, guid: 0978644f2b24c2f4393c767ecaac8263, type: 2}
+  templateInformation: {fileID: 11400000, guid: ba5d9b2c52bac0045a5eee72f378138c, type: 2}
   characterInformation: {fileID: 0}
   templateFightingData: {fileID: 11400000, guid: 27e13eabc053f9e41971041b2d415a0e, type: 2}
   fightingData: {fileID: 0}
@@ -2350,9 +2349,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b722b759e60cb410c99a8418d81f507b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  progressDialogue: {fileID: 0}
-  finishedDialogue: {fileID: 0}
-  completedDialogue: {fileID: 0}
 --- !u!1 &1210098956
 GameObject:
   m_ObjectHideFlags: 0

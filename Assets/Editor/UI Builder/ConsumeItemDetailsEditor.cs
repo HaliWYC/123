@@ -226,6 +226,12 @@ public class ConsumeItemDetailsEditor : EditorWindow
             activeItem.canDrop = evt.newValue;
         });
 
+        itemDetailsSection.Q<Toggle>("notForSale").value = activeItem.notForSale;
+        itemDetailsSection.Q<Toggle>("notForSale").RegisterValueChangedCallback(evt =>
+        {
+            activeItem.notForSale = evt.newValue;
+        });
+
         itemDetailsSection.Q<ObjectField>("ConsumeData").value = activeItem.consumeData;
         itemDetailsSection.Q<ObjectField>("ConsumeData").RegisterValueChangedCallback(evt =>
         {

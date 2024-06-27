@@ -34,20 +34,22 @@ public class ConsumeItem_SO : ScriptableObject
     public int Argility;
     public int Resilience;
     public int Speed;
-    public int MinimumRange;
-    public int MaximumRange;
+    public float WoundRecovery;
+    public float SkillCooling;
+    public float MinimumRange;
+    public float MaximumRange;
     public int Attack;
-    public int AttackCooling;
+    public float AttackCooling;
     public int AttackAccuracy;
     public int Penetrate;
     public int WoundCreate;
     public int CriticalPoint;
-    public int CriticalMultiple;
-    public int Fatal_Enhancement;
+    public float CriticalMultiple;
+    public float Fatal_Enhancement;
     public int Defense;
     public int PenetrateDefense;
-    public int CriticalDefense;
-    public int FatalDefense;
+    public float CriticalDefense;
+    public float FatalDefense;
 
     [Header("Inventory")]
     public int Gold;
