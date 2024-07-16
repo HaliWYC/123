@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SkillName: "\u706D\u4E16"
   skillID: 3800001
-  skillIcon: {fileID: 0}
-  skillQuality: 0
+  skillIcon: {fileID: 21300000, guid: 2d089513ae4adfc48a683c362ad9992c, type: 3}
+  skillQuality: 7
   skillInformation: "\u706D\u4E16"
+  ExpPerTimes: 0
   currentExp: 0
   nextExp: 20000
   skillProficiency: 9

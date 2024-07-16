@@ -29,6 +29,6 @@ public class HealthBuff : BuffBase
                 targetInfor.CurrentHealth = Mathf.Max(targetInfor.CurrentHealth - (int)(buffValue * ExpIncrement), 0);
         }
         targetInfor.healthChange.Invoke(targetInfor);
-        EventHandler.CallDamageTextPopEvent(targetInfor.transform, buffValue, AttackEffectType.Skill);
+        EventHandler.CallDamageTextPopEvent(targetInfor.transform, (int)(buffValue * ExpIncrement), AttackEffectType.Skill);
     }
 }

@@ -85,7 +85,7 @@ namespace ShanHai_IsolatedCity.Map
 
         private void OnAfterSceneLoadedEvent()
         {
-            currentGrid = FindObjectOfType<Grid>();
+            currentGrid = FindFirstObjectByType<Grid>();
         }
 
         private void OnExecuteActionAfterAnimation(Vector3 mouseWorldPos, ItemDetails itemDetails)

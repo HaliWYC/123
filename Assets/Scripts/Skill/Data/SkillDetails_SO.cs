@@ -11,6 +11,7 @@ public class SkillDetails_SO : ScriptableObject
     public BasicQualityType skillQuality;
     [TextArea]
     public string skillInformation;//The area where the introduction of the skill is.
+    public int ExpPerTimes;
     public int currentExp;//Current experience
     public int nextExp;//The experience limit for reaching next level
     public Proficiency skillProficiency;

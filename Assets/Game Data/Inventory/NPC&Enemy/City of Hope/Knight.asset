@@ -22,11 +22,5 @@ MonoBehaviour:
   - itemID: 60000
     itemAmount: 3
     Type: 1
-  - itemID: 60000
-    itemAmount: 3
-    Type: 1
-  - itemID: 60000
-    itemAmount: 3
-    Type: 1
   taskList: []
   otherList: []

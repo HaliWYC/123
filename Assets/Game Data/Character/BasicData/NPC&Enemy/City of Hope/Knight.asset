@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: "\u9A91\u58EB"
   Appellation: 
   charIcon: {fileID: 0}
-  Personality: 
+  Personality: []
   commandStyle: 
   Spirit: 
   prestigeIndex: 0

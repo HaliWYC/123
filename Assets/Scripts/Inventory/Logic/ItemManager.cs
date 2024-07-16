@@ -10,7 +10,7 @@ namespace ShanHai_IsolatedCity.Inventory
         public Item itemPrefab;
         public Item bounceItemPrefab;
         private Transform itemParent;
-        private Transform playerTransform => FindObjectOfType<Player>().transform;
+        private Transform playerTransform => FindFirstObjectByType<Player>().transform;
 
         private Dictionary<string, List<SceneItem>> sceneItemDict = new Dictionary<string, List<SceneItem>>();
 
@@ -63,7 +63,7 @@ namespace ShanHai_IsolatedCity.Inventory
         {
             List<SceneItem> currentSceneItems = new List<SceneItem>();
 
-            foreach(var item in FindObjectsOfType<Item>())
+            foreach(var item in FindObjectsByType<Item>(FindObjectsSortMode.None))
             {
                 SceneItem sceneItem = new SceneItem
                 {
@@ -96,7 +96,7 @@ namespace ShanHai_IsolatedCity.Inventory
                 if (currentSceneItems != null)
                 {
                     //Clean
-                    foreach (var item in FindObjectsOfType<Item>())
+                    foreach (var item in FindObjectsByType<Item>(FindObjectsSortMode.None))
                     {
                         Destroy(item.gameObject);
                     }

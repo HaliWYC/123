@@ -162,7 +162,7 @@ public class RelationShip
     //FIXME: 后期视情况改成是否拥有自己的社交圈
     //public string Name;
     [Range(-100, 100)]
-    public int Favourability;
+    public float Favourability;
 }
 
 [System.Serializable]

@@ -139,8 +139,8 @@ public class CharacterInformation : MonoBehaviour
     }
     public int Wisedom
     {
-        get { if (characterInformation != null) return characterInformation.Wisedom; else return 0; }
-        set { characterInformation.Wisedom = value; }
+        get { if (characterInformation != null) return characterInformation.Wisdom; else return 0; }
+        set { characterInformation.Wisdom = value; }
     }
     public int Luck
     {

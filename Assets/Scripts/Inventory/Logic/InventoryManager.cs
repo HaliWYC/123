@@ -20,6 +20,7 @@ namespace ShanHai_IsolatedCity.Inventory
         public InventoryBag_SO playerBag;
         public InventoryUI inventoryUI;
 
+
         [Header("基础品质颜色")]
         public Color Red;
         public Color Orange;
@@ -29,6 +30,16 @@ namespace ShanHai_IsolatedCity.Inventory
         public Color Blue;
         public Color Purple;
         public Color Grey;
+
+        private void OnEnable()
+        {
+            EventHandler.CheckInvalidItemsEvent += OnCheckInvalidItemsEvent;
+        }
+
+        private void OnDisable()
+        {
+            EventHandler.CheckInvalidItemsEvent -= OnCheckInvalidItemsEvent;
+        }
 
         private void Start()
         {
@@ -43,6 +54,29 @@ namespace ShanHai_IsolatedCity.Inventory
             playerBag.Gold += consume.Gold;
             playerBag.ShanHaiGold += consume.ShanHaiGold;
             EventHandler.CallUpdatePlayerInventoryUI(ItemType.Consume, playerBag.consumeList);
+        }
+        private void OnCheckInvalidItemsEvent()
+        {
+            foreach(var itemInbag in playerBag.equipList)
+            {
+                if (GetItemDetails(itemInbag.itemID, itemInbag.Type) == null)
+                    playerBag.equipList.Remove(itemInbag);
+            }
+            foreach (var itemInbag in playerBag.consumeList)
+            {
+                if (GetItemDetails(itemInbag.itemID, itemInbag.Type) == null)
+                    playerBag.consumeList.Remove(itemInbag);
+            }
+            foreach (var itemInbag in playerBag.taskList)
+            {
+                if (GetItemDetails(itemInbag.itemID, itemInbag.Type) == null)
+                    playerBag.taskList.Remove(itemInbag);
+            }
+            foreach (var itemInbag in playerBag.otherList)
+            {
+                if (GetItemDetails(itemInbag.itemID, itemInbag.Type) == null)
+                    playerBag.otherList.Remove(itemInbag);
+            }
         }
 
         #region GetItemDetails
@@ -161,13 +195,14 @@ namespace ShanHai_IsolatedCity.Inventory
             }
         }
 
-        public void AddItem(ItemDetails itemDetails, int amount, NPCDetails NPC)
+        public void AddItem(ItemDetails itemDetails, int amount, NPCDetails NPC, bool updateUI)
         {
             var index = GetItemIndexInBag(itemDetails.itemID, itemDetails.itemType, NPC);
 
             AddItemAtIndex(itemDetails.itemID, index, itemDetails.itemType, amount, NPC);
             //Update UI
-            TradeUI.Instance.UpdateNPCBagItems();
+            if(updateUI)
+                TradeUI.Instance.UpdateNPCBagItems();
         }
 
         private void AddNewItem(int ID, int amount, ItemType type)
@@ -893,6 +928,32 @@ namespace ShanHai_IsolatedCity.Inventory
                 if (GetOtherItemDetails(item.itemID).itemName == itemName)
                     EventHandler.CallUpdateTaskProgressEvent(itemName, item.itemAmount);
             }
+        }
+
+        public int GetItemInBag(ItemDetails fitem)
+        {
+            int amount = 0;
+            foreach (var item in playerBag.equipList)
+            {
+                if (fitem.itemID == item.itemID)
+                    amount += item.itemAmount;
+            }
+            foreach (var item in playerBag.consumeList)
+            {
+                if (fitem.itemID == item.itemID)
+                    amount += item.itemAmount;
+            }
+            foreach (var item in playerBag.taskList)
+            {
+                if (fitem.itemID == item.itemID)
+                    amount += item.itemAmount;
+            }
+            foreach (var item in playerBag.otherList)
+            {
+                if (fitem.itemID == item.itemID)
+                    amount += item.itemAmount;
+            }
+            return amount;
         }
 
         #endregion

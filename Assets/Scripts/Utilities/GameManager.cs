@@ -7,6 +7,7 @@ public class GameManager : Singleton<GameManager>
     public CharacterInformation playerInformation;
 
     List<IEndGameObserver> endGameObservers = new List<IEndGameObserver>();
+
     public void RegisterPlayer(CharacterInformation player)
     {
         playerInformation = player;

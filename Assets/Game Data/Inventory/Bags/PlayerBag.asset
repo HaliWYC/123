@@ -14,7 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShanHaiGold: 0
   Gold: 0
-  equipList: []
-  consumeList: []
+  equipList:
+  - itemID: 30000
+    itemAmount: 1
+    Type: 0
+  - itemID: 80000
+    itemAmount: 1
+    Type: 0
+  consumeList:
+  - itemID: 60000
+    itemAmount: 30
+    Type: 1
   taskList: []
   otherList: []

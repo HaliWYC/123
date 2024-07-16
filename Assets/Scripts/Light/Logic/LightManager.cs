@@ -39,7 +39,7 @@ public class LightManager : Singleton<LightManager>
 
     private void OnAfterSceneLoadedEvent()
     {
-        sceneLights = FindObjectsOfType<LightControl>();
+        sceneLights = FindObjectsByType<LightControl>(FindObjectsSortMode.None);
         
         foreach(LightControl light in sceneLights)
         {

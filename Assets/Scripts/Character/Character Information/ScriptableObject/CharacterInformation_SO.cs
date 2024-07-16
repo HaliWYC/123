@@ -9,8 +9,7 @@ public class CharacterInformation_SO : ScriptableObject
     public string Name;
     public string Appellation;
     public Sprite charIcon;
-    //后期做成效果
-    public string Personality;
+    public List<Personality> Personality;
     public string commandStyle;
     public string Spirit;
     public int prestigeIndex;
@@ -21,8 +20,17 @@ public class CharacterInformation_SO : ScriptableObject
     [Header("六维")]
     public int Fitness;
     public int Eloquence;
-    public int Wisedom;
+    public int Wisdom;
     public int Luck;
     public int Strength;
     public int Perception;
+}
+
+[System.Serializable]
+public class Personality
+{
+    public string Name;
+    public BasicQualityType personalityQuality;
+    [TextArea]
+    public string description;
 }

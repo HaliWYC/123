@@ -6,28 +6,10 @@ using ShanHai_IsolatedCity.Dialogue;
 public static class EventHandler
 {
     #region ConbatEvents
-    public static event Action<bool> AllowPlayerInputEvent;
-    public static void CallAllowPlayerInputEvent(bool input)
-    {
-        AllowPlayerInputEvent?.Invoke(input);
-    }
-
     public static event Action<Transform, int, AttackEffectType> DamageTextPopEvent;
     public static void CallDamageTextPopEvent(Transform targetPos, int damage, AttackEffectType attackEffect)
     {
         DamageTextPopEvent?.Invoke(targetPos, damage, attackEffect);
-    }
-
-    public static event Action<GameObject, bool> EnemyInAttackListEvent;
-    public static void CallEnemyInAttackListEvent(GameObject enemy, bool shouldExist)
-    {
-        EnemyInAttackListEvent?.Invoke(enemy, shouldExist);
-    }
-
-    public static event Action<Vector3, ItemDetails> ExecuteActionAfterAnimation;
-    public static void CallExecuteActionAfterAnimation(Vector3 pos, ItemDetails itemDetails)
-    {
-        ExecuteActionAfterAnimation?.Invoke(pos, itemDetails);
     }
     #endregion
 
@@ -54,6 +36,12 @@ public static class EventHandler
     public static void CallItemSelectedEvent(ItemDetails itemDetails, bool isSelected)
     {
         ItemSelectedEvent?.Invoke(itemDetails, isSelected);
+    }
+
+    public static event Action CheckInvalidItemsEvent;
+    public static void CallCheckInvalidItemsevent()
+    {
+        CheckInvalidItemsEvent?.Invoke();
     }
 
     #endregion
@@ -196,5 +184,23 @@ public static class EventHandler
         UpdateBuffListEvent?.Invoke();
     }
 
+    #endregion
+
+    #region PlayerEvent
+    public static Action<PlayerState> UpdatePlayerStateEvent;
+    public static void CallUpdatePlayerStateEvent(PlayerState ps)
+    {
+        UpdatePlayerStateEvent?.Invoke(ps);
+    }
+    public static event Action<Vector3, ItemDetails> ExecuteActionAfterAnimation;
+    public static void CallExecuteActionAfterAnimation(Vector3 pos, ItemDetails itemDetails)
+    {
+        ExecuteActionAfterAnimation?.Invoke(pos, itemDetails);
+    }
+    public static event Action<bool> AllowPlayerInputEvent;
+    public static void CallAllowPlayerInputEvent(bool input)
+    {
+        AllowPlayerInputEvent?.Invoke(input);
+    }
     #endregion
 }

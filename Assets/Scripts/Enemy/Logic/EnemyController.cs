@@ -63,7 +63,7 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         canAttack = true;
         dizzytime = 0;
         canAction = true;
-
+        skills = GetComponent<Skills>();
     }
 
     private void OnEnable()
@@ -120,6 +120,8 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             
         }
 
+        if(enemyInformation.MinimumRange<Settings.stopDistance)
+            enemyInformation.MinimumRange = Settings.stopDistance;
         attackCoolingTime = 0;
         timeAfterSkillSpell = 0;
         //FIXME:在加载场景的时候使用
@@ -149,16 +151,6 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             anim.SetBool("isChase", false );
             anim.SetBool("isCritical", false );
         }
-
-        if ((transform.position - playerTransform.position).sqrMagnitude <= playerTransform.GetComponent<Player>().eyeRange)
-        {
-            EventHandler.CallEnemyInAttackListEvent(this.gameObject, true);
-        }
-        else
-        {
-            EventHandler.CallEnemyInAttackListEvent(this.gameObject, false);
-        }
-
         if (dizzytime > 0)
         {
             anim.SetBool("isDizzy", true);
@@ -193,30 +185,11 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                 npcDetails.enemyState = EnemyState.攻击;
                 
             }
-            else if (transform.CompareTag("NPC"))
-            {
-                npcDetails.enemyState = EnemyState.和平;
-            }
         }
-            
 
         switch (npcDetails.enemyState)
         {
             case EnemyState.和平:
-                isMoving = true;
-                remainLookAtTime = lookAtTime;
-                if (remainLookAtTime > 0)
-                {
-                    remainLookAtTime -= Time.deltaTime;
-                    ChaseTheEnemy(originalPos);
-                }
-
-                if (Vector3.SqrMagnitude(originalPos - transform.position) <= Settings.stopDistance)
-                {
-                    isMoving = false;
-                    transform.localScale = new Vector3(direction, 1, 1);
-                }
-
                 break;
             case EnemyState.警惕:
                 break;
@@ -248,8 +221,6 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                 }
                 
                 EnemyAttackSelection();
-
-
                 break;
             case EnemyState.巡逻:
                 isChase = false;
@@ -266,7 +237,6 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                     isMoving = false;
                     if (remainLookAtTime > 0)
                         remainLookAtTime -= Time.deltaTime;
-                    
                     else
                         GenerateWayPoint();
                 }
@@ -298,23 +268,15 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         //FIXME:后期加上如果总概率超过100%要怎么办
         if(timeAfterSkillSpell<=0 && canAttack)
         {
-            foreach(SkillDetails_SO skill in GetComponent<Skills>().skillList)
+            if (attackCoolingTime <= 0)
             {
-                if (skill.currentCoolDown <= 0)
-                {
-                    StartCoroutine(EnemySkillSeletion());
-                    return;
-                }
+                StartCoroutine(EnemySkillSeletion(true));
+            }
+            else
+            {
+                StartCoroutine(EnemySkillSeletion(false));
             }
         }
-        
-        if(attackCoolingTime<=0 && canAttack)
-        {
-
-            StartCoroutine(Attack());
-        }
-
-        
     }
 
     private IEnumerator Attack()
@@ -340,14 +302,15 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
     }
 
 
-    private IEnumerator EnemySkillSeletion()
+    private IEnumerator EnemySkillSeletion(bool canAttack)
     {
+
         float currentValue=Random.value;
         foreach (SkillDetails_SO skill in GetComponent<Skills>().skillList)
         {
             if (skill != null)
             {
-                if (skill.QiComsume <= enemyInformation.CurrentQi && TargetInSkillRange(skill.skillRange))
+                if (skill.QiComsume <= enemyInformation.CurrentQi && TargetInSkillRange(skill.skillRange) && skill.currentCoolDown <= 0)
                 {
                     currentValue -= skill.skillProbability;
                     if (currentValue <= 0)
@@ -355,11 +318,16 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
                         isChase = false;
                         anim.SetTrigger("Skill");
                         skill.skillPrefab.GetComponent<SkillSpeller>().CallTheSkill(skill, attackTarget, transform.gameObject);
+                        skills.SkillExperienceChange(skill, skill.ExpPerTimes);
                         yield return null;
                         timeAfterSkillSpell = skill.timeAfterSpell;
                     }
                 }
             }
+        }
+        if(canAttack && currentValue > 0)
+        {
+            StartCoroutine(Attack());
         }
         yield return null;
 
@@ -421,7 +389,6 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
             if (transform.position.x - targetPos.x < 0)
                     faceDir = -1;
 
-
             transform.localScale = new Vector3(faceDir, 1, 1);
             transform.position = Vector2.MoveTowards(transform.position, targetPos, speed * Time.deltaTime);           
         }
@@ -429,7 +396,6 @@ public class EnemyController : MonoBehaviour,IEndGameObserver
         {
             isChase = false;
         }
-        
 
     }
     #region Events

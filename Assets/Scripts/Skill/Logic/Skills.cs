@@ -27,6 +27,7 @@ namespace ShanHai_IsolatedCity.Skill
             if (skillList != null)
                 SkillCooling(skillList);
         }
+
         #region GetSkill
         public SkillDetails_SO GetSkillDataByName(string skillName)
         {
@@ -99,6 +100,19 @@ namespace ShanHai_IsolatedCity.Skill
             return false;
         }
 
+        
+
+        public void SkillCooling(List<SkillDetails_SO> skillList)
+        {
+            foreach (SkillDetails_SO skillDetails in skillList)
+            {
+                if (skillDetails != null)
+                    skillDetails.currentCoolDown -= Time.deltaTime;
+            }
+        }
+
+
+        #region Proficiency
         public float SkillExpIncrementCalculation(SkillDetails_SO evaluateSkill)
         {
             float correctionValue = Random.Range(-0.01f, 0.01f);
@@ -119,21 +133,45 @@ namespace ShanHai_IsolatedCity.Skill
             return (0.2f + correctionValue) * proficiencyValue;
         }
 
-        public void SkillCooling(List<SkillDetails_SO> skillList)
+        public void SkillExperienceChange(SkillDetails_SO skill, int exp)
         {
-            foreach (SkillDetails_SO skillDetails in skillList)
+            if (skill.currentExp + exp >= skill.nextExp)
             {
-                if (skillDetails != null)
-                    skillDetails.currentCoolDown -= Time.deltaTime;
-            }
-        }
-        #region PlayerSkill
-        public void PlayerSkilldetection()
-        {
-            if (skiller.CompareTag("Player"))
-            {
+                skill.currentExp = skill.currentExp + exp - skill.nextExp;
+                skill.skillProficiency++;
+                //Debug.Log(skill.skillProficiency);
+                skill.nextExp = NextProficencyExp(skill.skillProficiency);
 
             }
+            else
+                skill.currentExp += exp;
+        }
+        
+
+        private int NextProficencyExp(Proficiency proficiency)
+        {
+            switch (proficiency)
+            {
+                case Proficiency.一窍不通:
+                    return 10;
+                case Proficiency.初窥门径:
+                    return 50;
+                case Proficiency.一知半解:
+                    return 100;
+                case Proficiency.半生不熟:
+                    return 200;
+                case Proficiency.融会贯通:
+                    return 500;
+                case Proficiency.游刃有余:
+                    return 1000;
+                case Proficiency.炉火纯青:
+                    return 1500;
+                case Proficiency.得心应手:
+                    return 2000;
+                case Proficiency.登峰造极:
+                    return 3000;
+            }
+            return -1;
         }
         #endregion
 

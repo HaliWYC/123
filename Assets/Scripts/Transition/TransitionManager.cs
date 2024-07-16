@@ -33,7 +33,7 @@ namespace ShanHai_IsolatedCity.Transition
 
         private IEnumerator Start()
         {
-            fadeCanvasGroup = FindObjectOfType<CanvasGroup>();
+            fadeCanvasGroup = FindFirstObjectByType<CanvasGroup>();
             yield return StartCoroutine(LoadSceneSetActive(startSceneName));
             EventHandler.CallAfterSceneLoadedEvent();
         }

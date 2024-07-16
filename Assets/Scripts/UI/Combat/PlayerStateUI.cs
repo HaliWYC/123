@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerStateUI : MonoBehaviour
+public class PlayerStateUI : Singleton<PlayerStateUI>
 {
     public GameObject playerState;
     public Image healthImage;

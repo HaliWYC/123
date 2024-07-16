@@ -20,7 +20,7 @@ MonoBehaviour:
     itemType: 1
     itemDescription: Use it for getting 100 gold
     useRadius: 7
-    canPickUp: 0
+    canPickUp: 1
     canDrop: 0
     notForSale: 0
     Stackable: 1

@@ -63,6 +63,42 @@ public class TradeUI : Singleton<TradeUI>
         SubmmitButton.onClick.AddListener(Submit);
         CancelButton.onClick.AddListener(Cancel);
     }
+    private void OnEnable()
+    {
+        EventHandler.CheckInvalidItemsEvent += OnCheckInvalidItemsEvent;
+    }
+
+    private void OnDisable()
+    {
+        EventHandler.CheckInvalidItemsEvent -= OnCheckInvalidItemsEvent;
+    }
+
+    private void OnCheckInvalidItemsEvent()
+    {
+        if (NPCBag != null)
+        {
+            foreach (var itemInbag in NPCBag.equipList)
+            {
+                if (InventoryManager.Instance.GetItemDetails(itemInbag.itemID, itemInbag.Type) == null)
+                    NPCBag.equipList.Remove(itemInbag);
+            }
+            foreach (var itemInbag in NPCBag.consumeList)
+            {
+                if (InventoryManager.Instance.GetItemDetails(itemInbag.itemID, itemInbag.Type) == null)
+                    NPCBag.consumeList.Remove(itemInbag);
+            }
+            foreach (var itemInbag in NPCBag.taskList)
+            {
+                if (InventoryManager.Instance.GetItemDetails(itemInbag.itemID, itemInbag.Type) == null)
+                    NPCBag.taskList.Remove(itemInbag);
+            }
+            foreach (var itemInbag in NPCBag.otherList)
+            {
+                if (InventoryManager.Instance.GetItemDetails(itemInbag.itemID, itemInbag.Type) == null)
+                    NPCBag.otherList.Remove(itemInbag);
+            }
+        }
+    }
 
     private void Update()
     {
@@ -286,7 +322,7 @@ public class TradeUI : Singleton<TradeUI>
                 }
                 else if (slot.slotType == SlotType.NPCBag)
                 {
-                    InventoryManager.Instance.AddItem(slot.itemDetails, slot.itemAmount, NPCDetail);
+                    InventoryManager.Instance.AddItem(slot.itemDetails, slot.itemAmount, NPCDetail, true);
                 }
             }
         }
@@ -399,7 +435,7 @@ public class TradeUI : Singleton<TradeUI>
         {
             if(slot.slotType == SlotType.PlayerBag)
             {
-                InventoryManager.Instance.AddItem(slot.itemDetails, slot.itemAmount, NPCDetail);
+                InventoryManager.Instance.AddItem(slot.itemDetails, slot.itemAmount, NPCDetail, true);
             }
             else if (slot.slotType == SlotType.NPCBag)
             {
@@ -480,11 +516,11 @@ public class TradeUI : Singleton<TradeUI>
                     {
                         TradeItemSlot newItem = TradeBagSlots.Find(i => i.itemDetails == selectedItem.itemDetails);
                         newItem.UpdateSlot(newItem.itemDetails, newItem.itemDetails.itemType, newItem.itemAmount - amount, SlotType.NPCBag);
-                        InventoryManager.Instance.AddItem(selectedItem.itemDetails, amount, NPCDetail);
+                        InventoryManager.Instance.AddItem(selectedItem.itemDetails, amount, NPCDetail, true);
                     }
                     else if (amount == selectedItem.itemAmount)
                     {
-                        InventoryManager.Instance.AddItem(selectedItem.itemDetails, amount, NPCDetail);
+                        InventoryManager.Instance.AddItem(selectedItem.itemDetails, amount, NPCDetail, true);
                         for (int index = 0; index < TradeBagSlots.Count; index++)
                         {
                             if (TradeBagSlots[index].itemDetails == selectedItem.itemDetails)

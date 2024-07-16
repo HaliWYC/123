@@ -70,7 +70,7 @@ namespace ShanHai_IsolatedCity.Inventory
             characterData.text = GetCharacterData();
             Fitness.text = characterInformation.Fitness.ToString();
             Eloquence.text = characterInformation.Eloquence.ToString();
-            Wisdom.text = characterInformation.Wisedom.ToString();
+            Wisdom.text = characterInformation.Wisdom.ToString();
             Luck.text = characterInformation.Luck.ToString();
             Strength.text = characterInformation.Strength.ToString();
             Perception.text = characterInformation.Perception.ToString();
@@ -118,8 +118,13 @@ namespace ShanHai_IsolatedCity.Inventory
         {
             string CD = string.Empty;
             //TODO:后期用Tooltip解释每一个词条
-            if (characterInformation.Personality != string.Empty)
-                CD += "Personality: " + characterInformation.Personality + "\n";
+            if (characterInformation.Personality.Count > 0)
+            {
+                foreach(var personality in characterInformation.Personality)
+                {
+                    CD += "Personality: " + personality.Name + "\n";
+                }
+            }
             if (characterInformation.commandStyle != string.Empty)
                 CD += "CommandStyle: " + characterInformation.commandStyle + "\n";
             if (characterInformation.Spirit != string.Empty)

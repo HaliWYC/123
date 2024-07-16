@@ -7,9 +7,12 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 public class LootSpawner : MonoBehaviour
 {
     public List<LootItem> lootItems;
+    private bool isFinish = false;
 
     public void InitLootItem(int enemyLevel, InventoryBag_SO inventoryBag)
     {
+        if (isFinish)
+            return;
         List<InventoryItem> allItems = new List<InventoryItem>();
 
         foreach(InventoryItem equip in inventoryBag.equipList)
@@ -32,9 +35,8 @@ public class LootSpawner : MonoBehaviour
         foreach(InventoryItem Item in allItems)
         {
             float pro = Random.Range(0f, 1f);
-
             bool found = false;
-            foreach(LootItem loot in lootItems)
+            foreach (LootItem loot in lootItems)
             {
                 if(loot.itemID == Item.itemID)
                 {
@@ -50,9 +52,9 @@ public class LootSpawner : MonoBehaviour
                     }
                 }
             }
+
             if (pro >= CalculateLootItemPro(enemyLevel) && !found)
             {
-                
                 for (int num = 0; num < Item.itemAmount; num++)
                 {
                     Vector3 range = new Vector3(Random.Range(transform.position.x, transform.position.x + 1), Random.Range(transform.position.y, transform.position.y + 1), transform.position.z);
@@ -64,6 +66,7 @@ public class LootSpawner : MonoBehaviour
                 }
             }
         }
+        isFinish = true;
     }
 
     private float CalculateLootItemPro(int level)

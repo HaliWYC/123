@@ -108,7 +108,7 @@ public class NPCMovement : MonoBehaviour
     } 
     private void OnAfterSceneLoadedEvent()
     {
-        grid = FindObjectOfType<Grid>();
+        grid = FindFirstObjectByType<Grid>();
         CheckVisible();
         if (!isInitailised)
         {

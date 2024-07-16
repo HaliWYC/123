@@ -12,5 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c9792d0d1ef74adf9e663d0576d3633, type: 3}
   m_Name: GivePresent
   m_EditorClassIdentifier: 
-  dialoguePieces: []
+  dialoguePieces:
+  - ID: Piece01
+    targetID: 
+    faceImage: {fileID: 21300000, guid: e62c299aa3fef458f9f46e8a98fc0608, type: 3}
+    isLeft: 0
+    name: Lucas
+    dialogueText: "\u6211\u6709\u4E9B\u4E1C\u897F\u8981\u7ED9\u60A8"
+    hasToPause: 1
+    isEnd: 1
+    finishTalk: 1
+    task: {fileID: 0}
+    dialogueOptions: []
   FinishDialogues: []

@@ -19,10 +19,16 @@ MonoBehaviour:
     enemyState: 0
     NPCBag: {fileID: 11400000, guid: 98d1995fbd34b47ee880b64d245dc7aa, type: 2}
     relationship:
-      Favourability: 0
+      Favourability: 97
     favouriteItems:
-    - itemID: 0
+    - itemID: 30000
       itemType: 0
+      extent: 100
+    - itemID: 80000
+      itemType: 0
+      extent: 0
+    - itemID: 60000
+      itemType: 1
       extent: 0
   - NPCName: "\u9A91\u58EB"
     NPCID: 1

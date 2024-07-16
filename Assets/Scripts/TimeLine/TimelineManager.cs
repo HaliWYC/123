@@ -37,7 +37,7 @@ public class TimelineManager : Singleton<TimelineManager>
 
     private void OnAfterSceneLoadedEvent()
     {
-        currentCG = FindObjectOfType<PlayableDirector>();
+        currentCG = FindFirstObjectByType<PlayableDirector>();
         if (currentCG != null)
             currentCG.Play();
     }

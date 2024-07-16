@@ -12,6 +12,7 @@ namespace ShanHai_IsolatedCity.Inventory
         public EquipItemTips equipItemTip;
         public ConsumeItemTip consumeItemTip;
         public GameObject ConsumeItemPanel;
+        public ItemToolTip itemToolTip;
 
         [Header("General Bag")]
         public SlotUI Head;

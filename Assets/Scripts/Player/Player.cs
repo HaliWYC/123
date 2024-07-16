@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     private int runnerComsume = 5;
     public List<GameObject> attackTargetList;
     public GameObject attackTarget;
+    private Skills skills;
 
     public bool canExecute;
     private bool canAction;
@@ -39,18 +40,43 @@ public class Player : MonoBehaviour
     public bool isExecute;
     public bool isParry;
 
+
     private void Awake()
     {
-        
         inputControl = new PlayerInputControl();
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponentInChildren<Animator>();
         playerInformation=GetComponent<CharacterInformation>();
+        skills = GetComponent<Skills>();
         isAttackEnd = true;
         isRolling = false;
         canAction = true;
         canExecute = false;
     }
+    private void OnEnable()
+    {
+        inputControl.Enable();
+        EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
+        EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadEvent;
+        EventHandler.MouseClickEvent += OnMouseClickEvent;
+        EventHandler.MoveToPosition += OnMoveToPosition;
+        EventHandler.UpdateGameStateEvent += OnUpdateGameStateEvent;
+        EventHandler.AllowPlayerInputEvent += OnAllowPlayerInputEvent;
+        EventHandler.UpdatePlayerStateEvent += OnUpdatePlayerStateEvent;
+    }
+
+    private void OnDisable()
+    {
+        inputControl.Disable();
+        EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
+        EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadEvent;
+        EventHandler.MoveToPosition -= OnMoveToPosition;
+        EventHandler.MouseClickEvent -= OnMouseClickEvent;
+        EventHandler.UpdateGameStateEvent -= OnUpdateGameStateEvent;
+        EventHandler.AllowPlayerInputEvent -= OnAllowPlayerInputEvent;
+        EventHandler.UpdatePlayerStateEvent -= OnUpdatePlayerStateEvent;
+    }
+
 
     private void Start()
     {
@@ -84,19 +110,23 @@ public class Player : MonoBehaviour
         {
             case PlayerState.和平:
                 if (Input.GetKeyDown(KeyCode.J))
-                    playerState = PlayerState.战斗;
+                {
+                    EventHandler.CallUpdatePlayerStateEvent(PlayerState.战斗);
+                }
+
                 if (Input.GetKeyDown(KeyCode.C))
                 {
                     playerState = PlayerState.潜行;
-                    Debug.Log(playerState);
                 }
-
                 break;
             case PlayerState.战斗:
                 //TODO:Play combat Animation
                 if (Input.GetKeyDown(KeyCode.J))
-                    playerState = PlayerState.和平;
+                {
+                    EventHandler.CallUpdatePlayerStateEvent(PlayerState.和平);
+                }
                 SelectEnemyFromList();
+                PlayerSkillSpelling();
                 PlayerExecute();
                 PlayerParry();
                 PlayerAttack();
@@ -114,6 +144,7 @@ public class Player : MonoBehaviour
         PlayerRunning();
         movementInput = inputControl.Gameplay.Move.ReadValue<Vector2>();
         SwitchAnimation();
+        UpdateEnemyInList();
     }
 
     
@@ -124,46 +155,13 @@ public class Player : MonoBehaviour
         Movement();
     }
 
-    private void OnEnable()
-    {
-        inputControl.Enable();
-        EventHandler.BeforeSceneUnloadEvent += OnBeforeSceneUnloadEvent;
-        EventHandler.AfterSceneLoadedEvent += OnAfterSceneLoadEvent;
-        EventHandler.MouseClickEvent += OnMouseClickEvent;
-        EventHandler.MoveToPosition += OnMoveToPosition;
-        EventHandler.UpdateGameStateEvent += OnUpdateGameStateEvent;
-        EventHandler.AllowPlayerInputEvent += OnAllowPlayerInputEvent;
-        EventHandler.EnemyInAttackListEvent += OnEnemyInAttackListEvent;
-    }
-
-    private void OnDisable()
-    {
-        inputControl.Disable();
-        EventHandler.BeforeSceneUnloadEvent -= OnBeforeSceneUnloadEvent;
-        EventHandler.AfterSceneLoadedEvent -= OnAfterSceneLoadEvent;
-        EventHandler.MoveToPosition -= OnMoveToPosition;
-        EventHandler.MouseClickEvent -= OnMouseClickEvent;
-        EventHandler.UpdateGameStateEvent -= OnUpdateGameStateEvent;
-        EventHandler.AllowPlayerInputEvent -= OnAllowPlayerInputEvent;
-        EventHandler.EnemyInAttackListEvent -= OnEnemyInAttackListEvent;
-    }
+    
 
     #region Events
 
     private void OnAllowPlayerInputEvent(bool input)
     {
         inputDisable = !input;
-    }
-
-    private void OnEnemyInAttackListEvent(GameObject enemy, bool shouldExist)
-    {
-        if (shouldExist)
-        {
-           if(!CheckEnemyExist(attackTargetList,enemy))
-            attackTargetList.Add(enemy);
-        }
-        else if(attackTargetList.Count>0 && CheckEnemyExist(attackTargetList, enemy))
-            attackTargetList.RemoveAt(attackTargetList.IndexOf(enemy));
     }
 
     private void OnUpdateGameStateEvent(GameState gameState)
@@ -202,20 +200,29 @@ public class Player : MonoBehaviour
         inputDisable = true;
     }
 
+    private void OnUpdatePlayerStateEvent(PlayerState state)
+    {
+        playerState = state;
+        switch (playerState)
+        {
+            case PlayerState.和平:
+                PlayerStateUI.Instance.playerState.SetActive(false);
+                break;
+            case PlayerState.战斗:
+                PlayerStateUI.Instance.playerState.SetActive(true);
+                break;
+        }
+    }
+
     #endregion
 
     #region PlayerCheck
-    /// <summary>
-    /// Check whether the given target has already exist in the attackTarget List
-    /// </summary>
-    /// <param name="attackList"></param>
-    /// <param name="target"></param>
-    /// <returns></returns>
-    private bool CheckEnemyExist(List<GameObject> attackList, GameObject target)
+
+    private bool CheckEnemyInList(GameObject target)
     {
-        foreach (GameObject enemy in attackList)
+        foreach(var enemy in attackTargetList)
         {
-            if (target == enemy)
+            if (enemy == target)
                 return true;
         }
         return false;
@@ -339,7 +346,7 @@ public class Player : MonoBehaviour
     public void PlayerParry()
     {
         if (isDead || !canAction || isExecute || isRolling || !isAttackEnd) return;
-        if(lastParryTime<=0 && Input.GetMouseButtonDown(1))
+        if(lastParryTime<=0 && Input.GetKeyDown(KeyCode.H))
         {
             anim.SetTrigger("isParry");
         }
@@ -397,6 +404,7 @@ public class Player : MonoBehaviour
         inputDisable = true;
         playerInformation.isUndefeated = true;
         attackTarget.GetComponent<EnemyController>().dizzytime = 100;
+        
         isExecute = true;
     }
 
@@ -404,6 +412,9 @@ public class Player : MonoBehaviour
     {
         inputDisable = false;
         attackTarget.GetComponent<EnemyController>().dizzytime = 0;
+        CharacterInformation enemy = attackTarget.GetComponent<CharacterInformation>();
+        enemy.CurrentWound += enemy.MaxWound;
+        StartCoroutine(enemy.CalculateFatal(playerInformation.Fatal_Enhancement, enemy.FatalDefense, enemy));
         isExecute = false;
         playerInformation.isUndefeated = false;
         playerInformation.ExecuteBenefits();
@@ -436,10 +447,94 @@ public class Player : MonoBehaviour
             if (attackTargetList[indexInList] != null)
             {
                 attackTarget = attackTargetList[indexInList];
-                Debug.Log(attackTarget);
             }
         }
     }
+
+    private void UpdateEnemyInList()
+    {
+        var collider = Physics2D.OverlapCircleAll(transform.position, eyeRange);
+        attackTargetList.Clear();
+        foreach(var enemy in collider)
+        {
+            if (enemy.CompareTag("Enemy") || enemy.CompareTag("NPC"))
+            {
+                attackTargetList.Add(enemy.gameObject);
+            }
+        }
+    }
+
+    private void PlayerSkillSpelling()
+    {
+        if (isDead || isExecute) return;
+        if (Input.GetKeyDown(KeyCode.Alpha1) && skills.skillList[0] != null)
+        {
+            if (attackTarget != null && skills.skillList[0].currentCoolDown <= 0)
+                SpellSkill(skills.skillList[0]);
+                
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2) && skills.skillList[1] != null)
+        {
+            if (attackTarget != null && skills.skillList[1].currentCoolDown <= 0)
+                SpellSkill(skills.skillList[1]);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3) && skills.skillList[2] != null)
+        {
+            if (attackTarget != null && skills.skillList[2].currentCoolDown <= 0)
+                SpellSkill(skills.skillList[2]);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4) && skills.skillList[3] != null)
+        {
+            if (attackTarget != null && skills.skillList[3].currentCoolDown <= 0)
+                SpellSkill(skills.skillList[3]);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5) && skills.skillList[4] != null)
+        {
+            if (attackTarget != null && skills.skillList[4].currentCoolDown <= 0)
+                SpellSkill(skills.skillList[4]);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha6) && skills.skillList[5] != null)
+        {
+            if (attackTarget != null && skills.skillList[5].currentCoolDown <= 0)
+                SpellSkill(skills.skillList[5]);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha7) && skills.skillList[6] != null)
+        {
+            if (attackTarget != null && skills.skillList[6].currentCoolDown <= 0)
+                SpellSkill(skills.skillList[6]);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha8) && skills.skillList[7] != null)
+        {
+            if (attackTarget != null && skills.skillList[7].currentCoolDown <= 0)
+                SpellSkill(skills.skillList[7]);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha9) && skills.skillList[8] != null)
+        {
+            if (attackTarget != null && skills.skillList[8].currentCoolDown <= 0)
+                SpellSkill(skills.skillList[8]);
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha0) && skills.skillList[9] != null)
+        {
+            if (attackTarget != null && skills.skillList[9].currentCoolDown <= 0)
+                SpellSkill(skills.skillList[9]);
+
+        }
+
+    }
+
+    private void SpellSkill(SkillDetails_SO skill)
+    {
+        skill.skillPrefab.GetComponent<SkillSpeller>().CallTheSkill(skill, attackTarget, gameObject);
+    }
+
     #endregion
 
 
@@ -447,16 +542,19 @@ public class Player : MonoBehaviour
     {
         if (target.CompareTag("Enemy") || target.CompareTag("NPC"))
         {
-            if(attackTarget==null)
             attackTarget = target.gameObject;
+            if (!CheckEnemyInList(attackTarget))
+            {
+                attackTargetList.Add(attackTarget);
+            }
         }
     }
 
 
-    private void OnTriggerExit2D(Collider2D target)
-    {
-        attackTarget = null;
-    }
+    //private void OnTriggerExit2D(Collider2D target)
+    //{
+    //    attackTarget = null;
+    //}
 
     private void OnDrawGizmosSelected()
     {

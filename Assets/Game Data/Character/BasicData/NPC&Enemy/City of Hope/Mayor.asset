@@ -15,16 +15,19 @@ MonoBehaviour:
   Name: "\u5B59\u7A0B"
   Appellation: 
   charIcon: {fileID: 0}
-  Personality: 
+  Personality:
+  - Name: "\u548C\u853C\u53EF\u4EB2"
+    personalityQuality: 3
+    description: 
   commandStyle: 
   Spirit: 
   prestigeIndex: 0
-  prestigeLevel: 5
+  prestigeLevel: 7
   currentPrestige: 0
   nextPrestige: 0
-  Fitness: 0
-  Eloquence: 0
-  Wisedom: 0
-  Luck: 0
-  Strength: 0
-  Perception: 0
+  Fitness: 10
+  Eloquence: 15
+  Wisdom: 20
+  Luck: 5
+  Strength: 7
+  Perception: 2

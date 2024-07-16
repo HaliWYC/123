@@ -25,7 +25,7 @@ public class CursorManager : Singleton<CursorManager>
     private bool cursorEnable;
     public bool cursorPositionValid;
     private ItemDetails currentItem;
-    private Transform playertransform => FindObjectOfType<Player>().transform;
+    private Transform playertransform => FindFirstObjectByType<Player>().transform;
 
 
     private void OnEnable()
@@ -45,7 +45,7 @@ public class CursorManager : Singleton<CursorManager>
 
     private void OnAfterSceneLoadedEvent()
     {
-        currentGrid = FindObjectOfType<Grid>();
+        currentGrid = FindFirstObjectByType<Grid>();
         
     }
 

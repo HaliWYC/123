@@ -206,7 +206,8 @@ namespace ShanHai_IsolatedCity.Dialogue
 
         private void GivePresent()
         {
-
+            EventHandler.CallNPCAvailableEvent(false);
+            GiftUI.Instance.SetUpGiftUI(GetComponent<CharacterInformation>().characterInformation, NPCDetails);
         }
 
         private void Leave()
